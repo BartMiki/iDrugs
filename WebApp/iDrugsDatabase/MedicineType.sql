@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[MedicineType]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
+    [Type] NVARCHAR(20) NOT NULL,
+    [Unit] NVARCHAR(10) NOT NULL,
+
+	-- SALVE = maść; PILLS = tabletki
+	CHECK ([Type] IN ('SALVE','PILL','SYRUP','SPRAY', 'SOLUTION', 'LIQUID', 'BANDAGE', 'PLASTER')),
+	CHECK ([Unit] IN ('PCS','GRAMS','MILILITERS'))
+)
