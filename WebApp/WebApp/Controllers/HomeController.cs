@@ -31,6 +31,8 @@ namespace WebApp.Controllers
 
         public IActionResult Privacy()
         {
+            var dbContext = new DAL.iDrugsEntities();
+            dbContext.SaveChanges();
             return View();
         }
 
