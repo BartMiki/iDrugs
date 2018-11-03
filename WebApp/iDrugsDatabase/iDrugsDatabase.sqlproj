@@ -58,21 +58,23 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Medicine.sql" />
-    <Build Include="MedicineType.sql" />
-    <Build Include="PrescriptionItem.sql" />
-    <Build Include="Prescription.sql" />
-    <Build Include="CompletedPrescription.sql" />
-    <Build Include="RejectedPrescription.sql" />
-    <Build Include="Apothecary.sql" />
-    <Build Include="Doctor.sql" />
-    <Build Include="DrugStore.sql" />
-    <Build Include="DrugStoreAvailableMedicine.sql" />
-    <Build Include="ApothecaryShift.sql" />
+    <Build Include="Tables\Apothecary.sql" />
+    <Build Include="Tables\Doctor.sql" />
+    <Build Include="Tables\DrugStoreAvailableMedicine.sql" />
+    <Build Include="Tables\Medicine.sql" />
+    <Build Include="Tables\MedicineWarehouse.sql" />
+    <Build Include="Tables\Order.sql" />
+    <Build Include="Tables\OrderItem.sql" />
   </ItemGroup>
   <ItemGroup>
-    <RefactorLog Include="iDrugsDatabase.refactorlog" />
+    <RefactorLog Include="Tables\iDrugsDatabase.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\MedicineType.sql" />
+    <Build Include="Tables\Prescription.sql" />
+    <Build Include="Tables\PrescriptionItem.sql" />
   </ItemGroup>
 </Project>

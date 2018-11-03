@@ -25,18 +25,15 @@ namespace DAL
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
         public virtual DbSet<Apothecary> Apothecaries { get; set; }
-        public virtual DbSet<ApothecaryShift> ApothecaryShifts { get; set; }
-        public virtual DbSet<CompletedPrescription> CompletedPrescriptions { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
-        public virtual DbSet<DrugStore> DrugStores { get; set; }
         public virtual DbSet<DrugStoreAvailableMedicine> DrugStoreAvailableMedicines { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
         public virtual DbSet<MedicineType> MedicineTypes { get; set; }
+        public virtual DbSet<MedicineWarehouse> MedicineWarehouses { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
-        public virtual DbSet<RejectedPrescription> RejectedPrescriptions { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

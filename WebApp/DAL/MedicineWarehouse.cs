@@ -12,15 +12,12 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class ApothecaryShift
+    public partial class MedicineWarehouse
     {
         public int Id { get; set; }
-        public int ApothecaryId { get; set; }
-        public System.DateTime ShiftStart { get; set; }
-        public Nullable<System.DateTime> ShiftEnd { get; set; }
-        public Nullable<System.TimeSpan> TotalTime { get; set; }
-        public Nullable<int> ServedClientsCount { get; set; }
+        public int MedicineId { get; set; }
+        public int Quantity { get; set; }
     
-        public virtual Apothecary Apothecary { get; set; }
+        public virtual Medicine Medicine { get; set; }
     }
 }

@@ -51,90 +51,77 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apothecary.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ApothecaryShift.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Class1.cs" />
-    <Compile Include="CompletedPrescription.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="C__RefactorLog.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Doctor.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DrugStore.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="DrugStoreAvailableMedicine.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="IDrugsDbContext.Context.cs">
+    <Compile Include="iDrugsDatabase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IDrugsDbContext.Context.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="IDrugsDbContext.cs">
+    <Compile Include="iDrugsDatabase.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="IDrugsDbContext.Designer.cs">
+    <Compile Include="iDrugsDatabase.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IDrugsDbContext.edmx</DependentUpon>
+      <DependentUpon>iDrugsDatabase.edmx</DependentUpon>
     </Compile>
     <Compile Include="Medicine.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="MedicineType.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MedicineWarehouse.cs">
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Order.cs">
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OrderItem.cs">
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Prescription.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="PrescriptionItem.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
+      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RejectedPrescription.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>IDrugsDbContext.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <EntityDeploy Include="IDrugsDbContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>IDrugsDbContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <None Include="IDrugsDbContext.edmx.diagram">
-      <DependentUpon>IDrugsDbContext.edmx</DependentUpon>
+    <EntityDeploy Include="iDrugsDatabase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>iDrugsDatabase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="iDrugsDatabase.edmx.diagram">
+      <DependentUpon>iDrugsDatabase.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="IDrugsDbContext.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IDrugsDbContext.Context.cs</LastGenOutput>
-      <DependentUpon>IDrugsDbContext.edmx</DependentUpon>
-    </Content>
-    <Content Include="IDrugsDbContext.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>IDrugsDbContext.edmx</DependentUpon>
-      <LastGenOutput>IDrugsDbContext.cs</LastGenOutput>
-    </Content>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Content Include="iDrugsDatabase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>iDrugsDatabase.edmx</DependentUpon>
+      <LastGenOutput>iDrugsDatabase.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="iDrugsDatabase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>iDrugsDatabase.edmx</DependentUpon>
+      <LastGenOutput>iDrugsDatabase.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

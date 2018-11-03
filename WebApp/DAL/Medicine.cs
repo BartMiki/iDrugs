@@ -18,6 +18,8 @@ namespace DAL
         public Medicine()
         {
             this.DrugStoreAvailableMedicines = new HashSet<DrugStoreAvailableMedicine>();
+            this.MedicineWarehouses = new HashSet<MedicineWarehouse>();
+            this.OrderItems = new HashSet<OrderItem>();
             this.PrescriptionItems = new HashSet<PrescriptionItem>();
         }
     
@@ -27,10 +29,15 @@ namespace DAL
         public int MedicineTypeId { get; set; }
         public Nullable<decimal> Refund { get; set; }
         public string Name { get; set; }
+        public bool Expired { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DrugStoreAvailableMedicine> DrugStoreAvailableMedicines { get; set; }
         public virtual MedicineType MedicineType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MedicineWarehouse> MedicineWarehouses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PrescriptionItem> PrescriptionItems { get; set; }
     }
