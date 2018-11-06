@@ -12,6 +12,8 @@ namespace DAL
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class iDrugsEntities : DbContext
     {
@@ -35,5 +37,31 @@ namespace DAL
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
+    
+        public virtual int InsertApothecary(string firstName, string lastName, Nullable<decimal> monthlySalary)
+        {
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var monthlySalaryParameter = monthlySalary.HasValue ?
+                new ObjectParameter("MonthlySalary", monthlySalary) :
+                new ObjectParameter("MonthlySalary", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertApothecary", firstNameParameter, lastNameParameter, monthlySalaryParameter);
+        }
+    
+        public virtual int FireApothecary(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FireApothecary", idParameter);
+        }
     }
 }

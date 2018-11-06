@@ -7,14 +7,14 @@
       <Diagram DiagramId="9be9381748914897b9be0be5e7345377" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="iDrugsModel.Apothecary" Width="1.5" PointX="10.875" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="iDrugsModel.Doctor" Width="1.5" PointX="11.125" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="iDrugsModel.DrugStoreAvailableMedicine" Width="1.5" PointX="0.625" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="iDrugsModel.Medicine" Width="1.5" PointX="2.875" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="iDrugsModel.MedicineType" Width="1.5" PointX="0.625" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="iDrugsModel.MedicineWarehouse" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="iDrugsModel.DrugStoreAvailableMedicine" Width="2.375" PointX="0.5" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="iDrugsModel.Medicine" Width="1.5" PointX="3.625" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="iDrugsModel.MedicineType" Width="1.5" PointX="1.375" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="iDrugsModel.MedicineWarehouse" Width="1.75" PointX="3.5" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="iDrugsModel.Order" Width="1.5" PointX="8.125" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="iDrugsModel.OrderItem" Width="1.5" PointX="5.625" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="iDrugsModel.Prescription" Width="1.5" PointX="8.375" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="iDrugsModel.PrescriptionItem" Width="1.5" PointX="5.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="iDrugsModel.PrescriptionItem" Width="1.625" PointX="5.625" PointY="2.375" IsExpanded="true" />
         <AssociationConnector Association="iDrugsModel.FK__Order__Apothecar__3D5E1FD2" ManuallyRouted="false" />
         <AssociationConnector Association="iDrugsModel.FK__Prescript__Apoth__4F7CD00D" ManuallyRouted="false" />
         <AssociationConnector Association="iDrugsModel.FK__Prescript__Docto__4D94879B" ManuallyRouted="false" />

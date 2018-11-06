@@ -59,6 +59,8 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Triggers" />
+    <Folder Include="StoredProcedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Apothecary.sql" />
@@ -68,6 +70,9 @@
     <Build Include="Tables\MedicineWarehouse.sql" />
     <Build Include="Tables\Order.sql" />
     <Build Include="Tables\OrderItem.sql" />
+    <Build Include="Triggers\RestrictNumberOfEmployedApothecaries.sql" />
+    <Build Include="StoredProcedures\InsertApothecary.sql" />
+    <Build Include="StoredProcedures\FireApothecary.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Tables\iDrugsDatabase.refactorlog" />

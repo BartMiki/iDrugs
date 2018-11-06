@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="iDrugsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="iDrugsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Apothecary">
           <Key>
             <PropertyRef Name="Id" />
@@ -13,6 +13,7 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="MonthlySalary" Type="money" Nullable="false" />
+          <Property Name="IsEmployed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
@@ -215,6 +216,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="FireApothecary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertApothecary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirstName" Type="nvarchar" Mode="In" />
+          <Parameter Name="LastName" Type="nvarchar" Mode="In" />
+          <Parameter Name="MonthlySalary" Type="money" Mode="In" />
+        </Function>
         <EntityContainer Name="iDrugsModelStoreContainer">
           <EntitySet Name="Apothecary" EntityType="Self.Apothecary" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
@@ -267,8 +276,7 @@
             <End Role="PrescriptionItem" EntitySet="PrescriptionItem" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="iDrugsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -282,6 +290,7 @@
           <Property Name="MonthlySalary" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <NavigationProperty Name="Orders" Relationship="Self.FK__Order__Apothecar__3D5E1FD2" FromRole="Apothecary" ToRole="Order" />
           <NavigationProperty Name="Prescriptions" Relationship="Self.FK__Prescript__Apoth__4F7CD00D" FromRole="Apothecary" ToRole="Prescription" />
+          <Property Name="IsEmployed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
@@ -553,6 +562,14 @@
             <End Role="Prescription" EntitySet="Prescriptions" />
             <End Role="PrescriptionItem" EntitySet="PrescriptionItems" />
           </AssociationSet>
+          <FunctionImport Name="InsertApothecary">
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="MonthlySalary" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="FireApothecary">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -563,6 +580,7 @@
           <EntitySetMapping Name="Apothecaries">
             <EntityTypeMapping TypeName="iDrugsModel.Apothecary">
               <MappingFragment StoreEntitySet="Apothecary">
+                <ScalarProperty Name="IsEmployed" ColumnName="IsEmployed" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -660,6 +678,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InsertApothecary" FunctionName="iDrugsModel.Store.InsertApothecary" />
+          <FunctionImportMapping FunctionImportName="FireApothecary" FunctionName="iDrugsModel.Store.FireApothecary" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

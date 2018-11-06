@@ -96,6 +96,7 @@
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repos\ApothecaryEfRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
@@ -122,6 +123,12 @@
       <DependentUpon>iDrugsDatabase.edmx</DependentUpon>
       <LastGenOutput>iDrugsDatabase.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{E517D62F-A89D-4F07-996E-0BE479960529}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
