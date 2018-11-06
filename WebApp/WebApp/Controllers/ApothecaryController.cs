@@ -69,5 +69,52 @@ namespace WebApp
                 return RedirectToAction("Index");
             }
         }
+
+        public IActionResult Details(int id)
+        {
+            var apothecary = _repo.Get(id);
+            if(apothecary != null)
+            {
+                return View(apothecary);
+            }
+            else
+            {
+                TempData["ErrorMsg"] = $"Nie ma aptekarza o id {id}";
+                return RedirectToAction("Index");
+            }
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View(_repo.Get(id));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Apothecary apothecary)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _repo.Update(apothecary.Id, apothecary.FirstName, apothecary.LastName, apothecary.MonthlySalary);
+
+                    return RedirectToAction("Index");
+                }
+
+                return View(apothecary);
+            }
+
+            catch (Exception ex) when (ex.InnerException != null)
+            {
+                ViewBag.ErrorMsg = ex.InnerExceptionMessageExtractor();
+                return View(apothecary);
+            }
+        }
+
+        public IActionResult Delete(int id)
+        {
+            _repo.Remove(id);
+            return RedirectToAction("Index");
+        }
     }
 }

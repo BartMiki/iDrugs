@@ -61,8 +61,9 @@ namespace DAL.Repos
 
                 if(toUpdate != null)
                 {
-                    toUpdate.FirstName.TryUpdate(firstName);
-                    toUpdate.LastName.TryUpdate(lastName);
+                    toUpdate.Id = id;
+                    toUpdate.FirstName = firstName ?? toUpdate.FirstName;
+                    toUpdate.LastName = lastName ?? toUpdate.LastName;
                     toUpdate.MonthlySalary = monthlySalary ?? toUpdate.MonthlySalary;
                 }
                 db.SaveChanges();
