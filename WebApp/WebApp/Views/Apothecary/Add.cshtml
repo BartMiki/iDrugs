@@ -7,11 +7,17 @@
 <h2>Add</h2>
 
 <h4>Apothecary</h4>
-@if(!string.IsNullOrEmpty(ViewBag.ErrorMsg))
-{
-    <label class="alert alert-danger">@ViewBag.ErrorMsg</label>
-}
+
 <hr />
+
+<div>
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMsg))
+    {
+        <label class="text-danger">@ViewBag.ErrorMsg</label>
+    }
+</div>
+
+<br />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Add">

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Common;
-using DAL;
+﻿using DAL;
+using DAL.Interfaces;
 using DAL.Repos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp
 {
-    public class ApothecaryController : Controller
+    public class ApothecaryController : BaseController
     {
-        private readonly ApothecaryEfRepo _repo;
+        private readonly IApothecaryRepo _repo;
 
         public ApothecaryController()
         {
@@ -21,12 +17,13 @@ namespace WebApp
         public IActionResult Index()
         {
             ViewBag.ErrorMsg = string.Empty;
-            if(TempData.ContainsKey("ErrorMsg"))
+            if (TempData.ContainsKey("ErrorMsg"))
             {
                 ViewBag.ErrorMsg = TempData["ErrorMsg"];
                 TempData.Remove("ErrorMsg");
             }
-            return View(_repo.Get());
+
+            return View(_repo.Get().Value);
         }
 
         public IActionResult Add()
@@ -37,84 +34,80 @@ namespace WebApp
         [HttpPost]
         public IActionResult Add(Apothecary apothecary)
         {
-            try
+            if (!ModelState.IsValid) return View(apothecary);
+
+            var result = _repo.Add(apothecary);
+
+            if (result.IsSuccess) return RedirectToAction("Index");
+            else
             {
-                if (ModelState.IsValid)
-                {
-                    _repo.Add(apothecary.FirstName, apothecary.LastName, apothecary.MonthlySalary);
-
-                    return RedirectToAction("Index");
-                }
-
-                return View(apothecary);
-            }
-
-            catch (Exception ex) when (ex.InnerException != null)
-            {
-                ViewBag.ErrorMsg = ex.InnerExceptionMessageExtractor();
+                ViewBag.ErrorMsg = result.FailureMessage;
                 return View(apothecary);
             }
         }
 
         public IActionResult Fire(int id)
         {
-            try
-            {
-                _repo.Fire(id);
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex) when (ex.InnerException != null)
-            {
-                TempData["ErrorMsg"] = ex.InnerExceptionMessageExtractor();
-                return RedirectToAction("Index");
-            }
+            var result = _repo.Fire(id);
+            var errorMsg = string.Empty;
+            if (!result.IsSuccess) errorMsg = result.FailureMessage;
+
+            return RedirectToIndex(errorMsg);
         }
 
         public IActionResult Details(int id)
         {
-            var apothecary = _repo.Get(id);
-            if(apothecary != null)
+            var result = _repo.Get(id);
+
+            if (result.IsSuccess)
             {
-                return View(apothecary);
+                return View(result.Value);
             }
             else
             {
-                TempData["ErrorMsg"] = $"Nie ma aptekarza o id {id}";
-                return RedirectToAction("Index");
+                return RedirectToIndex($"Nie ma aptekarza o id {id}");
             }
         }
 
         public IActionResult Edit(int id)
         {
-            return View(_repo.Get(id));
+            var result = _repo.Get(id);
+            if (result.IsSuccess)
+            {
+                return View(result.Value);
+            }
+            else
+            {
+                return RedirectToIndex(result.FailureMessage);
+            }
         }
 
         [HttpPost]
         public IActionResult Edit(Apothecary apothecary)
         {
-            try
+            if (!ModelState.IsValid) return View(apothecary);
+
+            var result = _repo.Update(apothecary);
+
+            if (result.IsSuccess)
             {
-                if (ModelState.IsValid)
-                {
-                    _repo.Update(apothecary.Id, apothecary.FirstName, apothecary.LastName, apothecary.MonthlySalary);
-
-                    return RedirectToAction("Index");
-                }
-
-                return View(apothecary);
+                return RedirectToAction("Details", new { id = result.Value.Id});
             }
-
-            catch (Exception ex) when (ex.InnerException != null)
+            else
             {
-                ViewBag.ErrorMsg = ex.InnerExceptionMessageExtractor();
+                ViewBag.ErrorMsg = result.FailureMessage;
                 return View(apothecary);
             }
         }
 
         public IActionResult Delete(int id)
         {
-            _repo.Remove(id);
-            return RedirectToAction("Index");
+            var result = _repo.Remove(id);
+            var errorMsg = string.Empty;
+
+            if (!result.IsSuccess) errorMsg = result.FailureMessage;
+
+            return RedirectToIndex(errorMsg);
         }
     }
 }

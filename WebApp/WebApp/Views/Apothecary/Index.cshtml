@@ -6,17 +6,23 @@
 
 <h2>Lista wszystkich aptekarzy</h2>
 
-<button onclick="location.href='@Url.Action("Add","Apothecary")'" class="btn btn-default">
-    <span class="glyphicon glyphicon-plus"></span>
-    <span>Dodaj aptekarza</span>
-</button>
+<div>
+    <button onclick="location.href='@Url.Action("Add","Apothecary")'" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        <span>Dodaj aptekarza</span>
+    </button>
+</div>
+
+<hr />
 
 <div>
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMsg))
     {
-        <label class="alert alert-danger">@ViewBag.ErrorMsg</label>
+        <label class="text-danger">@ViewBag.ErrorMsg</label>
     }
 </div>
+
+<br />
 
 <table class="table table-striped">
     <tr class="dl-horizontal">
