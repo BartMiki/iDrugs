@@ -9,9 +9,9 @@ namespace WebApp
     {
         private readonly IApothecaryRepo _repo;
 
-        public ApothecaryController()
+        public ApothecaryController(IApothecaryRepo repo)
         {
-            _repo = new ApothecaryEfRepo();
+            _repo = repo;
         }
 
         public IActionResult Index()
