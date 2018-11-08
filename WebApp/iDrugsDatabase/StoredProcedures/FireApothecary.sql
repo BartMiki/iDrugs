@@ -7,6 +7,6 @@ AS
 		RETURN
 	END
 	UPDATE Apothecary
-	SET IsEmployed = 0
+	SET IsEmployed = 0, FireDate = GETDATE()
 	WHERE Id = @id
 RETURN 0

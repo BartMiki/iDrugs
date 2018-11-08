@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Interfaces\IApothecaryRepo.cs" />
     <Compile Include="Interfaces\IBaseRepo.cs" />
+    <Compile Include="Interfaces\IMedicineTypeRepo.cs" />
     <Compile Include="Medicine.cs">
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>

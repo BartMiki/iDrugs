@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation.AspNetCore;
+using WebApp.Validators;
+using static WebApp.AutoMapperProfiels;
 
 namespace WebApp
 {
@@ -36,7 +39,10 @@ namespace WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ApothecaryViewModelValidator>());
 
             //Autofac
             var builder = new ContainerBuilder();
@@ -44,6 +50,8 @@ namespace WebApp
             builder.RegisterType<ApothecaryEfRepo>().As<IApothecaryRepo>().SingleInstance();
             builder.Populate(services);
             ApplicationContainer = builder.Build();
+
+            CreateMaps();
 
             return new AutofacServiceProvider(ApplicationContainer);
         }

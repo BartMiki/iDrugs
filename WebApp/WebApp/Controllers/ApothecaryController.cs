@@ -1,7 +1,12 @@
-﻿using DAL;
+﻿using AutoMapper;
+using DAL;
 using DAL.Interfaces;
 using DAL.Repos;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using WebApp.Models;
 
 namespace WebApp
 {
@@ -23,7 +28,18 @@ namespace WebApp
                 TempData.Remove("ErrorMsg");
             }
 
-            return View(_repo.Get().Value);
+            var result = _repo.Get();
+
+            if(!result.IsSuccess)
+            {
+                ViewBag.ErrorMsg = result.FailureMessage;
+                return View(new ApothecaryViewModel[] { });
+            }
+            else
+            {
+                var apothecaries = result.Value.Select(x => (ApothecaryViewModel)x);
+                return View(apothecaries);
+            }
         }
 
         public IActionResult Add()
@@ -32,17 +48,17 @@ namespace WebApp
         }
 
         [HttpPost]
-        public IActionResult Add(Apothecary apothecary)
+        public IActionResult Add(ApothecaryViewModel model)
         {
-            if (!ModelState.IsValid) return View(apothecary);
+            if (!ModelState.IsValid) return View(model);
 
-            var result = _repo.Add(apothecary);
+            var result = _repo.Add(model);
 
             if (result.IsSuccess) return RedirectToAction("Index");
             else
             {
                 ViewBag.ErrorMsg = result.FailureMessage;
-                return View(apothecary);
+                return View(model);
             }
         }
 
@@ -61,7 +77,7 @@ namespace WebApp
 
             if (result.IsSuccess)
             {
-                return View(result.Value);
+                return View((ApothecaryViewModel)result.Value);
             }
             else
             {
@@ -74,7 +90,7 @@ namespace WebApp
             var result = _repo.Get(id);
             if (result.IsSuccess)
             {
-                return View(result.Value);
+                return View((ApothecaryViewModel)result.Value);
             }
             else
             {
@@ -83,11 +99,11 @@ namespace WebApp
         }
 
         [HttpPost]
-        public IActionResult Edit(Apothecary apothecary)
+        public IActionResult Edit(ApothecaryViewModel model)
         {
-            if (!ModelState.IsValid) return View(apothecary);
+            if (!ModelState.IsValid) return View(model);
 
-            var result = _repo.Update(apothecary);
+            var result = _repo.Update(model);
 
             if (result.IsSuccess)
             {
@@ -96,7 +112,7 @@ namespace WebApp
             else
             {
                 ViewBag.ErrorMsg = result.FailureMessage;
-                return View(apothecary);
+                return View(model);
             }
         }
 

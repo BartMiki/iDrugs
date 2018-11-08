@@ -1,10 +1,10 @@
 ﻿CREATE TABLE dbo.MedicineType
 (
 	Id INT NOT NULL PRIMARY KEY IDENTITY,
-    MedicineType NVARCHAR(20) NOT NULL,
+    MedType NVARCHAR(20) NOT NULL,
     Unit NVARCHAR(10) NOT NULL,
 
 	-- SALVE = maść; PILLS = tabletki
-	CHECK (MedicineType IN ('SALVE','PILL','SYRUP','SPRAY', 'SOLUTION', 'LIQUID')),
+	CHECK (MedType IN ('SALVE','PILL','SYRUP','SPRAY', 'SOLUTION', 'LIQUID')),
 	CHECK (Unit IN ('PCS','GRAMS','MILILITERS'))
 )

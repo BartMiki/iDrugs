@@ -41,6 +41,10 @@ namespace Common.Utils
             {
                 return Result<TOut>.Failure(sqlEx.Message);
             }
+            catch (Exception ex) when (ex.InnerException != null && ex.InnerException.InnerException is SqlException sqlEx)
+            {
+                return Result<TOut>.Failure(sqlEx.Errors[0].Message);
+            }
             catch (Exception ex)
             {
                 return Result<TOut>.Failure(ex.Message);
@@ -58,6 +62,10 @@ namespace Common.Utils
             {
                 return Result.Failure(sqlEx.Message);
             }
+            catch (Exception ex) when (ex.InnerException != null && ex.InnerException.InnerException is SqlException sqlEx)
+            {
+                return Result.Failure(sqlEx.Errors[0].Message);
+            }
             catch (Exception ex)
             {
                 return Result.Failure(ex.Message);
@@ -74,6 +82,10 @@ namespace Common.Utils
             catch (Exception ex) when (ex.InnerException is SqlException sqlEx)
             {
                 return Result.Failure(sqlEx.Message);
+            }
+            catch (Exception ex) when (ex.InnerException != null && ex.InnerException.InnerException is SqlException sqlEx)
+            {
+                return Result.Failure(sqlEx.Errors[0].Message);
             }
             catch (Exception ex)
             {
