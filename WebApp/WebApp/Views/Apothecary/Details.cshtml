@@ -1,0 +1,72 @@
+﻿@model ApothecaryViewModel
+
+@{
+    ViewData["Title"] = "Detale";
+}
+
+<h2>Informacje o aptekarzu</h2>
+
+<div>
+    <h4>Detale</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MonthlySalary)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MonthlySalary)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HireDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HireDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsEmployed)
+        </dt>
+        <dd>
+            @{ if (Model.IsEmployed)
+                {
+                    <span class="glyphicon glyphicon-ok"></span>
+                }
+                else
+                {
+                    <span class="glyphicon glyphicon-remove"></span>
+                }
+            }
+        </dd>
+        @{ if (!Model.IsEmployed)
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.FireDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FireDate)
+                </dd>
+            }
+        }
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edytuj", "Edit", new { id = Model.Id }) |
+    <a asp-action="Index">Powrót</a>
+</div>

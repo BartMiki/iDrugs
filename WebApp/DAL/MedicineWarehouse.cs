@@ -12,7 +12,7 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class DrugStoreAvailableMedicine
+    public partial class MedicineWarehouse
     {
         public int Id { get; set; }
         public int MedicineId { get; set; }

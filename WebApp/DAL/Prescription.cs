@@ -17,22 +17,18 @@ namespace DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Prescription()
         {
-            this.CompletedPrescriptions = new HashSet<CompletedPrescription>();
             this.PrescriptionItems = new HashSet<PrescriptionItem>();
-            this.RejectedPrescriptions = new HashSet<RejectedPrescription>();
         }
     
         public int Id { get; set; }
         public int DoctorId { get; set; }
+        public int ApothecaryId { get; set; }
         public System.DateTime PrescriptionDate { get; set; }
-        public Nullable<decimal> Value { get; set; }
+        public Nullable<decimal> TotalCost { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompletedPrescription> CompletedPrescriptions { get; set; }
+        public virtual Apothecary Apothecary { get; set; }
         public virtual Doctor Doctor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PrescriptionItem> PrescriptionItems { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RejectedPrescription> RejectedPrescriptions { get; set; }
     }
 }

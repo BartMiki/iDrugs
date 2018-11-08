@@ -12,26 +12,20 @@ namespace DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Apothecary
+    public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Apothecary()
+        public Order()
         {
-            this.Orders = new HashSet<Order>();
-            this.Prescriptions = new HashSet<Prescription>();
+            this.OrderItems = new HashSet<OrderItem>();
         }
     
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public decimal MonthlySalary { get; set; }
-        public bool IsEmployed { get; set; }
-        public System.DateTime HireDate { get; set; }
-        public Nullable<System.DateTime> FireDate { get; set; }
+        public int ApothecaryId { get; set; }
+        public System.DateTime OrderDate { get; set; }
     
+        public virtual Apothecary Apothecary { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Order> Orders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Prescription> Prescriptions { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

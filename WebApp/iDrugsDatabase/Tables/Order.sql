@@ -1,0 +1,8 @@
+﻿CREATE TABLE dbo.[Order]
+(
+	Id INT NOT NULL PRIMARY KEY IDENTITY,
+	ApothecaryId INT NOT NULL,
+	OrderDate DATE NOT NULL DEFAULT GETDATE()
+
+	FOREIGN KEY (ApothecaryId) REFERENCES Apothecary(Id) 
+)
