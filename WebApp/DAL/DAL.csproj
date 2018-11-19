@@ -59,6 +59,8 @@
     <Compile Include="DrugStoreAvailableMedicine.cs">
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Enums\MedType.cs" />
+    <Compile Include="Enums\Unit.cs" />
     <Compile Include="iDrugsDatabase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -76,7 +78,7 @@
     </Compile>
     <Compile Include="Interfaces\IApothecaryRepo.cs" />
     <Compile Include="Interfaces\IBaseRepo.cs" />
-    <Compile Include="Interfaces\IMedicineTypeRepo.cs" />
+    <Compile Include="Interfaces\IMedicineRepo.cs" />
     <Compile Include="Medicine.cs">
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
