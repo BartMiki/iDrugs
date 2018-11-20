@@ -31,4 +31,9 @@
     <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Medicine\" />
+    <Folder Include="Views\MedicineType\" />
+  </ItemGroup>
+
 </Project>
