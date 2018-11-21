@@ -83,4 +83,7 @@
     <Build Include="Tables\Prescription.sql" />
     <Build Include="Tables\PrescriptionItem.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="iDrugsDatabase.publish.xml" />
+  </ItemGroup>
 </Project>

@@ -33,10 +33,10 @@ namespace DAL
         public virtual DbSet<Medicine> Medicines { get; set; }
         public virtual DbSet<MedicineType> MedicineTypes { get; set; }
         public virtual DbSet<MedicineWarehouse> MedicineWarehouses { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
     
         public virtual int InsertApothecary(string firstName, string lastName, Nullable<decimal> monthlySalary)
         {

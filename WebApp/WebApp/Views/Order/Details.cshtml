@@ -1,7 +1,7 @@
 ﻿@model DAL.Order
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły zamówienia";
 }
 
 <h2>Details</h2>
@@ -21,6 +21,18 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.ApothecaryId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Apothecary.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Apothecary.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Apothecary.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Apothecary.LastName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.OrderDate)
@@ -75,6 +87,13 @@
             }
         </tbody>
     </table>
+</div>
+
+<div>
+    @Html.ActionLink("Dodaj lek do zamówienia", "AddOrderItem", new { orderId = Model.Id })
+</div>
+<div>
+    @Html.ActionLink("Zamów", "SendOrder", new { orderId = Model.Id })
 </div>
 <div>
     <!--@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |-->
