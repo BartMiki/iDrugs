@@ -32,6 +32,8 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Apothecary" asp-action="Index">Aptekarze</a></li>
+                    <li><a asp-area="" asp-controller="Order" asp-action="Index">Zamówienia</a></li>
+                    <li><a asp-area="" asp-controller="Warehouse" asp-action="Index">Hurtownia</a></li>
                 </ul>
             </div>
         </div>
@@ -40,6 +42,14 @@
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMsg))
+        {
+        <div class="alert alert-danger alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@ViewBag.ErrorMsg</strong>
+        </div>
+        }
+
         @RenderBody()
         <hr />
         <footer>

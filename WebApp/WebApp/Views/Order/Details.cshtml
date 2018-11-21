@@ -1,0 +1,101 @@
+﻿@model DAL.Order
+
+@{
+    ViewData["Title"] = "Szczegóły zamówienia";
+}
+
+<h2>Szczegóły zamówienia</h2>
+
+<div>
+    <h4>Zamówienie</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ApothecaryId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ApothecaryId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Apothecary.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Apothecary.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Apothecary.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Apothecary.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+    </dl>
+    <h4>Leki na zamówieniu</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayName("Id")
+                </th>
+                <th>
+                    @Html.DisplayName("OrderId")
+                </th>
+                <th>
+                    @Html.DisplayName("MedicineId")
+                </th>
+                <th>
+                    @Html.DisplayName("Quantity")
+                </th>
+                <!--
+                    <th></th>
+                -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MedicineId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <!--<td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>-->
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    @Html.ActionLink("Dodaj lek do zamówienia", "AddOrderItem", new { orderId = Model.Id })
+</div>
+<div>
+    @Html.ActionLink("Zamów", "SendOrder", new { orderId = Model.Id })
+</div>
+<div>
+    <!--@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |-->
+    <a asp-action="Index">Powrót do listy</a>
+</div>

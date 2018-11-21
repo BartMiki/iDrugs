@@ -2,7 +2,7 @@
 (
 	Id INT NOT NULL PRIMARY KEY IDENTITY,
 	ApothecaryId INT NOT NULL,
-	OrderDate DATE NOT NULL DEFAULT GETDATE()
+	OrderDate DATE,
 
 	FOREIGN KEY (ApothecaryId) REFERENCES Apothecary(Id) 
 )

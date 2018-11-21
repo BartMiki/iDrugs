@@ -68,7 +68,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ApothecaryId" Type="int" Nullable="false" />
-          <Property Name="OrderDate" Type="date" Nullable="false" />
+          <Property Name="OrderDate" Type="date" />
         </EntityType>
         <EntityType Name="OrderItem">
           <Key>
@@ -290,11 +290,11 @@
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MonthlySalary" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK__Order__Apothecar__3D5E1FD2" FromRole="Apothecary" ToRole="Order" />
           <NavigationProperty Name="Prescriptions" Relationship="Self.FK__Prescript__Apoth__4F7CD00D" FromRole="Apothecary" ToRole="Prescription" />
           <Property Name="IsEmployed" Type="Boolean" Nullable="false" />
           <Property Name="HireDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FireDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Orders" Relationship="iDrugsModel.FK__Order__Apothecar__3D5E1FD2" FromRole="Apothecary" ToRole="Order" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
@@ -350,16 +350,6 @@
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Medicine" Relationship="Self.FK__MedicineW__Medic__3C69FB99" FromRole="MedicineWarehouse" ToRole="Medicine" />
         </EntityType>
-        <EntityType Name="Order">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ApothecaryId" Type="Int32" Nullable="false" />
-          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Apothecary" Relationship="Self.FK__Order__Apothecar__3D5E1FD2" FromRole="Order" ToRole="Apothecary" />
-          <NavigationProperty Name="OrderItems" Relationship="Self.FK__OrderItem__Order__3E52440B" FromRole="Order" ToRole="OrderItem" />
-        </EntityType>
         <EntityType Name="OrderItem">
           <Key>
             <PropertyRef Name="Id" />
@@ -369,7 +359,7 @@
           <Property Name="MedicineId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Medicine" Relationship="Self.FK__OrderItem__Medic__3F466844" FromRole="OrderItem" ToRole="Medicine" />
-          <NavigationProperty Name="Order" Relationship="Self.FK__OrderItem__Order__3E52440B" FromRole="OrderItem" ToRole="Order" />
+          <NavigationProperty Name="Order" Relationship="iDrugsModel.FK__OrderItem__Order__3E52440B" FromRole="OrderItem" ToRole="Order" />
         </EntityType>
         <EntityType Name="Prescription">
           <Key>
@@ -395,18 +385,6 @@
           <NavigationProperty Name="Medicine" Relationship="Self.FK__Prescript__Medic__412EB0B6" FromRole="PrescriptionItem" ToRole="Medicine" />
           <NavigationProperty Name="Prescription" Relationship="Self.FK__Prescript__Presc__4E88ABD4" FromRole="PrescriptionItem" ToRole="Prescription" />
         </EntityType>
-        <Association Name="FK__Order__Apothecar__3D5E1FD2">
-          <End Role="Apothecary" Type="Self.Apothecary" Multiplicity="1" />
-          <End Role="Order" Type="Self.Order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Apothecary">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order">
-              <PropertyRef Name="ApothecaryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Prescript__Apoth__4F7CD00D">
           <End Role="Apothecary" Type="Self.Apothecary" Multiplicity="1" />
           <End Role="Prescription" Type="Self.Prescription" Multiplicity="*" />
@@ -491,18 +469,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__OrderItem__Order__3E52440B">
-          <End Role="Order" Type="Self.Order" Multiplicity="1" />
-          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="OrderItem">
-              <PropertyRef Name="OrderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Prescript__Presc__4E88ABD4">
           <End Role="Prescription" Type="Self.Prescription" Multiplicity="1" />
           <End Role="PrescriptionItem" Type="Self.PrescriptionItem" Multiplicity="*" />
@@ -522,14 +488,9 @@
           <EntitySet Name="Medicines" EntityType="Self.Medicine" />
           <EntitySet Name="MedicineTypes" EntityType="Self.MedicineType" />
           <EntitySet Name="MedicineWarehouses" EntityType="Self.MedicineWarehouse" />
-          <EntitySet Name="Orders" EntityType="Self.Order" />
           <EntitySet Name="OrderItems" EntityType="Self.OrderItem" />
           <EntitySet Name="Prescriptions" EntityType="Self.Prescription" />
           <EntitySet Name="PrescriptionItems" EntityType="Self.PrescriptionItem" />
-          <AssociationSet Name="FK__Order__Apothecar__3D5E1FD2" Association="Self.FK__Order__Apothecar__3D5E1FD2">
-            <End Role="Apothecary" EntitySet="Apothecaries" />
-            <End Role="Order" EntitySet="Orders" />
-          </AssociationSet>
           <AssociationSet Name="FK__Prescript__Apoth__4F7CD00D" Association="Self.FK__Prescript__Apoth__4F7CD00D">
             <End Role="Apothecary" EntitySet="Apothecaries" />
             <End Role="Prescription" EntitySet="Prescriptions" />
@@ -558,10 +519,6 @@
             <End Role="Medicine" EntitySet="Medicines" />
             <End Role="PrescriptionItem" EntitySet="PrescriptionItems" />
           </AssociationSet>
-          <AssociationSet Name="FK__OrderItem__Order__3E52440B" Association="Self.FK__OrderItem__Order__3E52440B">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="OrderItem" EntitySet="OrderItems" />
-          </AssociationSet>
           <AssociationSet Name="FK__Prescript__Presc__4E88ABD4" Association="Self.FK__Prescript__Presc__4E88ABD4">
             <End Role="Prescription" EntitySet="Prescriptions" />
             <End Role="PrescriptionItem" EntitySet="PrescriptionItems" />
@@ -574,7 +531,50 @@
           <FunctionImport Name="FireApothecary">
           <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Orders" EntityType="iDrugsModel.Order" />
+          <AssociationSet Name="FK__Order__Apothecar__3D5E1FD2" Association="iDrugsModel.FK__Order__Apothecar__3D5E1FD2">
+            <End Role="Apothecary" EntitySet="Apothecaries" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__3E52440B" Association="iDrugsModel.FK__OrderItem__Order__3E52440B">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApothecaryId" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Apothecary" Relationship="iDrugsModel.FK__Order__Apothecar__3D5E1FD2" FromRole="Order" ToRole="Apothecary" />
+          <NavigationProperty Name="OrderItems" Relationship="iDrugsModel.FK__OrderItem__Order__3E52440B" FromRole="Order" ToRole="OrderItem" />
+        </EntityType>
+        <Association Name="FK__Order__Apothecar__3D5E1FD2">
+          <End Type="iDrugsModel.Apothecary" Role="Apothecary" Multiplicity="1" />
+          <End Type="iDrugsModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Apothecary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ApothecaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Order__3E52440B">
+          <End Type="iDrugsModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="iDrugsModel.OrderItem" Role="OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -644,15 +644,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Orders">
-            <EntityTypeMapping TypeName="iDrugsModel.Order">
-              <MappingFragment StoreEntitySet="Order">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ApothecaryId" ColumnName="ApothecaryId" />
-                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="OrderItems">
             <EntityTypeMapping TypeName="iDrugsModel.OrderItem">
               <MappingFragment StoreEntitySet="OrderItem">
@@ -686,6 +677,15 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="InsertApothecary" FunctionName="iDrugsModel.Store.InsertApothecary" />
           <FunctionImportMapping FunctionImportName="FireApothecary" FunctionName="iDrugsModel.Store.FireApothecary" />
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="iDrugsModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="ApothecaryId" ColumnName="ApothecaryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
