@@ -42,12 +42,14 @@
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
-        <div>
-            @if (!string.IsNullOrEmpty(ViewBag.ErrorMsg))
-            {
-                <label class="text-danger">@ViewBag.ErrorMsg</label>
-            }
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMsg))
+        {
+        <div class="alert alert-danger alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>@ViewBag.ErrorMsg</strong>
         </div>
+        }
+
         @RenderBody()
         <hr />
         <footer>

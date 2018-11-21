@@ -80,12 +80,20 @@ namespace WebApp.Controllers
                 {
                     var order = db.Orders.FirstOrDefault(o => o.Id == orderId);
 
-                    if (order.OrderDate.HasValue) throw new Exception("Zamówienie zostało już złożone i przetworzone, nie można go ponowinie złożyć.");
+                    if (order.OrderDate.HasValue)
+                        throw new Exception("Zamówienie zostało już złożone i przetworzone, nie można go ponowinie złożyć.");
+
+                    if (order.OrderItems.Count == 0)
+                        throw new Exception("Zamównienie nie może być puste.");
 
                     foreach (var orderItem in order.OrderItems)
                     {
                         var warehouseItem = db.MedicineWarehouses.FirstOrDefault(o => o.MedicineId == orderItem.MedicineId);
                         warehouseItem.Quantity -= orderItem.Quantity;
+
+                        if (warehouseItem.Quantity < 0)
+                            throw new Exception($"Zamówienie odrzucone, na magazynie brakuje {-warehouseItem.Quantity} sztuk leku {warehouseItem.Medicine.Name}");
+
                         order.OrderDate = DateTime.Now;
                     }
 

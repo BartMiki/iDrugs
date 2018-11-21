@@ -4,10 +4,10 @@
     ViewData["Title"] = "Zamówienia";
 }
 
-<h2>Index</h2>
+<h2>Zamówienia</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Utwórz nowe zamówienie</a>
 </p>
 <table class="table">
     <thead>
@@ -38,7 +38,7 @@
                     @Html.DisplayFor(modelItem => item.OrderDate)
                 </td>
                 <td>
-                    @Html.ActionLink("Datale", "Details", new { id = item.Id })
+                    @Html.ActionLink("Detale zamówienia", "Details", new { id = item.Id })
 
                     <!--
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

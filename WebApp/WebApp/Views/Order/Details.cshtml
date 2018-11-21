@@ -4,10 +4,10 @@
     ViewData["Title"] = "Szczegóły zamówienia";
 }
 
-<h2>Details</h2>
+<h2>Szczegóły zamówienia</h2>
 
 <div>
-    <h4>Order</h4>
+    <h4>Zamówienie</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -41,7 +41,7 @@
             @Html.DisplayFor(model => model.OrderDate)
         </dd>
     </dl>
-
+    <h4>Leki na zamówieniu</h4>
     <table class="table">
         <thead>
             <tr>
@@ -97,5 +97,5 @@
 </div>
 <div>
     <!--@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |-->
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót do listy</a>
 </div>
