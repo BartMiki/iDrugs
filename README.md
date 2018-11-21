@@ -1,5 +1,9 @@
-# iDrugs
+# iDrugs - University project
 
-Front - Angular - NodeJS - MongoDB (logs)
-Back - .Net - Entity Framework - SQLServer
-University project
+### Frontend
+* Bootstrap,
+* ASP .Net Core MVC 
+### Backend
+* .Net Framework,
+* Entity Framework 6,
+* MS SQL Server
