@@ -1,8 +1,8 @@
 ﻿using DAL;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using static Common.Utils.DatabaseExceptionHandler;
 
 namespace WebApp.Controllers
 {
@@ -10,7 +10,7 @@ namespace WebApp.Controllers
     {
         public IActionResult Index()
         {
-            if(TempData.ContainsKey("ErrorMsg"))
+            if (TempData.ContainsKey("ErrorMsg"))
             {
                 ViewBag.ErrorMsg = TempData["ErrorMsg"];
                 TempData.Remove("ErrorMsg");
@@ -53,23 +53,31 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid) return View(order);
 
-            using (var db = new iDrugsEntities())
+            var result = Try(() =>
             {
-                var apothecary = (from a in db.Apothecaries
-                                 where a.Id == order.ApothecaryId && a.IsEmployed == true
-                                 select a).FirstOrDefault();
-
-                if(apothecary == null)
+                using (var db = new iDrugsEntities())
                 {
-                    ViewBag.ErrorMsg = $"Aptekarz o ID {order.ApothecaryId} nie może składać zamówień, bo już tutaj nie pracuje";
-                    return View(order);
+                    var apothecary = (from a in db.Apothecaries
+                                      where a.Id == order.ApothecaryId && a.IsEmployed == true
+                                      select a).FirstOrDefault();
+
+                    //if(apothecary == null)
+                    //{
+                    //    ViewBag.ErrorMsg = $"Aptekarz o ID {order.ApothecaryId} nie może składać zamówień, bo już tutaj nie pracuje";
+                    //    return View(order);
+                    //}
+
+                    db.Orders.Add(order);
+                    db.SaveChanges();
                 }
+            });
 
-                db.Orders.Add(order);
-                db.SaveChanges();
+            if (result.IsSuccess) return RedirectToAction(nameof(Index));
+            else
+            {
+                ViewBag.ErrorMsg = result.FailureMessage;
+                return View(order);
             }
-
-            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult SendOrder(int orderId)
@@ -102,7 +110,7 @@ namespace WebApp.Controllers
 
                 return RedirectToAction(nameof(Details), new { id = orderId });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["ErrorMsg"] = ex.Message + "\n" + ex.InnerException?.Message
                     + "\n" + ex.InnerException?.InnerException?.Message;
@@ -124,7 +132,7 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid) return View(item);
 
-            using(var db = new iDrugsEntities())
+            using (var db = new iDrugsEntities())
             {
                 db.OrderItems.Add(item);
                 db.SaveChanges();
