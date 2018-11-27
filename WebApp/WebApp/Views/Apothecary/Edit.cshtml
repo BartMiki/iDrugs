@@ -1,4 +1,5 @@
-﻿@model ApothecaryViewModel
+﻿@using WebApp.Models.ApothecaryModels;
+@model ApothecaryViewModel
 
 @{
     ViewData["Title"] = "Edycja";
@@ -7,15 +8,8 @@
 <h2>Edycja aptekarza</h2>
 
 <h4>Dane aptekarza</h4>
-<hr />
-<div>
-    @if (!string.IsNullOrEmpty(ViewBag.ErrorMsg))
-    {
-        <label class="text-danger">@ViewBag.ErrorMsg</label>
-    }
-</div>
 
-<br/>
+<br />
 
 <div class="row">
     <div class="col-md-4">

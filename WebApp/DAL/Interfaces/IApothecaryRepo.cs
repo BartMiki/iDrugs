@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    public interface IApothecaryRepo : IBaseRepo<iDrugsEntities>
+    public interface IApothecaryRepo
     {
         Result<IEnumerable<Apothecary>> Get();
         Result<Apothecary> Get(int id);

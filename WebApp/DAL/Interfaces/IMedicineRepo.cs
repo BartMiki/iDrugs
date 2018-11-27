@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
-    public interface IMedicineRepo : IBaseRepo<iDrugsEntities>
+    public interface IMedicineRepo
     {
 
     }

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using WebApp.Models;
+using WebApp.Models.ApothecaryModels;
 
 namespace WebApp.Validators
 {

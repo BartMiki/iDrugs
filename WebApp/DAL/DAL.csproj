@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Enums\MedType.cs" />
     <Compile Include="Enums\Unit.cs" />
+    <Compile Include="Exceptions\OrderNotFoundException.cs" />
     <Compile Include="iDrugsDatabase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -77,8 +78,8 @@
       <DependentUpon>iDrugsDatabase.edmx</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IApothecaryRepo.cs" />
-    <Compile Include="Interfaces\IBaseRepo.cs" />
     <Compile Include="Interfaces\IMedicineRepo.cs" />
+    <Compile Include="Interfaces\IOrderRepo.cs" />
     <Compile Include="Medicine.cs">
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
@@ -102,6 +103,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\ApothecaryEfRepo.cs" />
+    <Compile Include="Repos\OrderEfRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

@@ -75,6 +75,7 @@
     <Build Include="StoredProcedures\FireApothecary.sql" />
     <Build Include="Triggers\UpdateOnlyEmployedApothecary.sql" />
     <Build Include="Triggers\OnlyEmployeeCanCreateOrder.sql" />
+    <Build Include="StoredProcedures\CreateOrder.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Tables\iDrugsDatabase.refactorlog" />

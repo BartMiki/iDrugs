@@ -1,83 +1,85 @@
-﻿using DAL;
+﻿using AutoMapper;
+using DAL;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using WebApp.Models.ApothecaryModels;
+using WebApp.Models.OrderModels;
 using static Common.Utils.DatabaseExceptionHandler;
+using static WebApp.Models.ApothecaryModels.ApothecarySelectViewModel;
+using static WebApp.Models.ApothecaryModels.ApothecaryViewModel;
 
 namespace WebApp.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
+        private readonly IApothecaryRepo _apothecaryRepo;
+        private readonly iDrugsEntities _context;
+        private readonly IOrderRepo _orderRepo;
+
+        public OrderController(IApothecaryRepo apothecaryRepo, iDrugsEntities context, IOrderRepo orderRepo)
+        {
+            _apothecaryRepo = apothecaryRepo;
+            _context = context;
+            _orderRepo = orderRepo;
+        }
+
         public IActionResult Index()
         {
-            if (TempData.ContainsKey("ErrorMsg"))
-            {
-                ViewBag.ErrorMsg = TempData["ErrorMsg"];
-                TempData.Remove("ErrorMsg");
-            }
+            DisplayTempErrorIfNedded();
 
-            using (var db = new iDrugsEntities())
+            var result = _orderRepo.Get();
+
+            if (result.IsSuccess)
             {
-                var orders = db.Orders.ToList();
-                return View(orders);
+                var model = Mapper.Map<IEnumerable<OrderViewModel>>(result.Value);
+                return View(model);
+            }
+            else
+            {
+                ViewBag.ErrorMsg = result.FailureMessage;
+                return View(Enumerable.Empty<OrderViewModel>());
             }
         }
 
         public IActionResult Details(int id)
         {
-            Order order = null;
-            using (var db = new iDrugsEntities())
-            {
-                var orderDb = db.Orders.Where(o => o.Id == id).FirstOrDefault();
-                order = orderDb;
-                order.OrderItems = orderDb.OrderItems.ToList();
-                order.Apothecary = orderDb.Apothecary;
-            }
+            var result = _orderRepo.Get(id);
+            var order = Mapper.Map<OrderDetailViewModel>(result);
             return View(order);
         }
-
-        //[HttpGet]
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new Order { OrderDate = null });
+            var list = ToApothecaryViewModels(_apothecaryRepo.Get().Value);
+
+            var model = new CreateOrderViewModel
+            {
+                ApothecaryList = ToApothecarySelectViewModels(list)
+            };
+
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(Order order)
+        public IActionResult Create(CreateOrderViewModel model)
         {
-            if (!ModelState.IsValid) return View(order);
+            if (!ModelState.IsValid) return View(model);
 
-            var result = Try(() =>
+            var result = Try<int>(() =>
             {
-                using (var db = new iDrugsEntities())
-                {
-                    var apothecary = (from a in db.Apothecaries
-                                      where a.Id == order.ApothecaryId && a.IsEmployed == true
-                                      select a).FirstOrDefault();
-
-                    //if(apothecary == null)
-                    //{
-                    //    ViewBag.ErrorMsg = $"Aptekarz o ID {order.ApothecaryId} nie może składać zamówień, bo już tutaj nie pracuje";
-                    //    return View(order);
-                    //}
-
-                    db.Orders.Add(order);
-                    db.SaveChanges();
-                }
+                return _context.CreateOrder(model.SelectedId);
             });
 
-            if (result.IsSuccess) return RedirectToAction(nameof(Index));
-            else
-            {
-                ViewBag.ErrorMsg = result.FailureMessage;
-                return View(order);
-            }
+            if (result.IsSuccess)
+                return RedirectToAction(nameof(Details), new { id = result.Value});
+
+            ViewBag.ErrorMsg = result.FailureMessage;
+            return View(model);
+
         }
 
         public IActionResult SendOrder(int orderId)
@@ -88,7 +90,7 @@ namespace WebApp.Controllers
                 {
                     var order = db.Orders.FirstOrDefault(o => o.Id == orderId);
 
-                    if (order.OrderDate.HasValue)
+                    if (order.SendOrderDate.HasValue)
                         throw new Exception("Zamówienie zostało już złożone i przetworzone, nie można go ponowinie złożyć.");
 
                     if (order.OrderItems.Count == 0)
@@ -102,7 +104,7 @@ namespace WebApp.Controllers
                         if (warehouseItem.Quantity < 0)
                             throw new Exception($"Zamówienie odrzucone, na magazynie brakuje {-warehouseItem.Quantity} sztuk leku {warehouseItem.Medicine.Name}");
 
-                        order.OrderDate = DateTime.Now;
+                        //order.OrderDate = DateTime.Now;
                     }
 
                     db.SaveChanges();

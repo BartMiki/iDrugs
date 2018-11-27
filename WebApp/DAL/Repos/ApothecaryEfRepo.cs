@@ -8,41 +8,29 @@ namespace DAL.Repos
 {
     public class ApothecaryEfRepo : IApothecaryRepo
     {
-        public iDrugsEntities Context => new iDrugsEntities();
+        private readonly iDrugsEntities _context;
+
+        public ApothecaryEfRepo(iDrugsEntities context)
+        {
+            _context = context;
+        }
 
         public Result<IEnumerable<Apothecary>> Get()
         {
-            var result = Try(() =>
-            {
-                using (var db = new iDrugsEntities())
-                {
-                    return db.Apothecaries.ToList().AsEnumerable();
-                }
-            });
-            return result;
+            return Try(() => _context.Apothecaries.ToList().AsEnumerable());
         }
 
         public Result<Apothecary> Get(int id)
         {
-            var result = Try(() =>
-            {
-                using (var db = new iDrugsEntities())
-                {
-                    return db.Apothecaries.Where(a => a.Id == id).First();
-                }
-            });
-            return result;
+            return Try(() => _context.Apothecaries.Where(a => a.Id == id).First());
         }
 
         public Result Add(Apothecary apothecary)
         {
             var result = Try(() =>
             {
-                using (var db = new iDrugsEntities())
-                {
-                    db.InsertApothecary(apothecary.FirstName, apothecary.LastName, apothecary.MonthlySalary);
-                    db.SaveChanges();
-                }
+                _context.InsertApothecary(apothecary.FirstName, apothecary.LastName, apothecary.MonthlySalary);
+                _context.SaveChanges();
             });
             return result;
         }
@@ -51,11 +39,8 @@ namespace DAL.Repos
         {
             var result = Try(() =>
             {
-                using (var db = new iDrugsEntities())
-                {
-                    db.FireApothecary(id);
-                    db.SaveChanges();
-                }
+                _context.FireApothecary(id);
+                _context.SaveChanges();
             });
             return result;
         }
@@ -64,13 +49,10 @@ namespace DAL.Repos
         {
             var result = Try(() =>
             {
-                using (var db = Context)
-                {
-                    var toRemove = new Apothecary { Id = id };
-                    db.Apothecaries.Attach(toRemove);
-                    db.Apothecaries.Remove(toRemove);
-                    db.SaveChanges();
-                }
+                var toRemove = new Apothecary { Id = id };
+                _context.Apothecaries.Attach(toRemove);
+                _context.Apothecaries.Remove(toRemove);
+                _context.SaveChanges();
             });
             return result;
         }
@@ -79,19 +61,16 @@ namespace DAL.Repos
         {
             var result = Try(() =>
             {
-                using (var db = new iDrugsEntities())
-                {
-                    var toUpdate = db.Apothecaries.Where(x => x.Id == apothecary.Id).FirstOrDefault();
+                var toUpdate = _context.Apothecaries.Where(x => x.Id == apothecary.Id).FirstOrDefault();
 
-                    if (toUpdate != null)
-                    {
-                        toUpdate.FirstName = apothecary.FirstName ?? toUpdate.FirstName;
-                        toUpdate.LastName = apothecary.LastName ?? toUpdate.LastName;
-                        toUpdate.MonthlySalary = apothecary.MonthlySalary;
-                    }
-                    db.SaveChanges();
-                    return toUpdate;
+                if (toUpdate != null)
+                {
+                    toUpdate.FirstName = apothecary.FirstName ?? toUpdate.FirstName;
+                    toUpdate.LastName = apothecary.LastName ?? toUpdate.LastName;
+                    toUpdate.MonthlySalary = apothecary.MonthlySalary;
                 }
+                _context.SaveChanges();
+                return toUpdate;
             });
             return result;
         }
