@@ -1,12 +1,7 @@
-﻿using AutoMapper;
-using DAL;
-using DAL.Interfaces;
-using DAL.Repos;
+﻿using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using WebApp.Models;
+using WebApp.Models.ApothecaryModels;
 
 namespace WebApp
 {

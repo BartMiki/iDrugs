@@ -22,7 +22,8 @@ namespace DAL
     
         public int Id { get; set; }
         public int ApothecaryId { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
+        public Nullable<System.DateTime> OrderCreationDate { get; set; }
+        public Nullable<System.DateTime> SendOrderDate { get; set; }
     
         public virtual Apothecary Apothecary { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebApp
 {
@@ -15,6 +11,15 @@ namespace WebApp
                 TempData["ErrorMsg"] = errorMsg;
             }
             return RedirectToAction("Index");
+        }
+
+        protected virtual void DisplayTempErrorIfNedded()
+        {
+            if (TempData.ContainsKey("ErrorMsg"))
+            {
+                ViewBag.ErrorMsg = TempData["ErrorMsg"];
+                TempData.Remove("ErrorMsg");
+            }
         }
     }
 }

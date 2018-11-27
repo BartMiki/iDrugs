@@ -63,5 +63,14 @@ namespace DAL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FireApothecary", idParameter);
         }
+    
+        public virtual int CreateOrder(Nullable<int> apothecaryId)
+        {
+            var apothecaryIdParameter = apothecaryId.HasValue ?
+                new ObjectParameter("ApothecaryId", apothecaryId) :
+                new ObjectParameter("ApothecaryId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateOrder", apothecaryIdParameter);
+        }
     }
 }

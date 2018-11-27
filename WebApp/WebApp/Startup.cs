@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DAL.Interfaces;
@@ -15,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using WebApp.Validators;
 using static WebApp.AutoMapperProfiels;
+using DAL;
 
 namespace WebApp
 {
@@ -47,7 +45,9 @@ namespace WebApp
             //Autofac
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<ApothecaryEfRepo>().As<IApothecaryRepo>().SingleInstance();
+            builder.RegisterType<iDrugsEntities>().AsSelf().InstancePerDependency();
+            builder.RegisterType<ApothecaryEfRepo>().As<IApothecaryRepo>().InstancePerDependency();
+            builder.RegisterType<OrderEfRepo>().As<IOrderRepo>().InstancePerDependency();
             builder.Populate(services);
             ApplicationContainer = builder.Build();
 

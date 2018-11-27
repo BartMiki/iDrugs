@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using DAL;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace WebApp.Models
+namespace WebApp.Models.ApothecaryModels
 {
     public class ApothecaryViewModel
     {
@@ -37,9 +39,19 @@ namespace WebApp.Models
             return Mapper.Map<Apothecary>(model);
         }
 
+        public static IEnumerable<Apothecary> ToApothecaries(IEnumerable<ApothecaryViewModel> viewModels)
+        {
+            return Mapper.Map<IEnumerable<Apothecary>>(viewModels);
+        }
+
         public static implicit operator ApothecaryViewModel(Apothecary value)
         {
             return Mapper.Map<ApothecaryViewModel>(value);
+        }
+
+        public static IEnumerable<ApothecaryViewModel> ToApothecaryViewModels(IEnumerable<Apothecary> apothecaries)
+        {
+            return Mapper.Map<IEnumerable<ApothecaryViewModel>>(apothecaries);
         }
     }
 }
