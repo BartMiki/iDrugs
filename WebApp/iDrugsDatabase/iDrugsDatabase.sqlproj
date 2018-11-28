@@ -76,12 +76,13 @@
     <Build Include="Triggers\UpdateOnlyEmployedApothecary.sql" />
     <Build Include="Triggers\OnlyEmployeeCanCreateOrder.sql" />
     <Build Include="StoredProcedures\CreateOrder.sql" />
+    <Build Include="StoredProcedures\DeleteMedicine.sql" />
+    <Build Include="StoredProcedures\DeleteOrder.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Tables\iDrugsDatabase.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\MedicineType.sql" />
     <Build Include="Tables\Prescription.sql" />
     <Build Include="Tables\PrescriptionItem.sql" />
   </ItemGroup>

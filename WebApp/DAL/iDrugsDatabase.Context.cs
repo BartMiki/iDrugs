@@ -31,12 +31,11 @@ namespace DAL
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DrugStoreAvailableMedicine> DrugStoreAvailableMedicines { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
-        public virtual DbSet<MedicineType> MedicineTypes { get; set; }
         public virtual DbSet<MedicineWarehouse> MedicineWarehouses { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
     
         public virtual int InsertApothecary(string firstName, string lastName, Nullable<decimal> monthlySalary)
         {
@@ -64,13 +63,31 @@ namespace DAL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FireApothecary", idParameter);
         }
     
-        public virtual int CreateOrder(Nullable<int> apothecaryId)
+        public virtual ObjectResult<Nullable<int>> CreateOrder(Nullable<int> apothecaryId)
         {
             var apothecaryIdParameter = apothecaryId.HasValue ?
                 new ObjectParameter("ApothecaryId", apothecaryId) :
                 new ObjectParameter("ApothecaryId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateOrder", apothecaryIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateOrder", apothecaryIdParameter);
+        }
+    
+        public virtual int DeleteMedicine(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteMedicine", idParameter);
+        }
+    
+        public virtual int DeleteOrder(Nullable<int> orderId)
+        {
+            var orderIdParameter = orderId.HasValue ?
+                new ObjectParameter("orderId", orderId) :
+                new ObjectParameter("orderId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteOrder", orderIdParameter);
         }
     }
 }

@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApp.Models.ApothecaryModels;
 using WebApp.Models.OrderModels;
 using static Common.Utils.DatabaseExceptionHandler;
 using static WebApp.Models.ApothecaryModels.ApothecarySelectViewModel;
 using static WebApp.Models.ApothecaryModels.ApothecaryViewModel;
+using static AutoMapper.Mapper;
+using WebApp.Models.MedicineModels;
 
 namespace WebApp.Controllers
 {
@@ -18,36 +19,43 @@ namespace WebApp.Controllers
         private readonly IApothecaryRepo _apothecaryRepo;
         private readonly iDrugsEntities _context;
         private readonly IOrderRepo _orderRepo;
+        private readonly IMedicineRepo _medicineRepo;
 
-        public OrderController(IApothecaryRepo apothecaryRepo, iDrugsEntities context, IOrderRepo orderRepo)
+        public OrderController(IApothecaryRepo apothecaryRepo, iDrugsEntities context, IOrderRepo orderRepo, IMedicineRepo medicineRepo)
         {
             _apothecaryRepo = apothecaryRepo;
             _context = context;
             _orderRepo = orderRepo;
+            _medicineRepo = medicineRepo;
         }
 
         public IActionResult Index()
         {
-            DisplayTempErrorIfNedded();
+            DisplayErrorFromRedirectIfNecessary();
 
             var result = _orderRepo.Get();
 
             if (result.IsSuccess)
             {
-                var model = Mapper.Map<IEnumerable<OrderViewModel>>(result.Value);
+                var model = Map<IEnumerable<OrderViewModel>>(result.Value);
                 return View(model);
             }
             else
             {
-                ViewBag.ErrorMsg = result.FailureMessage;
+                AddLocalError(result.FailureMessage);
                 return View(Enumerable.Empty<OrderViewModel>());
             }
         }
 
         public IActionResult Details(int id)
         {
+            DisplayErrorFromRedirectIfNecessary();
+
             var result = _orderRepo.Get(id);
-            var order = Mapper.Map<OrderDetailViewModel>(result);
+
+            if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
+
+            var order = Map<OrderDetailViewModel>(result.Value);
             return View(order);
         }
 
@@ -69,17 +77,18 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var result = Try<int>(() =>
+            var result = Try(() =>
             {
-                return _context.CreateOrder(model.SelectedId);
+                var res = _context.CreateOrder(model.SelectedId).FirstOrDefault();
+
+                if (!res.HasValue) throw new Exception("Nie znaleziono nowo dodanego zamówienia.");
+
+                return res.Value;
             });
 
-            if (result.IsSuccess)
-                return RedirectToAction(nameof(Details), new { id = result.Value});
+            if (result.IsSuccess) return RedirectToDetails(result.Value);
 
-            ViewBag.ErrorMsg = result.FailureMessage;
-            return View(model);
-
+            return RedirectToIndex(result.FailureMessage);
         }
 
         public IActionResult SendOrder(int orderId)
@@ -122,25 +131,46 @@ namespace WebApp.Controllers
 
         public IActionResult AddOrderItem(int orderId)
         {
-            var orderItem = new OrderItem
+            var result = _medicineRepo.Get();
+            
+            if (!result.IsSuccess)
             {
-                OrderId = orderId
+                AddErrorForRedirect(result.FailureMessage);
+                return RedirectToDetails(orderId);
+            }
+
+            var temp = Map<IEnumerable<MedicineViewModel>>(result.Value);
+            var medicineList = Map<IEnumerable<MedicineSelectModel>>(temp);
+
+            var model = new AddOrderItemViewModel
+            {
+                OrderId = orderId,
+                MedicineList = medicineList
             };
-            return View(orderItem);
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult AddOrderItem(OrderItem item)
+        public IActionResult AddOrderItem(AddOrderItemViewModel model)
         {
-            if (!ModelState.IsValid) return View(item);
+            if (!ModelState.IsValid) return View(model);
 
-            using (var db = new iDrugsEntities())
-            {
-                db.OrderItems.Add(item);
-                db.SaveChanges();
-            }
+            var result = _orderRepo.AddOrderItem(model.OrderId, model);
 
-            return RedirectToAction(nameof(Details), new { id = item.OrderId });
+            if (!result.IsSuccess) AddErrorForRedirect(result.FailureMessage);
+
+            return RedirectToDetails(model.OrderId);
         }
+
+        public IActionResult Delete(int id)
+        {
+            var result = _orderRepo.RemoveOrder(id);
+
+            if(result.IsSuccess) return RedirectToIndex();
+
+            return RedirectToIndex(result.FailureMessage);
+        }
+
+        private IActionResult RedirectToDetails(int orderId) => RedirectToAction(nameof(Details), new { id = orderId });
     }
 }

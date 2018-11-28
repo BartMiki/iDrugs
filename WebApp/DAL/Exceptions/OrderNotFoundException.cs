@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Exceptions
 {
-    public class OrderNotFoundException : Exception
+    public class OrderNotFoundException : BaseNotFoundException
     {
         public OrderNotFoundException(int orderId)
-            : base($"Nie znaleziono zamówienia o id {orderId}"){}
+            : base("zamówienia", orderId){}
     }
 }

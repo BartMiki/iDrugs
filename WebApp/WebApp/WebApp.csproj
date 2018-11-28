@@ -4,6 +4,7 @@
     <TargetFramework>net472</TargetFramework>
     <DebugType>full</DebugType>
     <StartupObject></StartupObject>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,11 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Medicine\" />
-    <Folder Include="Views\MedicineType\" />
   </ItemGroup>
 
 </Project>

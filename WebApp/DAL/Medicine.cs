@@ -26,14 +26,15 @@ namespace DAL
         public int Id { get; set; }
         public decimal UnitPrice { get; set; }
         public int Amount { get; set; }
-        public int MedicineTypeId { get; set; }
         public Nullable<decimal> Refund { get; set; }
+        public string MedType { get; set; }
+        public string Unit { get; set; }
         public string Name { get; set; }
         public bool Expired { get; set; }
+        public int MedicineTypeId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DrugStoreAvailableMedicine> DrugStoreAvailableMedicines { get; set; }
-        public virtual MedicineType MedicineType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MedicineWarehouse> MedicineWarehouses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

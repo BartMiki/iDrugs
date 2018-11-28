@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Common.Utils;
 using DAL;
+using DAL.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using WebApp.Models;
+using WebApp.Models.MedicineModels;
 using WebApp.Models.ApothecaryModels;
 using WebApp.Models.OrderModels;
 
@@ -18,15 +19,25 @@ namespace WebApp
                 mapper.CreateMap<Apothecary, ApothecaryViewModel>().ReverseMap();
 
                 mapper.CreateMap<Medicine, MedicineViewModel>()
-                    //.ForMember(m => m.MedicineType.Id, x => x.MapFrom(mvm => mvm.MedicineType.Id))
+                    .ForMember(d => d.MedType, x => x.MapFrom(s => s.MedType.AsEnum<MedType>()))
+                    .ForMember(d => d.Unit, x => x.MapFrom(s => s.Unit.AsEnum<Unit>()))
                     ;
 
-                mapper.CreateMap<MedicineViewModel, Medicine>()
-                    .ForMember(m => m.MedicineTypeId, x => x.MapFrom(mvm => mvm.MedicineType.Id))
+                mapper.CreateMap<MedicineViewModel, MedicineSelectModel>()
+                    .ForMember(d => d.FullName, x => x.MapFrom(s => $"{s.Name} | {s.MedicineContent}"))
                     ;
-                mapper.CreateMap<MedicineTypeViewModel, MedicineType>()
-                    .ForMember(mt => mt.MedType, x => x.MapFrom(mvtm => mvtm.MedType.AsDatabaseType()))
-                    .ForMember(mt => mt.Unit, x => x.MapFrom(mtvm => mtvm.Unit.AsDatabaseType()));
+
+                mapper.CreateMap<AddOrderItemViewModel, OrderItem>();
+
+                mapper.CreateMap<MedicineViewModel, Medicine>()
+                    .ForMember(d => d.MedType, x => x.MapFrom(s => s.MedType.AsDatabaseType()))
+                    .ForMember(d => d.Unit, x => x.MapFrom(s => s.Unit.AsDatabaseType()))
+                    ;
+
+                mapper.CreateMap<CreateMedicineViewModel, Medicine>()
+                    .ForMember(d => d.MedType, x => x.MapFrom(s => s.MedType.AsDatabaseType()))
+                    .ForMember(d => d.Unit, x => x.MapFrom(s => s.Unit.AsDatabaseType()))
+                    ;
 
                 mapper.CreateMap<ApothecaryViewModel, ApothecarySelectViewModel>()
                     .ForMember(dest => dest.FullName, x => x.MapFrom(src => $"{src.FirstName} {src.LastName} | ID - {src.Id}"));
@@ -34,10 +45,11 @@ namespace WebApp
                 mapper.CreateMap<Order, OrderViewModel>()
                     .ForMember(dest => dest.ApothecaryFullName, x => x.MapFrom(src => src.Apothecary.FirstName + " " + src.Apothecary.LastName))
                     .ReverseMap();
-                //.ForMember(dest => dest.Apothecary, x => x.MapFrom(src => src.Apothecary))
 
                 mapper.CreateMap<OrderItem, OrderItemViewModel>()
-                    .ForMember(dest => dest.Medicine, x => x.MapFrom(src => Mapper.Map<MedicineViewModel>(src.Medicine)));
+                    .ForMember(dest => dest.Medicine, x => x.MapFrom(src => Mapper.Map<MedicineViewModel>(src.Medicine)))
+                    .ForMember(dest => dest.OrderId, x => x.MapFrom(src => src.OrderId))
+                    ;
 
                 mapper.CreateMap<Order, OrderDetailViewModel>()
                     .IncludeBase<Order, OrderViewModel>()

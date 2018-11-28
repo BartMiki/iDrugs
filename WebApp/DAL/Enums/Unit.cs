@@ -10,11 +10,11 @@ namespace DAL.Enums
     //CHECK (Unit IN ('PCS','GRAMS','MILILITERS'))
     public enum Unit
     {
-        [Display(Name = "Sztuk")]
+        [Display(Name = "sztuk")]
         Pcs,
-        [Display(Name = "Gramy")]
+        [Display(Name = "gram")]
         Grams,
-        [Display(Name = "Mililitry")]
+        [Display(Name = "mililitr")]
         Mililiters
     }
 }

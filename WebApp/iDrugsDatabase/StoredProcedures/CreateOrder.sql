@@ -8,7 +8,7 @@ AS BEGIN
 	OUTPUT inserted.Id INTO @OrderTable
 	VALUES (@ApothecaryId)
 
-	SET @OrderId = (SELECT TOP 1 Id FROM @OrderTable)
+	SET @OrderId = (SELECT Id FROM @OrderTable)
 
-RETURN @OrderId
+	SELECT Id FROM @OrderTable
 END
