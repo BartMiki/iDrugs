@@ -77,16 +77,18 @@ namespace WebApp.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var result = Try<int>(() =>
+            var result = Try(() =>
             {
-                return _context.CreateOrder(model.SelectedId);
+                var res = _context.CreateOrder(model.SelectedId).FirstOrDefault();
+
+                if (!res.HasValue) throw new Exception("Nie znaleziono nowo dodanego zamówienia.");
+
+                return res.Value;
             });
 
             if (result.IsSuccess) return RedirectToDetails(result.Value);
 
-            ViewBag.ErrorMsg = result.FailureMessage;
-            return View(model);
-
+            return RedirectToIndex(result.FailureMessage);
         }
 
         public IActionResult SendOrder(int orderId)
@@ -158,6 +160,15 @@ namespace WebApp.Controllers
             if (!result.IsSuccess) AddErrorForRedirect(result.FailureMessage);
 
             return RedirectToDetails(model.OrderId);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var result = _orderRepo.RemoveOrder(id);
+
+            if(result.IsSuccess) return RedirectToIndex();
+
+            return RedirectToIndex(result.FailureMessage);
         }
 
         private IActionResult RedirectToDetails(int orderId) => RedirectToAction(nameof(Details), new { id = orderId });

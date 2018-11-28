@@ -107,6 +107,7 @@
     <Compile Include="Repos\ApothecaryEfRepo.cs" />
     <Compile Include="Repos\MedicineEfRepo.cs" />
     <Compile Include="Repos\OrderEfRepo.cs" />
+    <Compile Include="Utils\Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

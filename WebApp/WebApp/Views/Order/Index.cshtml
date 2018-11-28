@@ -7,10 +7,16 @@
 
 <h2>Zamówienia</h2>
 
-<p>
-    <a asp-action="Create">Utwórz nowe zamówienie</a>
-</p>
-<table class="table">
+<div class="btn-group">
+    <button onclick="location.href='@Url.Action("Create","Order")'" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        <span>Utwórz nowe zamówienie</span>
+    </button>
+</div>
+
+<br />
+
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -48,7 +54,18 @@
                     }
                 </td>
                 <td>
-                    @Html.ActionLink("Detale zamówienia", "Details", new { id = item.Id })
+                    <div class="btn-group">
+                        <button onclick="location.href='@Url.Action("Details","Order", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span>Detale</span>
+                        </button>
+                        <button onclick="location.href='@Url.Action("Delete","Order", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span>Usuń</span>
+                        </button>
+                    </div>
                 </td>
             </tr>
         }

@@ -14,5 +14,6 @@ namespace DAL.Interfaces
         Result Add(Order order);
         Result AddOrderItem(int orderId, OrderItem orderItem);
         Result SendOrder(int id);
+        Result RemoveOrder(int id);
     }
 }

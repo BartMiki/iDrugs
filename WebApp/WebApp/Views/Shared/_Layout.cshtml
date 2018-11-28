@@ -15,6 +15,11 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -40,15 +45,16 @@
         </div>
     </nav>
 
+
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @if (!string.IsNullOrEmpty(ViewBag.ErrorMsg))
         {
-        <div class="alert alert-danger alert-dismissible">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>@ViewBag.ErrorMsg</strong>
-        </div>
+            <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>@ViewBag.ErrorMsg</strong>
+            </div>
         }
 
         @RenderBody()

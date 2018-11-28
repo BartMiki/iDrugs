@@ -63,13 +63,13 @@ namespace DAL
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("FireApothecary", idParameter);
         }
     
-        public virtual int CreateOrder(Nullable<int> apothecaryId)
+        public virtual ObjectResult<Nullable<int>> CreateOrder(Nullable<int> apothecaryId)
         {
             var apothecaryIdParameter = apothecaryId.HasValue ?
                 new ObjectParameter("ApothecaryId", apothecaryId) :
                 new ObjectParameter("ApothecaryId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateOrder", apothecaryIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CreateOrder", apothecaryIdParameter);
         }
     
         public virtual int DeleteMedicine(Nullable<int> id)
@@ -79,6 +79,15 @@ namespace DAL
                 new ObjectParameter("id", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteMedicine", idParameter);
+        }
+    
+        public virtual int DeleteOrder(Nullable<int> orderId)
+        {
+            var orderIdParameter = orderId.HasValue ?
+                new ObjectParameter("orderId", orderId) :
+                new ObjectParameter("orderId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteOrder", orderIdParameter);
         }
     }
 }

@@ -42,8 +42,27 @@
             @Html.DisplayFor(model => model.SendOrderDate)
         </dd>
     </dl>
+
+    <div class="btn-group">
+        <button onclick="location.href='@Url.Action("Index","Order")'"
+                class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+            <span>Powrót do listy</span>
+        </button>
+        <button onclick="location.href='@Url.Action("AddOrderItem","Order", new { orderId = Model.Id })'"
+                class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+            <span>Dodaj lek do zamówienia</span>
+        </button>
+        <button onclick="location.href='@Url.Action("SendOrder","Order", new { orderId = Model.Id })'"
+                class="btn btn-default">
+            <span class="glyphicon glyphicon-send"></span>
+            <span>Zamów</span>
+        </button>
+    </div>
+
     <h4>Leki na zamówieniu</h4>
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>
@@ -85,15 +104,4 @@
             }
         </tbody>
     </table>
-</div>
-
-<div>
-    @Html.ActionLink("Dodaj lek do zamówienia", "AddOrderItem", new { orderId = Model.Id })
-</div>
-<div>
-    @Html.ActionLink("Zamów", "SendOrder", new { orderId = Model.Id })
-</div>
-<div>
-    <!--@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |-->
-    <a asp-action="Index">Powrót do listy</a>
 </div>

@@ -1,12 +1,12 @@
 ﻿using Common.Utils;
 using DAL.Exceptions;
 using DAL.Interfaces;
+using DAL.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using static Common.Utils.DatabaseExceptionHandler;
-using System.Data.Entity;
-
 
 namespace DAL.Repos
 {
@@ -66,6 +66,28 @@ namespace DAL.Repos
                 if (order == null) throw new OrderNotFoundException(id);
 
                 return order;
+            });
+
+            return result;
+        }
+
+        public Result RemoveOrder(int id)
+        {
+            var result = _context.BeginTransaction(() =>
+            {
+                var order = _context.Orders.Find(id);
+
+                if (order == null) throw new OrderNotFoundException(id);
+
+                foreach (var item in order.OrderItems.ToArray())
+                {
+                    _context.OrderItems.Remove(item);
+                }
+
+                _context.Orders.Remove(order);
+                _context.SaveChanges();
+
+                //throw new Exception("Test");
             });
 
             return result;

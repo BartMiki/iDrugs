@@ -207,6 +207,9 @@
         <Function Name="DeleteMedicine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id" Type="int" Mode="In" />
         </Function>
+        <Function Name="DeleteOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="orderId" Type="int" Mode="In" />
+        </Function>
         <Function Name="FireApothecary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id" Type="int" Mode="In" />
         </Function>
@@ -275,7 +278,7 @@
           <FunctionImport Name="FireApothecary">
           <Parameter Name="id" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="CreateOrder">
+          <FunctionImport Name="CreateOrder" ReturnType="Collection(Int32)">
           <Parameter Name="ApothecaryId" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="Apothecaries" EntityType="iDrugsModel.Apothecary" />
@@ -324,7 +327,10 @@
             <End Role="PrescriptionItem" EntitySet="PrescriptionItems" />
           </AssociationSet>
           <FunctionImport Name="DeleteMedicine">
-            <Parameter Name="id" Mode="In" Type="Int32" />
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteOrder">
+            <Parameter Name="orderId" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Apothecary">
@@ -648,6 +654,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="DeleteMedicine" FunctionName="iDrugsModel.Store.DeleteMedicine" />
+          <FunctionImportMapping FunctionImportName="DeleteOrder" FunctionName="iDrugsModel.Store.DeleteOrder" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
