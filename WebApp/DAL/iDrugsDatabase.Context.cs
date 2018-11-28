@@ -31,12 +31,11 @@ namespace DAL
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DrugStoreAvailableMedicine> DrugStoreAvailableMedicines { get; set; }
         public virtual DbSet<Medicine> Medicines { get; set; }
-        public virtual DbSet<MedicineType> MedicineTypes { get; set; }
         public virtual DbSet<MedicineWarehouse> MedicineWarehouses { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
     
         public virtual int InsertApothecary(string firstName, string lastName, Nullable<decimal> monthlySalary)
         {
@@ -71,6 +70,15 @@ namespace DAL
                 new ObjectParameter("ApothecaryId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CreateOrder", apothecaryIdParameter);
+        }
+    
+        public virtual int DeleteMedicine(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteMedicine", idParameter);
         }
     }
 }

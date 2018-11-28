@@ -1,15 +1,54 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using DAL.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using WebApp.Models.MedicineModels;
 
 namespace WebApp.Controllers
 {
     public class MedicineController : BaseController
     {
+        private readonly IMedicineRepo _medicineRepo;
+
+        public MedicineController(IMedicineRepo medicineRepo)
+        {
+            _medicineRepo = medicineRepo;
+        }
 
         public IActionResult Index()
         {
-            //var result = _repo.Get();
+            DisplayErrorFromRedirectIfNecessary();
 
-            return View();
+            var result = _medicineRepo.Get();
+
+            if (!result.IsSuccess)
+            {
+                AddLocalError(result.FailureMessage);
+                return View(Enumerable.Empty<MedicineViewModel>());
+            }
+
+            var model = Mapper.Map<IEnumerable<MedicineViewModel>>(result.Value);
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var model = new CreateMedicineViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateMedicineViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var result = _medicineRepo.Add(model);
+
+            if (result.IsSuccess) return RedirectToIndex();
+
+            return RedirectToIndex(result.FailureMessage);
         }
     }
 }

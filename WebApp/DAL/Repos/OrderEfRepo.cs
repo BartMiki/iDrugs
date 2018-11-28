@@ -32,7 +32,7 @@ namespace DAL.Repos
 
         public Result AddOrderItem(int orderId, OrderItem orderItem)
         {
-            var resul = Try(() =>
+            var result = Try(() =>
             {
                 var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
 
@@ -43,7 +43,7 @@ namespace DAL.Repos
 
             });
 
-            return resul;
+            return result;
         }
 
         public Result<IEnumerable<Order>> Get()

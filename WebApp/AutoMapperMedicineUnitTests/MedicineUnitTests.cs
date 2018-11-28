@@ -1,12 +1,12 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
+using Common.Utils;
 using DAL;
 using DAL.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebApp.Models;
-using static WebApp.AutoMapperProfiels;
 using Shouldly;
-using Common.Utils;
+using WebApp.Models.MedicineModels;
+using WebApp.Models.OrderModels;
+using static WebApp.AutoMapperProfiels;
 
 namespace AutoMapperMedicineUnitTests
 {
@@ -28,14 +28,41 @@ namespace AutoMapperMedicineUnitTests
         }
 
         [TestMethod]
-        public void MedicineViewModelToMedicine_NoMedicineType_Success()
+        public void MedicineToMedicineViewModel_AllProperties_Success()
         {
-            var mvm = GetFakeMedicineViewModel();
-            mvm.MedicineType = null;
-
-            var m = Mapper.Map<Medicine>(mvm);
+            var copy = GetFakeMedicineViewModel();
+            var m = Mapper.Map<Medicine>(copy);
+            var mvm = Mapper.Map<MedicineViewModel>(m);
 
             CompareMedicines(m, mvm);
+        }
+
+        [TestMethod]
+        public void OrderToModel()
+        {
+            var copy = GetFakeMedicineViewModel();
+            var m = Mapper.Map<Medicine>(copy);
+
+            var order = new Order
+            {
+                Id = 1,
+            };
+
+            var orderItem = new OrderItem
+            {
+                Id = 1,
+                Medicine = m,
+                MedicineId = m.Id,
+                Order = order,
+                OrderId = order.Id,
+                Quantity = 10
+            };
+
+            order.OrderItems = null;//new []{ orderItem };
+
+            var res = Mapper.Map<OrderDetailViewModel>(order);
+
+
         }
 
         public static void CompareMedicines(MedicineViewModel mvm, Medicine m) => CompareMedicines(m, mvm);
@@ -48,20 +75,8 @@ namespace AutoMapperMedicineUnitTests
             m.Name.ShouldBe(mvm.Name);
             m.Refund.ShouldBe(mvm.Refund);
             m.UnitPrice.ShouldBe(mvm.UnitPrice);
-
-            var mt = m.MedicineType;
-            if(mt != null && mvm.MedicineType != null)
-            {
-                m.MedicineTypeId.ShouldBe(mvm.MedicineType.Id);
-
-                mt.Id.ShouldBe(mvm.MedicineType.Id);
-                mt.MedType.ShouldBe(mvm.MedicineType.MedType.AsDatabaseType());
-                mt.Unit.ShouldBe(mvm.MedicineType.Unit.AsDatabaseType());
-            }
-            else
-            {
-                m.MedicineTypeId.ShouldBe(0);
-            }
+            m.MedType.ShouldBe(mvm.MedType.AsDatabaseType());
+            m.Unit.ShouldBe(mvm.Unit.AsDatabaseType());
         }
 
         public static MedicineViewModel GetFakeMedicineViewModel()
@@ -71,12 +86,8 @@ namespace AutoMapperMedicineUnitTests
                 Amount = 10,
                 Expired = false,
                 Id = 1,
-                MedicineType = new MedicineTypeViewModel
-                {
-                    MedType = MedType.Liquid,
-                    Id = 5,
-                    Unit = Unit.Mililiters
-                },
+                MedType = MedType.Liquid,
+                Unit = Unit.Mililiters,
                 Name = "Xenna Extra Forte Plus",
                 Refund = 0.95M,
                 UnitPrice = 19.99M

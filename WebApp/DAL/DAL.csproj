@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -59,8 +61,11 @@
     <Compile Include="DrugStoreAvailableMedicine.cs">
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Enums\DALEnumExtensions.cs" />
     <Compile Include="Enums\MedType.cs" />
     <Compile Include="Enums\Unit.cs" />
+    <Compile Include="Exceptions\BaseNotFoundException.cs" />
+    <Compile Include="Exceptions\MedicineNotFoundException.cs" />
     <Compile Include="Exceptions\OrderNotFoundException.cs" />
     <Compile Include="iDrugsDatabase.Context.cs">
       <AutoGen>True</AutoGen>
@@ -83,9 +88,6 @@
     <Compile Include="Medicine.cs">
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="MedicineType.cs">
-      <DependentUpon>iDrugsDatabase.tt</DependentUpon>
-    </Compile>
     <Compile Include="MedicineWarehouse.cs">
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
     </Compile>
@@ -103,6 +105,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\ApothecaryEfRepo.cs" />
+    <Compile Include="Repos\MedicineEfRepo.cs" />
     <Compile Include="Repos\OrderEfRepo.cs" />
   </ItemGroup>
   <ItemGroup>

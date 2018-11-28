@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Exceptions
 {
-    public class OrderNotFoundException : BaseNotFoundException
+    public class MedicineNotFoundException : BaseNotFoundException
     {
-        public OrderNotFoundException(int orderId)
-            : base("zamówienia", orderId){}
+        public MedicineNotFoundException(int id)
+            : base("leku", id){}
     }
 }

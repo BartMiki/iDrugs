@@ -5,9 +5,11 @@
     Amount INT NOT NULL, 
     MedicineTypeId INT NOT NULL,
 	Refund DECIMAL(3,2),
+	MedType NVARCHAR(20) NOT NULL,
+    Unit NVARCHAR(10) NOT NULL,
 	Name NVARCHAR(50) NOT NULL,
 	Expired BIT NOT NULL DEFAULT(1)
 
-	FOREIGN KEY (MedicineTypeId) REFERENCES MedicineType(Id) 
-
+	CHECK (MedType IN ('SALVE','PILL','SYRUP','SPRAY', 'SOLUTION', 'LIQUID')),
+	CHECK (Unit IN ('PCS','GRAMS','MILILITERS'))
 )

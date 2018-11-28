@@ -18,12 +18,6 @@
             @Html.DisplayFor(model => model.Id)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Apothecary.Id)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Apothecary.Id)
-        </dd>
-        <dt>
             @Html.DisplayNameFor(model => model.Apothecary.FirstName)
         </dt>
         <dd>
@@ -56,10 +50,10 @@
                     @Html.DisplayNameFor(model => model.Items.First().Medicine.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Items.First().Medicine.MedicineType.MedType)
+                    @Html.DisplayNameFor(model => model.Items.First().Medicine.MedType)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Items.First().Medicine.MedicineDescription)
+                    @Html.DisplayNameFor(model => model.Items.First().Medicine.MedicineContent)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Items.First().Quantity)
@@ -74,10 +68,10 @@
                         @Html.DisplayFor(modelItem => item.Medicine.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Medicine.MedicineType.MedType)
+                        @Html.DisplayFor(modelItem => item.Medicine.MedType)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Medicine.MedicineDescription)
+                        @Html.DisplayFor(modelItem => item.Medicine.MedicineContent)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)

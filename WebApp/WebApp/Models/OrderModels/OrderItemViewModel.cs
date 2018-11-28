@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Models.ApothecaryModels;
+using WebApp.Models.MedicineModels;
 
 namespace WebApp.Models.OrderModels
 {

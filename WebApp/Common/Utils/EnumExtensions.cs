@@ -19,6 +19,9 @@ namespace Common.Utils
                 .GetCustomAttribute<TAttribute>();
         }
 
+        /// <summary>
+        /// Use when you want to displya value of Enum in View or Model
+        /// </summary>
         public static string GetDisplayName(this Enum value)
         {
             return value.GetAttribute<DisplayAttribute>().Name;
@@ -29,11 +32,17 @@ namespace Common.Utils
             return value.ToString();
         }
 
+        /// <summary>
+        /// Use when you want to convert enum to database constant
+        /// </summary>
         public static string AsDatabaseType(this Enum value)
         {
             return value.ToString().ToUpper();
         }
 
+        /// <summary>
+        /// Use when you want to convert value from database into enum counterpart
+        /// </summary>
         public static TEnum AsEnum<TEnum>(this string value)
         {
             return (TEnum) Parse(typeof(TEnum), value.ToTitleCase());

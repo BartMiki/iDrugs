@@ -1,0 +1,58 @@
+﻿@using WebApp.Models.MedicineModels;
+@model IEnumerable<MedicineViewModel>
+
+@{
+    ViewData["Title"] = "Spis leków";
+}
+
+<h2>Spis leków</h2>
+
+<div>
+    <button onclick="location.href='@Url.Action("Create","Medicine")'" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        <span>Dodaj nowy lek</span>
+    </button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriceWithRefund)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MedicineContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Expired)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriceWithRefund)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedicineContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Expired)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

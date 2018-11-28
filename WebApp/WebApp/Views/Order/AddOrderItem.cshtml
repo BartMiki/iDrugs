@@ -1,30 +1,21 @@
-﻿@model DAL.OrderItem
+﻿@using WebApp.Models.OrderModels;
+@model AddOrderItemViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Dodaj lek do zamówienia";
 }
 
-<h2>Create</h2>
+<h2>Dodaj lek do zamówienia</h2>
 
-<h4>OrderItem</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="AddOrderItem">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderId" class="control-label"></label>
-                <input asp-for="OrderId" class="form-control" />
-                <span asp-validation-for="OrderId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="MedicineId" class="control-label"></label>
-                <input asp-for="MedicineId" class="form-control" />
+                <select asp-for="MedicineId" class="form-control" 
+                    asp-items="@{new SelectList(Model.MedicineList, "Id", "FullName")}"></select>
                 <span asp-validation-for="MedicineId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -32,7 +23,7 @@
                 <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Order" />
+            <input type="hidden" asp-for="OrderId" />
             <div class="form-group">
                 <input type="submit" value="AddOrderItem" class="btn btn-default" />
             </div>
