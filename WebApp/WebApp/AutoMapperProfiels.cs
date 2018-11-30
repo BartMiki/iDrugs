@@ -63,7 +63,9 @@ namespace WebApp
                     .ForMember(dest => dest.Items, x => x.MapFrom(src => Mapper.Map<IEnumerable<OrderItemViewModel>>(src.OrderItems.AsEnumerable())));
 
                 mapper.CreateMap<MedicineWarehouse, WarehouseItemViewModel>().ReverseMap();
-                    //.ForMember(d => d.Medicine, x => x.MapFrom(s => s.Medicine));
+                //.ForMember(d => d.Medicine, x => x.MapFrom(s => s.Medicine));
+
+                mapper.CreateMap<WarehouseItemViewModel, AddWarehouseItemViewModel>().ReverseMap();
             });
         }
     }

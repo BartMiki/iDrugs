@@ -1,7 +1,8 @@
-﻿@model IEnumerable<DAL.MedicineWarehouse>
+﻿@using WebApp.Models.WarehouseModels;
+@model IEnumerable<WarehouseItemViewModel>
 
 @{
-    ViewData["Title"] = "Hurtownia Leków";
+    ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
@@ -13,10 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Medicine.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MedicineId)
+                @Html.DisplayNameFor(model => model.Medicine.MedicineContent)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
@@ -28,16 +29,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                @Html.DisplayFor(modelItem => item.Medicine.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MedicineId)
+                @Html.DisplayFor(modelItem => item.Medicine.MedicineContent)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id, medicineId = item.MedicineId, quantity = item.Quantity })
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

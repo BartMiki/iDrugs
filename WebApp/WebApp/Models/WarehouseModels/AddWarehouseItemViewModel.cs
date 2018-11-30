@@ -9,6 +9,12 @@ namespace WebApp.Models.WarehouseModels
 {
     public class AddWarehouseItemViewModel
     {
+        [Display(Name = "Lek")]
+        public int MedicineId { get; set; }
 
+        [Display(Name = "Dodawana ilość")]
+        public int Quantity { get; set; }
+
+        public IEnumerable<MedicineSelectModel> MedicineList { get; set; }
     }
 }

@@ -68,6 +68,7 @@
     <Compile Include="Exceptions\MedicineNotFoundException.cs" />
     <Compile Include="Exceptions\OrderItemNotFoundException.cs" />
     <Compile Include="Exceptions\OrderNotFoundException.cs" />
+    <Compile Include="Exceptions\WarehouseItemNotFoundException.cs" />
     <Compile Include="iDrugsDatabase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
