@@ -19,12 +19,17 @@ namespace DAL.Repos
             _context = context;
         }
 
-        public Result Add(Order order)
+        public Result<int> Create(int apothecaryId)
         {
             var result = Try(() =>
             {
-                _context.Orders.Add(order);
+                var res = _context.CreateOrder(apothecaryId).FirstOrDefault();
+
+                if (!res.HasValue) throw new Exception("Nie znaleziono nowo dodanego zamówienia.");
+
                 _context.SaveChanges();
+
+                return res.Value;
             });
 
             return result;
@@ -41,6 +46,36 @@ namespace DAL.Repos
                 order.OrderItems.Add(orderItem);
                 _context.SaveChanges();
 
+            });
+
+            return result;
+        }
+
+        public Result DeleteOrderItem(int orderId, int itemId)
+        {
+            var result = Try(() =>
+            {
+                var entity = _context.OrderItems.Find(itemId);
+
+                if (entity == null) throw new OrderItemNotFoundException(itemId);
+
+                _context.OrderItems.Remove(entity);
+                _context.SaveChanges();
+            });
+
+            return result;
+        }
+
+        public Result EditOrderItem(OrderItem item)
+        {
+            var result = Try(() =>
+            {
+                var entity = _context.OrderItems.Find(item.Id);
+
+                if (entity == null) throw new OrderItemNotFoundException(item.Id);
+
+                entity.Quantity = item.Quantity;
+                _context.SaveChanges();
             });
 
             return result;
@@ -86,8 +121,6 @@ namespace DAL.Repos
 
                 _context.Orders.Remove(order);
                 _context.SaveChanges();
-
-                //throw new Exception("Test");
             });
 
             return result;
@@ -95,7 +128,58 @@ namespace DAL.Repos
 
         public Result SendOrder(int id)
         {
-            throw new NotImplementedException();
+            var result = _context.BeginTransaction(() =>
+            {
+                var order = _context.Orders.Find(id);
+
+                if (order == null) throw new OrderNotFoundException(id);
+
+                if (order.SendOrderDate.HasValue)
+                    throw new Exception("Zamówienie zostało już wysłane, nie można wysłać go ponownie.");
+
+                if (order.OrderItems.Count == 0)
+                    throw new Exception("Zamównienie nie może być puste");
+
+                foreach (var orderItem in order.OrderItems)
+                {
+                    // Getting items from Warehouse
+                    var warehouseItem = _context.MedicineWarehouses.FirstOrDefault(x => x.MedicineId == orderItem.MedicineId);
+
+                    if (warehouseItem == null || warehouseItem.Quantity == 0)
+                        throw new Exception($"W hurtowni nie ma leku o nazwie {orderItem.Medicine.Name}");
+
+                    var qunatityAfterOrder = warehouseItem.Quantity - orderItem.Quantity;
+                    if (qunatityAfterOrder < 0)
+                        throw new Exception($"Nie można zrealizować zamówienia - na magazynie brakuje {qunatityAfterOrder}"
+                            + $" sztuk leku {orderItem.Medicine.Name}");
+
+                    warehouseItem.Quantity -= orderItem.Quantity;
+
+                    // Inserting items into Drug Store Available Medicines
+                    var drugStoreItem = _context.DrugStoreAvailableMedicines.FirstOrDefault(x => x.MedicineId == orderItem.MedicineId);
+
+                    if (drugStoreItem == null)
+                    {
+                        drugStoreItem = new DrugStoreAvailableMedicine
+                        {
+                            MedicineId = orderItem.MedicineId,
+                            Quantity = orderItem.Quantity
+                        };
+
+                        _context.DrugStoreAvailableMedicines.Add(drugStoreItem);
+                    }
+                    else
+                    {
+                        drugStoreItem.Quantity += orderItem.Quantity;
+                    }
+                }
+
+                order.SendOrderDate = DateTime.Now;
+
+                _context.SaveChanges();
+            });
+
+            return result;
         }
     }
 }

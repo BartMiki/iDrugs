@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models.MedicineModels
 {
-    public class MedicineViewModel
+    public class MedicineDetailsViewModel
     {
         public int Id { get; set; }
 
@@ -16,20 +16,11 @@ namespace WebApp.Models.MedicineModels
         [Display(Name = "Cena całkowita")]
         public decimal UnitPrice { get; set; }
 
-        [Display(Name = "Ilość")]
-        public int Amount { get; set; }
-
-        [Display(Name = "Jednostka")]
-        public Unit Unit { get; set; }
-
-        [Display(Name = "Rodzaj leku")]
-        public MedType MedType { get; set; }
-
-        [Display(Name = "Refundacja")]
+        //[Display(Name = "Refundacja")]
         public decimal? Refund { get; set; }
 
-        [Display(Name = "Wycofany z użycia")]
-        public bool Expired { get; set; }
+        [Display(Name = "Refundacja")]
+        public string RefundString { get => Refund.HasValue ? $"{decimal.Round(Refund.Value * 100, 2)}%" : "Brak refundacji"; }
 
         [Display(Name = "Cena z refundacją")]
         public decimal PriceWithRefund
@@ -43,17 +34,21 @@ namespace WebApp.Models.MedicineModels
             }
         }
 
+        [Display(Name = "Ilość leku w opakowaniu")]
+        public int Amount { get; set; }
+
+        [Display(Name = "Jednostka")]
+        public Unit Unit { get; set; }
+
+        [Display(Name = "Rodzaj leku")]
+        public MedType MedType { get; set; }
+
+        [Display(Name = "Wycofany z użycia")]
+        public bool Expired { get; set; }
+
         [Display(Name = "Zawartość opakowania")]
         public string MedicineContent { get => $"{MedType.GetDisplayName()} - {Amount} {Unit.AsPlural(Amount)}"; }
 
-        public static implicit operator Medicine(MedicineViewModel model)
-        {
-            return Mapper.Map<Medicine>(model);
-        }
 
-        public static implicit operator MedicineViewModel(Medicine entity)
-        {
-            return Mapper.Map<MedicineViewModel>(entity);
-        }
     }
 }

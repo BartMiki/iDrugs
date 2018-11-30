@@ -48,9 +48,23 @@
                 @Html.DisplayFor(modelItem => item.Expired)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <div class="btn-group">
+                    <button onclick="location.href='@Url.Action("Details","Medicine", new { id = item.Id })'"
+                            class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span>Detale</span>
+                    </button>
+                    <button onclick="location.href='@Url.Action("Delete","Medicine", new { id = item.Id })'"
+                            class="btn btn-default">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        <span>Usuń</span>
+                    </button>
+                    <button onclick="location.href='@Url.Action("MakeExpired","Medicine", new { id = item.Id })'"
+                            class="btn btn-default">
+                        <span class="glyphicon glyphicon-ban-circle"></span>
+                        <span>Wycofaj z obiegu</span>
+                    </button>
+                </div>
             </td>
         </tr>
 }

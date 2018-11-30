@@ -1,0 +1,40 @@
+﻿@model WebApp.Models.OrderModels.EditOrderItemViewModel
+
+@{
+    ViewData["Title"] = "Edycja pozycji na zamówieniu";
+}
+
+<h2>Edycja pozycji na zamówieniu</h2>
+
+<h4>Edycja dla leku @Model.MedicineName</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditOrderItem">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+            <input type="hidden" asp-for="OrderId" class="form-control" />
+            <input type="hidden" asp-for="MedicineId" class="form-control" />
+            <input type="hidden" asp-for="Id" class="form-control" />
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>Akceptuj</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<button onclick="location.href='@Url.Action("Details","Order", new { id = Model.OrderId })'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+    <span>Powrót do zamówienia</span>
+</button>
+

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace WebApp.Controllers
 {
-    public class WarehouseController : Controller
+    public class WarehouseController : BaseController
     {
         public IActionResult Index()
         {

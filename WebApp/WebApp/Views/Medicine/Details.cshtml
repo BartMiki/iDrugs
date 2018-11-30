@@ -1,0 +1,84 @@
+﻿@model WebApp.Models.MedicineModels.MedicineDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MedicineDetailsViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Refund)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Refund)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RefundString)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RefundString)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceWithRefund)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PriceWithRefund)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Unit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Unit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MedType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MedType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Expired)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Expired)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MedicineContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MedicineContent)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edytuj", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Powrót</a>
+</div>
