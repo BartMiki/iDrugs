@@ -1,6 +1,9 @@
 ﻿using Common.Utils;
 using DAL.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using static Common.Utils.DatabaseExceptionHandler;
 
@@ -61,16 +64,20 @@ namespace DAL.Repos
         {
             var result = Try(() =>
             {
-                var toUpdate = _context.Apothecaries.Where(x => x.Id == apothecary.Id).FirstOrDefault();
+                var entity = _context.Apothecaries.Find(apothecary.Id);
 
-                if (toUpdate != null)
-                {
-                    toUpdate.FirstName = apothecary.FirstName ?? toUpdate.FirstName;
-                    toUpdate.LastName = apothecary.LastName ?? toUpdate.LastName;
-                    toUpdate.MonthlySalary = apothecary.MonthlySalary;
-                }
+                if (entity == null) throw new Exception("Nie znaleziono aptekarza");
+
+                if (entity.RowVersion != apothecary.RowVersion)
+                    throw new DBConcurrencyException("Informacje o aptekarzu zostały zmienione, przez innego użytkownika");
+
+                apothecary.RowVersion++;
+
+                _context.Entry(entity)
+                    .CurrentValues.SetValues(apothecary);
+
                 _context.SaveChanges();
-                return toUpdate;
+                return apothecary;
             });
             return result;
         }

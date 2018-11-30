@@ -30,8 +30,16 @@
                 <input asp-for="MonthlySalary" class="form-control" />
                 <span asp-validation-for="MonthlySalary" class="text-danger"></span>
             </div>
+            @Html.HiddenFor(x => x.RowVersion)
+            @Html.HiddenFor(x => x.IsEmployed)
+            @Html.HiddenFor(x => x.HireDate)
+            @Html.HiddenFor(x => x.FireDate)
+            @Html.HiddenFor(x => x.Id)
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-save"></span>
+                    <span>Zapisz</span>
+                </button>
             </div>
         </form>
     </div>

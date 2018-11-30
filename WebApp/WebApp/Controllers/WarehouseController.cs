@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using Common.Utils;
-using DAL;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApp.Models.MedicineModels;
 using WebApp.Models.WarehouseModels;
-using static Common.Utils.DatabaseExceptionHandler;
 using static AutoMapper.Mapper;
-using System;
+using static Common.Utils.DatabaseExceptionHandler;
 
 namespace WebApp.Controllers
 {
@@ -53,8 +52,11 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(AddWarehouseItemViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
+            if (!ModelState.IsValid)
+            {
+                model.MedicineList = GetMedicineSelectList().Value;
+                return View(model);
+            }
             var entity = Map<WarehouseItemViewModel>(model);
 
             _warehouseRepo.Add(entity);
@@ -68,19 +70,24 @@ namespace WebApp.Controllers
 
             if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
 
-            var model = Map<AddWarehouseItemViewModel>((WarehouseItemViewModel)result.Value); 
+            var model = Map<AddWarehouseItemViewModel>((WarehouseItemViewModel)result.Value);
 
+            model.MedicineList = GetMedicineSelectList().Value;
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Edit(WarehouseItemViewModel model)
+        public IActionResult Edit(AddWarehouseItemViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+            {
+                model.MedicineList = GetMedicineSelectList().Value;
+                return View(model);
+            }
 
-            var result = _warehouseRepo.Add(model);
+            var result = _warehouseRepo.Add(Map<WarehouseItemViewModel>(model));
 
-            if(!result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 AddLocalError(result.FailureMessage);
                 return View(model);
@@ -91,7 +98,8 @@ namespace WebApp.Controllers
 
         private Result<IEnumerable<MedicineSelectModel>> GetMedicineSelectList()
         {
-            return Try(() => {
+            return Try(() =>
+            {
                 var result = _medicineRepo.Get();
 
                 if (!result.IsSuccess) throw new Exception(result.FailureMessage);

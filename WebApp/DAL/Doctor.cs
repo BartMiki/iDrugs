@@ -24,6 +24,7 @@ namespace DAL
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool HasValidMedicalLicense { get; set; }
+        public byte[] RowVersion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Prescription> Prescriptions { get; set; }

@@ -28,6 +28,7 @@ namespace DAL
         public bool IsEmployed { get; set; }
         public System.DateTime HireDate { get; set; }
         public Nullable<System.DateTime> FireDate { get; set; }
+        public int RowVersion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }

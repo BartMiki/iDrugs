@@ -25,10 +25,11 @@ namespace DAL
         public int ApothecaryId { get; set; }
         public System.DateTime PrescriptionDate { get; set; }
         public Nullable<decimal> TotalCost { get; set; }
+        public byte[] RowVersion { get; set; }
     
-        public virtual Apothecary Apothecary { get; set; }
         public virtual Doctor Doctor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PrescriptionItem> PrescriptionItems { get; set; }
+        public virtual Apothecary Apothecary { get; set; }
     }
 }

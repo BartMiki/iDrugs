@@ -4,6 +4,7 @@
 	[PrescriptionId] INT NOT NULL,
 	[Quantity] INT NOT NULL CHECK (Quantity > 0),
 	[MedicineId] INT NOT NULL,
+	RowVersion TIMESTAMP,
 
 	FOREIGN KEY (MedicineId) REFERENCES Medicine(Id),
 	FOREIGN KEY (PrescriptionId) REFERENCES Prescription(Id),
