@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace DAL.Utils
 {
@@ -16,10 +17,11 @@ namespace DAL.Utils
         /// <param name="action">
         /// Action that you want to perform on database, no need to defining Transaction logic.
         /// </param>
-        public static Result BeginTransaction(this iDrugsEntities context, Action action)
+        public static Result BeginTransaction(this iDrugsEntities context, Action action, 
+            IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             var result = Try(() => {
-                using (var transaction = context.Database.BeginTransaction())
+                using (var transaction = context.Database.BeginTransaction(isolationLevel))
                 {
                     try
                     {
