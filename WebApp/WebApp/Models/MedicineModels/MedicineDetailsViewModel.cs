@@ -14,6 +14,7 @@ namespace WebApp.Models.MedicineModels
         public string Name { get; set; }
 
         [Display(Name = "Cena całkowita")]
+        [DisplayFormat(DataFormatString = "{0:0.00} zł")]
         public decimal UnitPrice { get; set; }
 
         //[Display(Name = "Refundacja")]
@@ -23,6 +24,7 @@ namespace WebApp.Models.MedicineModels
         public string RefundString { get => Refund.HasValue ? $"{decimal.Round(Refund.Value * 100, 2)}%" : "Brak refundacji"; }
 
         [Display(Name = "Cena z refundacją")]
+        [DisplayFormat(DataFormatString = "{0:0.00} zł")]
         public decimal PriceWithRefund
         {
             get
@@ -50,5 +52,10 @@ namespace WebApp.Models.MedicineModels
         public string MedicineContent { get => $"{MedType.GetDisplayName()} - {Amount} {Unit.AsPlural(Amount)}"; }
 
 
+        public static implicit operator MedicineDetailsViewModel(Medicine entity)
+        {
+            var temp = Mapper.Map<MedicineViewModel>(entity);
+            return Mapper.Map<MedicineDetailsViewModel>(temp);
+        }
     }
 }

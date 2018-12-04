@@ -14,6 +14,7 @@ namespace WebApp.Models.MedicineModels
         public string Name { get; set; }
 
         [Display(Name = "Cena całkowita")]
+        [DisplayFormat(DataFormatString = "{0:0.00} zł")]
         public decimal UnitPrice { get; set; }
 
         [Display(Name = "Ilość")]
@@ -32,6 +33,7 @@ namespace WebApp.Models.MedicineModels
         public bool Expired { get; set; }
 
         [Display(Name = "Cena z refundacją")]
+        [DisplayFormat(DataFormatString = "{0:0.00} zł")]
         public decimal PriceWithRefund
         {
             get

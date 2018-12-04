@@ -26,21 +26,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Medicine.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Medicine.MedicineContent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.ActionLink("Edytuj", "Edit", new { id=item.Id }) |
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine.MedicineContent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    <button onclick="location.href='@Url.Action("Edit","Warehouse", new { id = item.Id })'"
+                            class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        <span>Edytuj</span>
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

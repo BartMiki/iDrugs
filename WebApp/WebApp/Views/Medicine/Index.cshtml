@@ -14,7 +14,7 @@
     </button>
 </div>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -45,7 +45,14 @@
                 @Html.DisplayFor(modelItem => item.MedicineContent)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Expired)
+                @if (item.Expired)
+                {
+                    <span class="glyphicon glyphicon-ok"></span>
+                }
+                else
+                {
+                    <span class="glyphicon glyphicon-remove"></span>
+                }
             </td>
             <td>
                 <div class="btn-group">

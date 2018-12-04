@@ -57,7 +57,7 @@ namespace WebApp.Controllers
 
             if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
 
-            return View((MedicineViewModel)result.Value);
+            return View((MedicineDetailsViewModel)result.Value);
         }
 
         public IActionResult Delete(int id)

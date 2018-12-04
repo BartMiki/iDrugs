@@ -8,6 +8,7 @@ using WebApp.Models.MedicineModels;
 using WebApp.Models.ApothecaryModels;
 using WebApp.Models.OrderModels;
 using WebApp.Models.WarehouseModels;
+using WebApp.Models.DrugStoreStockModels;
 
 namespace WebApp
 {
@@ -66,6 +67,8 @@ namespace WebApp
                 //.ForMember(d => d.Medicine, x => x.MapFrom(s => s.Medicine));
 
                 mapper.CreateMap<WarehouseItemViewModel, AddWarehouseItemViewModel>().ReverseMap();
+
+                mapper.CreateMap<DrugStoreStockViewModel, DrugStoreAvailableMedicine>().ReverseMap();
             });
         }
     }

@@ -50,6 +50,7 @@ namespace WebApp
             builder.RegisterType<MedicineEfRepo>().As<IMedicineRepo>().InstancePerDependency();
             builder.RegisterType<OrderEfRepo>().As<IOrderRepo>().InstancePerDependency();
             builder.RegisterType<WarehouseEfRepo>().As<IWarehouseRepo>().InstancePerDependency();
+            builder.RegisterType<DrugStoreStockEfRepo>().As<IDrugStoreStockRepo>().InstancePerDependency();
             builder.Populate(services);
             ApplicationContainer = builder.Build();
 
