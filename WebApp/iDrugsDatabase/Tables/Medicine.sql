@@ -3,7 +3,7 @@
 	Id INT NOT NULL PRIMARY KEY IDENTITY,
 	UnitPrice MONEY NOT NULL, 
     Amount INT NOT NULL, 
-    MedicineTypeId INT NOT NULL,
+    --MedicineTypeId INT NOT NULL,
 	Refund DECIMAL(3,2),
 	MedType NVARCHAR(20) NOT NULL,
     Unit NVARCHAR(10) NOT NULL,
