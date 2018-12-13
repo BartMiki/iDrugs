@@ -50,5 +50,32 @@ namespace WebApp.Controllers
 
             return RedirectToIndex(result.FailureMessage);
         }
+
+        public IActionResult Details(int id)
+        {
+            var result = _medicineRepo.Get(id);
+
+            if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
+
+            return View((MedicineDetailsViewModel)result.Value);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var result = _medicineRepo.Delete(id);
+
+            if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
+
+            return RedirectToIndex();
+        }
+
+        public IActionResult MakeExpired(int id)
+        {
+            var result = _medicineRepo.MakeExpired(id);
+
+            if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
+
+            return RedirectToIndex();
+        }
     }
 }

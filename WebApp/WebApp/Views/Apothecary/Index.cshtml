@@ -17,36 +17,38 @@
 <br />
 
 <table class="table table-striped">
-    <tr class="dl-horizontal">
-        <th>@Html.DisplayName("Id")</th>
-        <th>@Html.DisplayName("Imię")</th>
-        <th>@Html.DisplayName("Nazwisko")</th>
-        <th>@Html.DisplayName("Miesięczne zarobki")</th>
-        <th>@Html.DisplayName("Czy zatrudniony?")</th>
-        <th>@Html.DisplayName("Akcje")</th>
-    </tr>
-    @foreach (var apothecary in Model)
-    {
-        <tr>
-            <td>@Html.DisplayFor(x => apothecary.Id)</td>
-            <td>@Html.DisplayFor(x => apothecary.FirstName)</td>
-            <td>@Html.DisplayFor(x => apothecary.LastName)</td>
-            <td>@Html.DisplayFor(x => apothecary.MonthlySalary)</td>
-            @{ if (apothecary.IsEmployed)
-                {
-                    <td><span class="glyphicon glyphicon-ok"></span></td>
-                }
-                else
-                {
-                    <td><span class="glyphicon glyphicon-remove"></span></td>
-                }
-            }
-            <td>
-                @Html.ActionLink("Zwolnij", "Fire", new { id = apothecary.Id }) |
-                @Html.ActionLink("Detale", "Details", new { id = apothecary.Id }) |
-                @Html.ActionLink("Usuń", "Delete", new { id = apothecary.Id })
-            </td>
+    <thead>
+        <tr class="dl-horizontal">
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.MonthlySalary)</th>
+            <th>@Html.DisplayNameFor(model => model.IsEmployed)</th>
+            <th>@Html.DisplayName("Akcje")</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var apothecary in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(x => apothecary.FirstName)</td>
+                <td>@Html.DisplayFor(x => apothecary.LastName)</td>
+                <td>@Html.DisplayFor(x => apothecary.MonthlySalary)</td>
+                @{ if (apothecary.IsEmployed)
+                    {
+                        <td><span class="glyphicon glyphicon-ok"></span></td>
+                    }
+                    else
+                    {
+                        <td><span class="glyphicon glyphicon-remove"></span></td>
+                    }
+                }
+                <td>
+                    @Html.ActionLink("Zwolnij", "Fire", new { id = apothecary.Id }) |
+                    @Html.ActionLink("Detale", "Details", new { id = apothecary.Id }) |
+                    @Html.ActionLink("Usuń", "Delete", new { id = apothecary.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>

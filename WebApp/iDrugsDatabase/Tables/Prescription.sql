@@ -5,6 +5,7 @@
 	ApothecaryId INT NOT NULL,
 	PrescriptionDate DATE NOT NULL,
 	TotalCost MONEY,
+	RowVersion TIMESTAMP,
 
 	FOREIGN KEY (DoctorId) REFERENCES Doctor(Id),
 	FOREIGN KEY (ApothecaryId) REFERENCES Apothecary(Id)

@@ -4,8 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9be9381748914897b9be0be5e7345377" Name="Diagram1" ZoomLevel="67">
-        <EntityTypeShape EntityType="iDrugsModel.Apothecary" Width="1.5" PointX="10.375" PointY="4.25" />
+      <Diagram DiagramId="9be9381748914897b9be0be5e7345377" Name="Diagram1" ZoomLevel="133">
         <EntityTypeShape EntityType="iDrugsModel.Doctor" Width="1.5" PointX="10.25" PointY="1.375" />
         <EntityTypeShape EntityType="iDrugsModel.DrugStoreAvailableMedicine" Width="1.5" PointX="2.625" PointY="7.875" />
         <EntityTypeShape EntityType="iDrugsModel.Medicine" Width="1.5" PointX="2.625" PointY="3.375" />
@@ -14,8 +13,6 @@
         <EntityTypeShape EntityType="iDrugsModel.OrderItem" Width="1.5" PointX="5.625" PointY="5.5" />
         <EntityTypeShape EntityType="iDrugsModel.Prescription" Width="1.5" PointX="7.75" PointY="2.375" />
         <EntityTypeShape EntityType="iDrugsModel.PrescriptionItem" Width="1.5" PointX="5.625" PointY="2.375" />
-        <AssociationConnector Association="iDrugsModel.FK__Order__Apothecar__3C69FB99" />
-        <AssociationConnector Association="iDrugsModel.FK__Prescript__Apoth__403A8C7D" />
         <AssociationConnector Association="iDrugsModel.FK__Prescript__Docto__3F466844" />
         <AssociationConnector Association="iDrugsModel.FK__DrugStore__Medic__3A81B327" />
         <AssociationConnector Association="iDrugsModel.FK__MedicineW__Medic__3B75D760" />
@@ -23,6 +20,9 @@
         <AssociationConnector Association="iDrugsModel.FK__Prescript__Medic__412EB0B6" />
         <AssociationConnector Association="iDrugsModel.FK__OrderItem__Order__3D5E1FD2" />
         <AssociationConnector Association="iDrugsModel.FK__Prescript__Presc__4222D4EF" />
+        <EntityTypeShape EntityType="iDrugsModel.Apothecary" Width="1.5" PointX="10.25" PointY="3.875" />
+        <AssociationConnector Association="iDrugsModel.FK__Order__Apothecar__3F115E1A" />
+        <AssociationConnector Association="iDrugsModel.FK__Prescript__Apoth__40058253" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

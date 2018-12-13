@@ -3,9 +3,8 @@ using DAL.Exceptions;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
-using static Common.Utils.DatabaseExceptionHandler;
-using System.Data.Entity;
 using System.Linq;
+using static Common.Utils.DatabaseExceptionHandler;
 
 namespace DAL.Repos
 {
@@ -33,7 +32,11 @@ namespace DAL.Repos
         {
             var result = Try(() =>
             {
-                _context.DeleteMedicine(id);
+                var entity = _context.Medicines.Find(id);
+
+                if (entity == null) throw new MedicineNotFoundException(id);
+
+                _context.Medicines.Remove(entity);
                 _context.SaveChanges();
             });
 
@@ -81,7 +84,20 @@ namespace DAL.Repos
 
         public Result MakeExpired(int id)
         {
-            throw new NotImplementedException();
+            var result = Try(() =>
+            {
+                var entity = _context.Medicines.Find(id);
+
+                if (entity == null) throw new MedicineNotFoundException(id);
+
+                if (entity.Expired) throw new Exception($"Lek o Id {id} został już wycofany, nie można wycofać go ponownie");
+
+                entity.Expired = true;
+                _context.SaveChanges();
+
+            });
+
+            return result;
         }
     }
 }

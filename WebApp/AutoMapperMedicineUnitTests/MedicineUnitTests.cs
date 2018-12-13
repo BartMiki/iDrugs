@@ -38,6 +38,24 @@ namespace AutoMapperMedicineUnitTests
         }
 
         [TestMethod]
+        public void CraeteMedicineViewModelToMedicineViewModel()
+        {
+            var create = new CreateMedicineViewModel
+            {
+                Amount = 1,
+                MedType = MedType.Liquid,
+                Name = "Test medicine",
+                RefundString = "25%",
+                Unit = Unit.Grams,
+                UnitPrice = 100
+            };
+
+            var m = Mapper.Map<Medicine>(create);
+
+            return;
+        }
+
+        [TestMethod]
         public void OrderToModel()
         {
             var copy = GetFakeMedicineViewModel();

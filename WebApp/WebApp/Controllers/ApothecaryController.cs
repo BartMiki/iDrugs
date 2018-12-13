@@ -82,6 +82,8 @@ namespace WebApp
 
         public IActionResult Edit(int id)
         {
+            DisplayErrorFromRedirectIfNecessary();
+
             var result = _repo.Get(id);
             if (result.IsSuccess)
             {
@@ -106,8 +108,8 @@ namespace WebApp
             }
             else
             {
-                ViewBag.ErrorMsg = result.FailureMessage;
-                return View(model);
+                AddErrorForRedirect(result.FailureMessage);
+                return RedirectToAction("Edit", new { id = model.Id });
             }
         }
 

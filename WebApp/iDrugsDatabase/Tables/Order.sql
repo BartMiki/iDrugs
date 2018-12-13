@@ -2,8 +2,9 @@
 (
 	Id INT NOT NULL PRIMARY KEY IDENTITY,
 	ApothecaryId INT NOT NULL,
-	OrderCreationDate DATE DEFAULT GETDATE(),
-	SendOrderDate DATE
+	OrderCreationDate DATETIME DEFAULT GETDATE(),
+	SendOrderDate DATETIME,
+	RowVersion TIMESTAMP,
 
 	FOREIGN KEY (ApothecaryId) REFERENCES Apothecary(Id) 
 )

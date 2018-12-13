@@ -3,7 +3,8 @@
 	Id INT NOT NULL PRIMARY KEY IDENTITY,
 	OrderId INT NOT NULL,
 	MedicineId INT NOT NULL,
-	Quantity INT NOT NULL CHECK (Quantity > 0)
+	Quantity INT NOT NULL CHECK (Quantity > 0),
+	RowVersion TIMESTAMP
 
 	UNIQUE(OrderId, MedicineId)
 

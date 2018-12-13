@@ -42,16 +42,7 @@
                     @Html.DisplayFor(modelItem => item.OrderCreationDate)
                 </td>
                 <td>
-                    @{
-                        if (item.SendOrderDate.HasValue)
-                        {
-                            Html.DisplayFor(modelItem => item.SendOrderDate);
-                        }
-                        else
-                        {
-                            Html.Display("Niezrealizowane");
-                        }
-                    }
+                    @Html.DisplayFor(modelItem => item.SendOrderDate)
                 </td>
                 <td>
                     <div class="btn-group">

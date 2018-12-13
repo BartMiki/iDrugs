@@ -1,30 +1,28 @@
-﻿using AutoMapper;
+﻿using Common.Utils;
 using DAL;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebApp.Models.MedicineModels;
 using WebApp.Models.OrderModels;
+using static AutoMapper.Mapper;
 using static Common.Utils.DatabaseExceptionHandler;
 using static WebApp.Models.ApothecaryModels.ApothecarySelectViewModel;
 using static WebApp.Models.ApothecaryModels.ApothecaryViewModel;
-using static AutoMapper.Mapper;
-using WebApp.Models.MedicineModels;
 
 namespace WebApp.Controllers
 {
     public class OrderController : BaseController
     {
         private readonly IApothecaryRepo _apothecaryRepo;
-        private readonly iDrugsEntities _context;
         private readonly IOrderRepo _orderRepo;
         private readonly IMedicineRepo _medicineRepo;
 
-        public OrderController(IApothecaryRepo apothecaryRepo, iDrugsEntities context, IOrderRepo orderRepo, IMedicineRepo medicineRepo)
+        public OrderController(IApothecaryRepo apothecaryRepo, IOrderRepo orderRepo, IMedicineRepo medicineRepo)
         {
             _apothecaryRepo = apothecaryRepo;
-            _context = context;
             _orderRepo = orderRepo;
             _medicineRepo = medicineRepo;
         }
@@ -76,15 +74,8 @@ namespace WebApp.Controllers
         public IActionResult Create(CreateOrderViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
-
-            var result = Try(() =>
-            {
-                var res = _context.CreateOrder(model.SelectedId).FirstOrDefault();
-
-                if (!res.HasValue) throw new Exception("Nie znaleziono nowo dodanego zamówienia.");
-
-                return res.Value;
-            });
+        
+            var result = _orderRepo.Create(model.SelectedId);
 
             if (result.IsSuccess) return RedirectToDetails(result.Value);
 
@@ -93,67 +84,41 @@ namespace WebApp.Controllers
 
         public IActionResult SendOrder(int orderId)
         {
-            try
-            {
-                using (var db = new iDrugsEntities())
-                {
-                    var order = db.Orders.FirstOrDefault(o => o.Id == orderId);
+            var result = _orderRepo.SendOrder(orderId);
 
-                    if (order.SendOrderDate.HasValue)
-                        throw new Exception("Zamówienie zostało już złożone i przetworzone, nie można go ponowinie złożyć.");
+            if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
 
-                    if (order.OrderItems.Count == 0)
-                        throw new Exception("Zamównienie nie może być puste.");
-
-                    foreach (var orderItem in order.OrderItems)
-                    {
-                        var warehouseItem = db.MedicineWarehouses.FirstOrDefault(o => o.MedicineId == orderItem.MedicineId);
-                        warehouseItem.Quantity -= orderItem.Quantity;
-
-                        if (warehouseItem.Quantity < 0)
-                            throw new Exception($"Zamówienie odrzucone, na magazynie brakuje {-warehouseItem.Quantity} sztuk leku {warehouseItem.Medicine.Name}");
-
-                        //order.OrderDate = DateTime.Now;
-                    }
-
-                    db.SaveChanges();
-                }
-
-                return RedirectToAction(nameof(Details), new { id = orderId });
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMsg"] = ex.Message + "\n" + ex.InnerException?.Message
-                    + "\n" + ex.InnerException?.InnerException?.Message;
-                return RedirectToAction(nameof(Index));
-            }
+            return RedirectToIndex();
         }
 
         public IActionResult AddOrderItem(int orderId)
         {
-            var result = _medicineRepo.Get();
-            
-            if (!result.IsSuccess)
-            {
-                AddErrorForRedirect(result.FailureMessage);
-                return RedirectToDetails(orderId);
-            }
+            var result = GetMedicineSelectList();
 
-            var temp = Map<IEnumerable<MedicineViewModel>>(result.Value);
-            var medicineList = Map<IEnumerable<MedicineSelectModel>>(temp);
+            if (!result.IsSuccess) return RedirectToDetails(orderId, result.FailureMessage);
 
             var model = new AddOrderItemViewModel
             {
                 OrderId = orderId,
-                MedicineList = medicineList
+                MedicineList = result.Value
             };
+
             return View(model);
         }
 
         [HttpPost]
         public IActionResult AddOrderItem(AddOrderItemViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            var medicineListResult = GetMedicineSelectList();
+
+            if (!medicineListResult.IsSuccess)
+                return RedirectToDetails(model.OrderId, medicineListResult.FailureMessage);
+
+            if (!ModelState.IsValid)
+            {
+                model.MedicineList = medicineListResult.Value;
+                return View(model);
+            }
 
             var result = _orderRepo.AddOrderItem(model.OrderId, model);
 
@@ -166,11 +131,64 @@ namespace WebApp.Controllers
         {
             var result = _orderRepo.RemoveOrder(id);
 
-            if(result.IsSuccess) return RedirectToIndex();
+            if (result.IsSuccess) return RedirectToIndex();
 
             return RedirectToIndex(result.FailureMessage);
         }
 
-        private IActionResult RedirectToDetails(int orderId) => RedirectToAction(nameof(Details), new { id = orderId });
+        [HttpGet]
+        public IActionResult EditOrderItem(int orderId, int itemId)
+        {
+            var result = _orderRepo.Get(orderId);
+
+            if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
+
+            var item = result.Value.OrderItems.FirstOrDefault(i => i.Id == itemId);
+
+            if (item == null) return RedirectToDetails(orderId, $"Nie znaleziono pozycji na zamówieniu o Id {itemId}");
+
+            return View((EditOrderItemViewModel)item);
+        }
+
+        [HttpPost]
+        public IActionResult EditOrderItem(EditOrderItemViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var result = _orderRepo.EditOrderItem(model);
+
+            if (!result.IsSuccess) return RedirectToDetails(model.OrderId, result.FailureMessage);
+
+            return RedirectToDetails(model.OrderId);
+        }
+
+        public IActionResult DeleteOrderItem(int orderId, int itemId)
+        {
+            var result = _orderRepo.DeleteOrderItem(orderId, itemId);
+
+            if (!result.IsSuccess) return RedirectToDetails(orderId, result.FailureMessage);
+
+            return RedirectToDetails(orderId);
+        }
+
+        private IActionResult RedirectToDetails(int orderId) => RedirectToDetails(orderId, null);
+
+        private IActionResult RedirectToDetails(int orderId, string errorMsg)
+        {
+            if (!string.IsNullOrEmpty(errorMsg)) AddErrorForRedirect(errorMsg);
+            return RedirectToAction(nameof(Details), new { id = orderId });
+        }
+
+        private Result<IEnumerable<MedicineSelectModel>> GetMedicineSelectList()
+        {
+            return Try(() => {
+                var result = _medicineRepo.Get();
+
+                if (!result.IsSuccess) throw new Exception(result.FailureMessage);
+
+                var temp = Map<IEnumerable<MedicineViewModel>>(result.Value);
+                return Map<IEnumerable<MedicineSelectModel>>(temp);
+            });
+        }
     }
 }

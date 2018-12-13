@@ -1,0 +1,36 @@
+﻿@using WebApp.Models.WarehouseModels
+@model AddWarehouseItemViewModel
+
+@{
+    ViewData["Title"] = "Utwórz";
+}
+
+<h2>Dodaj lub zmień lek w hurtowni</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MedicineId" class="control-label"></label>
+                <select asp-for="MedicineId" class="form-control selectpicker" data-live-search="true"
+                        asp-items="@{new SelectList(Model.MedicineList, "Id", "FullName")}"></select>
+                <span asp-validation-for="MedicineId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
