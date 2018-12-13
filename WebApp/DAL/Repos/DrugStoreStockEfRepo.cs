@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Common.Utils.DatabaseExceptionHandler;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 
 namespace DAL.Repos
 {
@@ -23,7 +23,7 @@ namespace DAL.Repos
             var result = Try(() => 
             {
                 return _context.DrugStoreAvailableMedicines.ToArray().AsEnumerable();
-            });
+            }, typeof(DrugStoreStockEfRepo));
 
             return result;
         }

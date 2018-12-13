@@ -8,7 +8,7 @@ using System.Linq;
 using WebApp.Models.MedicineModels;
 using WebApp.Models.WarehouseModels;
 using static AutoMapper.Mapper;
-using static Common.Utils.DatabaseExceptionHandler;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 
 namespace WebApp.Controllers
 {
@@ -106,7 +106,7 @@ namespace WebApp.Controllers
 
                 var temp = Map<IEnumerable<MedicineViewModel>>(result.Value);
                 return Map<IEnumerable<MedicineSelectModel>>(temp);
-            });
+            }, typeof(WarehouseController));
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using DAL.Interfaces;
+﻿using Common.Interfaces;
+using Common.Utils;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using WebApp.Models.ApothecaryModels;
@@ -8,14 +10,18 @@ namespace WebApp
     public class ApothecaryController : BaseController
     {
         private readonly IApothecaryRepo _repo;
+        private readonly ILogger<ApothecaryController> _logger;
 
-        public ApothecaryController(IApothecaryRepo repo)
+        public ApothecaryController(IApothecaryRepo repo, ILogger<ApothecaryController> logger)
         {
             _repo = repo;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInfo($"Zapytanie do metody Index");
+
             ViewBag.ErrorMsg = string.Empty;
             if (TempData.ContainsKey("ErrorMsg"))
             {
