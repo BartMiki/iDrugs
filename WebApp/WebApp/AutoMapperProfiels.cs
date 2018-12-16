@@ -7,6 +7,7 @@ using System.Linq;
 using WebApp.Models.MedicineModels;
 using WebApp.Models.ApothecaryModels;
 using WebApp.Models.OrderModels;
+using WebApp.Models.DoctorModels;
 
 namespace WebApp
 {
@@ -54,6 +55,8 @@ namespace WebApp
                 mapper.CreateMap<Order, OrderDetailViewModel>()
                     .IncludeBase<Order, OrderViewModel>()
                     .ForMember(dest => dest.Items, x => x.MapFrom(src => Mapper.Map<IEnumerable<OrderItemViewModel>>(src.OrderItems.AsEnumerable())));
+
+                mapper.CreateMap<Doctor, DoctorViewModel>().ReverseMap();
             });
         }
     }
