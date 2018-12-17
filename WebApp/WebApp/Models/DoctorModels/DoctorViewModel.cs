@@ -19,5 +19,7 @@ namespace WebApp.Models.DoctorModels
 
         [Display(Name ="Licencja na wydanie leków")]
         public bool HasValidMedicalLicense { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }
