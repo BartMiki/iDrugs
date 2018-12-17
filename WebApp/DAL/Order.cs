@@ -24,9 +24,10 @@ namespace DAL
         public int ApothecaryId { get; set; }
         public Nullable<System.DateTime> OrderCreationDate { get; set; }
         public Nullable<System.DateTime> SendOrderDate { get; set; }
+        public byte[] RowVersion { get; set; }
     
-        public virtual Apothecary Apothecary { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual Apothecary Apothecary { get; set; }
     }
 }

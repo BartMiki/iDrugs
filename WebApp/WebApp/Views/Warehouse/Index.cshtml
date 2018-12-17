@@ -1,22 +1,23 @@
-﻿@model IEnumerable<DAL.MedicineWarehouse>
+﻿@using WebApp.Models.WarehouseModels;
+@model IEnumerable<WarehouseItemViewModel>
 
 @{
-    ViewData["Title"] = "Hurtownia Leków";
+    ViewData["Title"] = "Hurtownia";
 }
 
-<h2>Index</h2>
+<h2>Hurtownia leków</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Dodaj/zmień ilość leków w hurtowni</a>
 </p>
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.Medicine.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MedicineId)
+                @Html.DisplayNameFor(model => model.Medicine.MedicineContent)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
@@ -25,21 +26,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MedicineId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id, medicineId = item.MedicineId, quantity = item.Quantity })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Medicine.MedicineContent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    <button onclick="location.href='@Url.Action("Edit","Warehouse", new { id = item.Id })'"
+                            class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit"></span>
+                        <span>Edytuj</span>
+                    </button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

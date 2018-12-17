@@ -17,6 +17,7 @@ namespace DAL
         public int Id { get; set; }
         public int MedicineId { get; set; }
         public int Quantity { get; set; }
+        public byte[] RowVersion { get; set; }
     
         public virtual Medicine Medicine { get; set; }
     }

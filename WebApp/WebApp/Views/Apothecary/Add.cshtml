@@ -2,12 +2,10 @@
 @model ApothecaryViewModel
 
 @{
-    ViewData["Title"] = "Dodaj nowego pracownika";
+    ViewData["Title"] = "Dodaj aptekarza";
 }
 
-<h2>Add</h2>
-
-<h4>Apothecary</h4>
+<h2>Dodaj aptekarza</h2>
 
 <hr />
 
@@ -31,7 +29,7 @@
                 <span asp-validation-for="MonthlySalary" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Utwórz" class="btn btn-default" />
+                <input type="submit" value="Utwórz" class="btn btn-success" />
             </div>
 
         </form>
@@ -39,6 +37,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót</a>
 </div>
 

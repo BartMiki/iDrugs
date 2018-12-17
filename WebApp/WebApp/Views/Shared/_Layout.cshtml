@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebApp</title>
+    <title>@ViewData["Title"] - iDrugs</title>
 
     <environment include="Development">
         
@@ -33,16 +33,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">WebApp</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Apteka - iDrugs</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Strona domowa</a></li>
                     <li><a asp-area="" asp-controller="Apothecary" asp-action="Index">Aptekarze</a></li>
                     <li><a asp-area="" asp-controller="Medicine" asp-action="Index">Spis leków</a></li>
                     <li><a asp-area="" asp-controller="Order" asp-action="Index">Zamówienia</a></li>
                     <li><a asp-area="" asp-controller="Warehouse" asp-action="Index">Hurtownia</a></li>
                     <li><a asp-area="" asp-controller="Doctor" asp-action="Index">Spis Lekarzy</a></li>
+                    <li><a asp-area="" asp-controller="DrugStoreStock" asp-action="Index">Stan leków w aptece</a></li>
                 </ul>
             </div>
         </div>
@@ -63,7 +64,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - WebApp</p>
+            <p>&copy; 2018 - iDrugs</p>
         </footer>
     </div>
 

@@ -10,39 +10,50 @@
 <div>
     <h4>Zamówienie</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Apothecary.FirstName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Apothecary.FirstName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Apothecary.LastName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Apothecary.LastName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderCreationDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.OrderCreationDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.SendOrderDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SendOrderDate)
-        </dd>
-    </dl>
-
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Informacje o zamówieniu</h4>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.OrderCreationDate)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.OrderCreationDate)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SendOrderDate)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.SendOrderDate)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-md-6">
+                <h4>Informacje o zamawiającym</h4>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Apothecary.FirstName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Apothecary.FirstName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Apothecary.LastName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Apothecary.LastName)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
     <div class="btn-group">
         <button onclick="location.href='@Url.Action("Index","Order")'"
                 class="btn btn-default">
@@ -77,6 +88,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Items.First().Quantity)
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -95,11 +107,20 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
-                    <!--<td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                    </td>-->
+                    <td>
+                        <div class="btn-group">
+                            <button onclick="location.href='@Url.Action("EditOrderItem","Order", new { orderId = Model.Id, itemId = item.Id })'"
+                                    class="btn btn-default">
+                                <span class="glyphicon glyphicon-search"></span>
+                                <span>Detale</span>
+                            </button>
+                            <button onclick="location.href='@Url.Action("DeleteOrderItem","Order", new { orderId = Model.Id, itemId = item.Id })'"
+                                    class="btn btn-default">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span>Usuń</span>
+                            </button>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>

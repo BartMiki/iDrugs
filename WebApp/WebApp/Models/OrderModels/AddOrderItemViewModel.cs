@@ -11,9 +11,9 @@ namespace WebApp.Models.OrderModels
 {
     public class AddOrderItemViewModel
     {
+        [Display(Name = "Lek")]
         public int MedicineId { get; set; }
         public int OrderId { get; set; }
-        [Display(Name = "Lek")]
         public IEnumerable<MedicineSelectModel> MedicineList { get; set; }
         [Display(Name = "Zamawiana ilość")]
         public int Quantity { get; set; }

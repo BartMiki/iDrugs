@@ -11,9 +11,11 @@ namespace DAL.Interfaces
     {
         Result<IEnumerable<Order>> Get();
         Result<Order> Get(int id);
-        Result Add(Order order);
+        Result<int> Create(int aptohecaryId);
         Result AddOrderItem(int orderId, OrderItem orderItem);
         Result SendOrder(int id);
         Result RemoveOrder(int id);
+        Result EditOrderItem(OrderItem id);
+        Result DeleteOrderItem(int orderId, int itemId);
     }
 }

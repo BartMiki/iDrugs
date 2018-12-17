@@ -2,7 +2,6 @@
 using Common.Utils;
 using DAL;
 using DAL.Enums;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -26,9 +25,20 @@ namespace WebApp.Models.MedicineModels
         public MedType MedType { get; set; }
 
         [Display(Name = "Refundacja")]
-        public decimal? Refund { get; set; }
+        public decimal? Refund
+        {
+            get
+            {
+                if (!RefundString.IsValidPercent()) return null;
 
-        public IEnumerable<MedTypeSelectListItem> MedTypeSelectList { get => MedTypeSelectListItem.GetSelectList();  }
+                return RefundString.PercentToDecimal();
+            }
+        }
+
+        [Display(Name = "Refundacja (w procentach)")]
+        public string RefundString { get; set; }
+
+        public IEnumerable<MedTypeSelectListItem> MedTypeSelectList { get => MedTypeSelectListItem.GetSelectList(); }
 
         public IEnumerable<UnitSelectListItem> UnitSelectList { get => UnitSelectListItem.GetSelectList(); }
 

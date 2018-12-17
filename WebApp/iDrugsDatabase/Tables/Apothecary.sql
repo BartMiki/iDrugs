@@ -6,5 +6,6 @@
 	MonthlySalary MONEY NOT NULL CHECK (MonthlySalary > 0),
 	IsEmployed BIT NOT NULL DEFAULT 1,
 	HireDate DATE NOT NULL DEFAULT GETDATE(),
-	FireDate DATE CHECK(HireDate <= FireDate)
+	FireDate DATE CHECK(HireDate <= FireDate),
+	RowVersion INT NOT NULL DEFAULT 1,
 )

@@ -10,7 +10,11 @@ namespace WebApp.Models.MedicineModels
     {
         public int Id { get; set; }
 
+        [Display(Name = "Nazwa")]
+        public string Name { get; set; }
+
         [Display(Name = "Cena całkowita")]
+        [DisplayFormat(DataFormatString = "{0:0.00} zł")]
         public decimal UnitPrice { get; set; }
 
         [Display(Name = "Ilość")]
@@ -25,13 +29,11 @@ namespace WebApp.Models.MedicineModels
         [Display(Name = "Refundacja")]
         public decimal? Refund { get; set; }
 
-        [Display(Name = "Nazwa")]
-        public string Name { get; set; }
-
         [Display(Name = "Wycofany z użycia")]
         public bool Expired { get; set; }
 
         [Display(Name = "Cena z refundacją")]
+        [DisplayFormat(DataFormatString = "{0:0.00} zł")]
         public decimal PriceWithRefund
         {
             get

@@ -33,6 +33,8 @@ namespace WebApp.Models.ApothecaryModels
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? FireDate { get; set; }
 
+        [Display(Name = "Liczba edycji")]
+        public int RowVersion { get; set; }
 
         public static implicit operator Apothecary(ApothecaryViewModel model)
         {
