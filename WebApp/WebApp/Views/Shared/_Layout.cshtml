@@ -6,8 +6,10 @@
     <title>@ViewData["Title"] - iDrugs</title>
 
     <environment include="Development">
+        
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -40,6 +42,7 @@
                     <li><a asp-area="" asp-controller="Medicine" asp-action="Index">Spis leków</a></li>
                     <li><a asp-area="" asp-controller="Order" asp-action="Index">Zamówienia</a></li>
                     <li><a asp-area="" asp-controller="Warehouse" asp-action="Index">Hurtownia</a></li>
+                    <li><a asp-area="" asp-controller="Doctor" asp-action="Index">Spis Lekarzy</a></li>
                     <li><a asp-area="" asp-controller="DrugStoreStock" asp-action="Index">Stan leków w aptece</a></li>
                     <li><a asp-area="" asp-controller="Statistic" asp-action="Index">Statystyki</a></li>
                     <li class="dropdown">

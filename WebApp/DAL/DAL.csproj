@@ -65,6 +65,7 @@
     <Compile Include="Enums\MedType.cs" />
     <Compile Include="Enums\Unit.cs" />
     <Compile Include="Exceptions\BaseNotFoundException.cs" />
+    <Compile Include="Exceptions\DoctorNotFoundException.cs" />
     <Compile Include="Exceptions\MedicineNotFoundException.cs" />
     <Compile Include="Exceptions\OrderItemNotFoundException.cs" />
     <Compile Include="Exceptions\OrderNotFoundException.cs" />
@@ -85,6 +86,7 @@
       <DependentUpon>iDrugsDatabase.edmx</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IApothecaryRepo.cs" />
+    <Compile Include="Interfaces\IDoctorRepo.cs" />
     <Compile Include="Interfaces\IDrugStoreStockRepo.cs" />
     <Compile Include="Interfaces\IMedicineRepo.cs" />
     <Compile Include="Interfaces\IOrderRepo.cs" />
@@ -109,6 +111,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\ApothecaryEfRepo.cs" />
+    <Compile Include="Repos\DoctorEfRepo.cs" />
     <Compile Include="Repos\DrugStoreStockEfRepo.cs" />
     <Compile Include="Repos\MedicineEfRepo.cs" />
     <Compile Include="Repos\OrderEfRepo.cs" />
