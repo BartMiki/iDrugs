@@ -1,0 +1,70 @@
+﻿@using WebApp.Models.StatisticModels;
+@model StatisticsModel
+
+@{
+    ViewData["Title"] = "Statystyki";
+}
+
+<h2>Statystyki</h2>
+
+<div>
+    <h4>@Html.DisplayNameFor(x => x.ApothecaryFiredRecently)</h4>
+    <div>
+
+        @Html.DisplayFor(x => x.ApothecaryFiredRecently.text)
+        @if (Model.ApothecaryFiredRecently.id > 0)
+        {
+            <span>|</span>
+            @Html.ActionLink("Przejdź do aptekarza", "Details", "Order", new { id = Model.ApothecaryFiredRecently.id });
+        }
+    </div>
+    <hr />
+
+    <h4>@Html.DisplayNameFor(x => Model.ApothecaryThatOrderedTheMost)</h4>
+    <div>
+
+        @Html.DisplayFor(x => x.ApothecaryThatOrderedTheMost.text)
+        @if (Model.ApothecaryThatOrderedTheMost.id > 0)
+        {
+            <span>|</span>
+            @Html.ActionLink("Przejdź do aptekarza", "Details", "Order", new { id = Model.ApothecaryThatOrderedTheMost.id });
+        }
+    </div>
+    <hr />
+
+    <h4>@Html.DisplayNameFor(x => Model.ApothecaryWithMostEdits)</h4>
+    <div>
+
+        @Html.DisplayFor(x => x.ApothecaryWithMostEdits.text)
+        @if (Model.ApothecaryWithMostEdits.id > 0)
+        {
+            <span>|</span>
+            @Html.ActionLink("Przejdź do aptekarza", "Details", "Order", new { id = Model.ApothecaryWithMostEdits.id });
+        }
+    </div>
+    <hr />
+
+    <h4>@Html.DisplayNameFor(x => Model.OrderContainingMostExpensiveSumOfMedicinesPrices)</h4>
+    <div>
+
+        @Html.DisplayFor(x => x.OrderContainingMostExpensiveSumOfMedicinesPrices.text)
+        @if (Model.OrderContainingMostExpensiveSumOfMedicinesPrices.id > 0)
+        {
+            <span>|</span>
+            @Html.ActionLink("Przejdź do zamówienia", "Details", "Order", new { id = Model.OrderContainingMostExpensiveSumOfMedicinesPrices.id });
+        }
+    </div>
+    <hr />
+
+    <h4>@Html.DisplayNameFor(x => Model.OrderWithBigestTimeSpanBetweenCreationAndSending)</h4>
+    <div>
+
+        @Html.DisplayFor(x => x.OrderWithBigestTimeSpanBetweenCreationAndSending.text)
+        @if (Model.OrderWithBigestTimeSpanBetweenCreationAndSending.id > 0)
+        {
+            <span>|</span>
+            @Html.ActionLink("Przejdź do zamówienia", "Details", "Order", new { id = Model.OrderWithBigestTimeSpanBetweenCreationAndSending.id });
+        }
+
+    </div>
+</div>
