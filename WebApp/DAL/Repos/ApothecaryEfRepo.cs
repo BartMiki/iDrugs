@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using static Common.Utils.DatabaseExceptionHandler;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 
 namespace DAL.Repos
 {
@@ -20,12 +20,12 @@ namespace DAL.Repos
 
         public Result<IEnumerable<Apothecary>> Get()
         {
-            return Try(() => _context.Apothecaries.ToList().AsEnumerable());
+            return Try(() => _context.Apothecaries.ToList().AsEnumerable(), typeof(ApothecaryEfRepo));
         }
 
         public Result<Apothecary> Get(int id)
         {
-            return Try(() => _context.Apothecaries.Where(a => a.Id == id).First());
+            return Try(() => _context.Apothecaries.Where(a => a.Id == id).First(), typeof(ApothecaryEfRepo));
         }
 
         public Result Add(Apothecary apothecary)
@@ -34,7 +34,7 @@ namespace DAL.Repos
             {
                 _context.InsertApothecary(apothecary.FirstName, apothecary.LastName, apothecary.MonthlySalary);
                 _context.SaveChanges();
-            });
+            }, typeof(ApothecaryEfRepo));
             return result;
         }
 
@@ -44,7 +44,7 @@ namespace DAL.Repos
             {
                 _context.FireApothecary(id);
                 _context.SaveChanges();
-            });
+            }, typeof(ApothecaryEfRepo));
             return result;
         }
 
@@ -56,7 +56,7 @@ namespace DAL.Repos
                 _context.Apothecaries.Attach(toRemove);
                 _context.Apothecaries.Remove(toRemove);
                 _context.SaveChanges();
-            });
+            }, typeof(ApothecaryEfRepo));
             return result;
         }
 
@@ -78,7 +78,7 @@ namespace DAL.Repos
 
                 _context.SaveChanges();
                 return apothecary;
-            });
+            }, typeof(ApothecaryEfRepo));
             return result;
         }
     }

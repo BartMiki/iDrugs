@@ -1,0 +1,45 @@
+﻿@model Common.Models.InfoLogModel
+
+@{
+    ViewData["Title"] = "Szczegóły";
+}
+
+<h2>Szczegóły logu</h2>
+
+<div>
+    <h4>Info: @Model.Message</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ObjectId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ObjectId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ClassName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Args)
+        </dt>
+        <dd>
+            <span style="white-space: pre">@Model.Args</span>
+        </dd>
+    </dl>
+</div>
+<div>
+    <button onclick="location.href='@Url.Action("Infos","Logger")'"
+            class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        <span>Powrót</span>
+    </button>
+</div>

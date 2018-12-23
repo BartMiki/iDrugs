@@ -1,5 +1,5 @@
 ﻿using Common.Utils;
-using static Common.Utils.DatabaseExceptionHandler;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace DAL.Utils
         /// <param name="action">
         /// Action that you want to perform on database, no need to defining Transaction logic.
         /// </param>
-        public static Result BeginTransaction(this iDrugsEntities context, Action action, 
+        public static Result BeginTransaction(this iDrugsEntities context, Action action, Type loggerType,
             IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             var result = Try(() => {
@@ -34,7 +34,7 @@ namespace DAL.Utils
                         throw ex;
                     }
                 }
-            });
+            }, loggerType);
 
             return result;
         }

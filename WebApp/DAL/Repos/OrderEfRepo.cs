@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using static Common.Utils.DatabaseExceptionHandler;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 
 namespace DAL.Repos
 {
@@ -30,7 +30,7 @@ namespace DAL.Repos
                 _context.SaveChanges();
 
                 return res.Value;
-            });
+            }, typeof(OrderEfRepo));
 
             return result;
         }
@@ -46,7 +46,7 @@ namespace DAL.Repos
                 order.OrderItems.Add(orderItem);
                 _context.SaveChanges();
 
-            });
+            }, typeof(OrderEfRepo));
 
             return result;
         }
@@ -61,7 +61,7 @@ namespace DAL.Repos
 
                 _context.OrderItems.Remove(entity);
                 _context.SaveChanges();
-            });
+            }, typeof(OrderEfRepo));
 
             return result;
         }
@@ -76,14 +76,14 @@ namespace DAL.Repos
 
                 entity.Quantity = item.Quantity;
                 _context.SaveChanges();
-            });
+            }, typeof(OrderEfRepo));
 
             return result;
         }
 
         public Result<IEnumerable<Order>> Get()
         {
-            var result = Try(() => _context.Orders.ToArray().AsEnumerable());
+            var result = Try(() => _context.Orders.ToArray().AsEnumerable(), typeof(OrderEfRepo));
 
             return result;
         }
@@ -101,7 +101,7 @@ namespace DAL.Repos
                 if (order == null) throw new OrderNotFoundException(id);
 
                 return order;
-            });
+            }, typeof(OrderEfRepo));
 
             return result;
         }
@@ -121,7 +121,7 @@ namespace DAL.Repos
 
                 _context.Orders.Remove(order);
                 _context.SaveChanges();
-            });
+            }, typeof(OrderEfRepo));
 
             return result;
         }
@@ -177,7 +177,7 @@ namespace DAL.Repos
                 order.SendOrderDate = DateTime.Now;
 
                 _context.SaveChanges();
-            });
+            }, typeof(OrderEfRepo));
 
             return result;
         }

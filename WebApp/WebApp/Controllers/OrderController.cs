@@ -1,5 +1,5 @@
-﻿using Common.Utils;
-using DAL;
+﻿using Common.Interfaces;
+using Common.Utils;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using WebApp.Models.MedicineModels;
 using WebApp.Models.OrderModels;
 using static AutoMapper.Mapper;
-using static Common.Utils.DatabaseExceptionHandler;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 using static WebApp.Models.ApothecaryModels.ApothecarySelectViewModel;
 using static WebApp.Models.ApothecaryModels.ApothecaryViewModel;
 
@@ -19,16 +19,20 @@ namespace WebApp.Controllers
         private readonly IApothecaryRepo _apothecaryRepo;
         private readonly IOrderRepo _orderRepo;
         private readonly IMedicineRepo _medicineRepo;
+        private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IApothecaryRepo apothecaryRepo, IOrderRepo orderRepo, IMedicineRepo medicineRepo)
+        public OrderController(IApothecaryRepo apothecaryRepo, IOrderRepo orderRepo, IMedicineRepo medicineRepo, ILogger<OrderController> logger)
         {
             _apothecaryRepo = apothecaryRepo;
             _orderRepo = orderRepo;
             _medicineRepo = medicineRepo;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInfo($"Zapytanie do metody Index()");
+
             DisplayErrorFromRedirectIfNecessary();
 
             var result = _orderRepo.Get();
@@ -47,6 +51,8 @@ namespace WebApp.Controllers
 
         public IActionResult Details(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody Details(id)", new { id });
+
             DisplayErrorFromRedirectIfNecessary();
 
             var result = _orderRepo.Get(id);
@@ -60,6 +66,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            _logger.LogInfo($"Zapytanie do metody Create()");
+
             var list = ToApothecaryViewModels(_apothecaryRepo.Get().Value);
 
             var model = new CreateOrderViewModel
@@ -73,8 +81,10 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(CreateOrderViewModel model)
         {
+            _logger.LogInfo($"Zapytanie do metody Create(model)", new { model });
+
             if (!ModelState.IsValid) return View(model);
-        
+
             var result = _orderRepo.Create(model.SelectedId);
 
             if (result.IsSuccess) return RedirectToDetails(result.Value);
@@ -84,6 +94,8 @@ namespace WebApp.Controllers
 
         public IActionResult SendOrder(int orderId)
         {
+            _logger.LogInfo($"Zapytanie do metody SendOrder(orderId)", new { orderId });
+
             var result = _orderRepo.SendOrder(orderId);
 
             if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
@@ -93,6 +105,8 @@ namespace WebApp.Controllers
 
         public IActionResult AddOrderItem(int orderId)
         {
+            _logger.LogInfo($"Zapytanie do metody AddOrderItem(orderId)", new { orderId });
+
             var result = GetMedicineSelectList();
 
             if (!result.IsSuccess) return RedirectToDetails(orderId, result.FailureMessage);
@@ -109,6 +123,8 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult AddOrderItem(AddOrderItemViewModel model)
         {
+            _logger.LogInfo($"Zapytanie do metody AddOrderItem(model)", new { model });
+
             var medicineListResult = GetMedicineSelectList();
 
             if (!medicineListResult.IsSuccess)
@@ -129,6 +145,8 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody Delete(id)", new { id });
+
             var result = _orderRepo.RemoveOrder(id);
 
             if (result.IsSuccess) return RedirectToIndex();
@@ -139,6 +157,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult EditOrderItem(int orderId, int itemId)
         {
+            _logger.LogInfo($"Zapytanie do metody EditOrderItem(orderId, itemId)", new { orderId, itemId });
+
             var result = _orderRepo.Get(orderId);
 
             if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
@@ -153,6 +173,8 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult EditOrderItem(EditOrderItemViewModel model)
         {
+            _logger.LogInfo($"Zapytanie do metody EditOrderItem(model)", new { model });
+
             if (!ModelState.IsValid) return View(model);
 
             var result = _orderRepo.EditOrderItem(model);
@@ -164,6 +186,8 @@ namespace WebApp.Controllers
 
         public IActionResult DeleteOrderItem(int orderId, int itemId)
         {
+            _logger.LogInfo($"Zapytanie do metody DeleteOrderItem(orderId, itemId)", new { orderId, itemId });
+
             var result = _orderRepo.DeleteOrderItem(orderId, itemId);
 
             if (!result.IsSuccess) return RedirectToDetails(orderId, result.FailureMessage);
@@ -181,14 +205,15 @@ namespace WebApp.Controllers
 
         private Result<IEnumerable<MedicineSelectModel>> GetMedicineSelectList()
         {
-            return Try(() => {
+            return Try(() =>
+            {
                 var result = _medicineRepo.Get();
 
                 if (!result.IsSuccess) throw new Exception(result.FailureMessage);
 
                 var temp = Map<IEnumerable<MedicineViewModel>>(result.Value);
                 return Map<IEnumerable<MedicineSelectModel>>(temp);
-            });
+            }, typeof(OrderController));
         }
     }
 }

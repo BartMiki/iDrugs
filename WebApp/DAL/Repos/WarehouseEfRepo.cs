@@ -4,7 +4,7 @@ using DAL.Interfaces;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using static Common.Utils.DatabaseExceptionHandler;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 
 namespace DAL.Repos
 {
@@ -29,7 +29,7 @@ namespace DAL.Repos
                 else item.Quantity = entity.Quantity;
 
                 _context.SaveChanges();
-            });
+            }, typeof(WarehouseEfRepo));
 
             return result;
         }
@@ -40,7 +40,7 @@ namespace DAL.Repos
             {
                 var entities = _context.MedicineWarehouses.ToArray().AsEnumerable();
                 return entities;
-            });
+            }, typeof(WarehouseEfRepo));
             return result;
         }
 
@@ -55,7 +55,7 @@ namespace DAL.Repos
                 if (entity == null) throw new WarehouseItemNotFoundException(id);
 
                 return entity;
-            });
+            }, typeof(WarehouseEfRepo));
 
             return result;
         }

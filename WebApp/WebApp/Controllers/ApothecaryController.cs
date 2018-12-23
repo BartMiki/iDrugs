@@ -1,4 +1,6 @@
-﻿using DAL.Interfaces;
+﻿using Common.Interfaces;
+using Common.Utils;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using WebApp.Models.ApothecaryModels;
@@ -8,14 +10,18 @@ namespace WebApp
     public class ApothecaryController : BaseController
     {
         private readonly IApothecaryRepo _repo;
+        private readonly ILogger<ApothecaryController> _logger;
 
-        public ApothecaryController(IApothecaryRepo repo)
+        public ApothecaryController(IApothecaryRepo repo, ILogger<ApothecaryController> logger)
         {
             _repo = repo;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInfo($"Zapytanie do metody Index()");
+
             ViewBag.ErrorMsg = string.Empty;
             if (TempData.ContainsKey("ErrorMsg"))
             {
@@ -39,12 +45,15 @@ namespace WebApp
 
         public IActionResult Add()
         {
+            _logger.LogInfo($"Zapytanie do metody Add()");
             return View();
         }
 
         [HttpPost]
         public IActionResult Add(ApothecaryViewModel model)
         {
+            _logger.LogInfo($"Zapytanie do metody Add(model)", new { model });
+
             if (!ModelState.IsValid) return View(model);
 
             var result = _repo.Add(model);
@@ -59,6 +68,8 @@ namespace WebApp
 
         public IActionResult Fire(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody Fire(id)", new { id });
+
             var result = _repo.Fire(id);
             var errorMsg = string.Empty;
             if (!result.IsSuccess) errorMsg = result.FailureMessage;
@@ -68,6 +79,8 @@ namespace WebApp
 
         public IActionResult Details(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody Details(id)", new { id });
+
             var result = _repo.Get(id);
 
             if (result.IsSuccess)
@@ -82,6 +95,8 @@ namespace WebApp
 
         public IActionResult Edit(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody Edit(id)", new { id });
+
             DisplayErrorFromRedirectIfNecessary();
 
             var result = _repo.Get(id);
@@ -98,6 +113,8 @@ namespace WebApp
         [HttpPost]
         public IActionResult Edit(ApothecaryViewModel model)
         {
+            _logger.LogInfo($"Zapytanie do metody Edit(model)", new { model });
+
             if (!ModelState.IsValid) return View(model);
 
             var result = _repo.Update(model);
@@ -115,6 +132,8 @@ namespace WebApp
 
         public IActionResult Delete(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody Delete(id)", new { id });
+
             var result = _repo.Remove(id);
             var errorMsg = string.Empty;
 

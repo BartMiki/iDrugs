@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Interfaces;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -10,14 +11,18 @@ namespace WebApp.Controllers
     public class MedicineController : BaseController
     {
         private readonly IMedicineRepo _medicineRepo;
+        public readonly ILogger<MedicineController> _logger;
 
-        public MedicineController(IMedicineRepo medicineRepo)
+        public MedicineController(IMedicineRepo medicineRepo, ILogger<MedicineController> logger)
         {
             _medicineRepo = medicineRepo;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInfo($"Zapytanie do metody Index()");
+
             DisplayErrorFromRedirectIfNecessary();
 
             var result = _medicineRepo.Get();
@@ -35,6 +40,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            _logger.LogInfo($"Zapytanie do metody Create()");
+
             var model = new CreateMedicineViewModel();
             return View(model);
         }
@@ -42,6 +49,8 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(CreateMedicineViewModel model)
         {
+            _logger.LogInfo($"Zapytanie do metody Create(model)", new { model });
+
             if (!ModelState.IsValid) return View(model);
 
             var result = _medicineRepo.Add(model);
@@ -53,6 +62,8 @@ namespace WebApp.Controllers
 
         public IActionResult Details(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody Details(id)", new { id });
+
             var result = _medicineRepo.Get(id);
 
             if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
@@ -62,6 +73,8 @@ namespace WebApp.Controllers
 
         public IActionResult Delete(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody Delete(id)", new { id });
+
             var result = _medicineRepo.Delete(id);
 
             if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);
@@ -71,6 +84,8 @@ namespace WebApp.Controllers
 
         public IActionResult MakeExpired(int id)
         {
+            _logger.LogInfo($"Zapytanie do metody MakeExpired(id)", new { id });
+
             var result = _medicineRepo.MakeExpired(id);
 
             if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage);

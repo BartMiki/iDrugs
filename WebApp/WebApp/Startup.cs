@@ -13,6 +13,8 @@ using FluentValidation.AspNetCore;
 using WebApp.Validators;
 using static WebApp.AutoMapperProfiels;
 using DAL;
+using Common.Utils;
+using Common.Interfaces;
 
 namespace WebApp
 {
@@ -45,13 +47,38 @@ namespace WebApp
             //Autofac
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<iDrugsEntities>().AsSelf().InstancePerDependency();
-            builder.RegisterType<ApothecaryEfRepo>().As<IApothecaryRepo>().InstancePerDependency();
-            builder.RegisterType<MedicineEfRepo>().As<IMedicineRepo>().InstancePerDependency();
-            builder.RegisterType<OrderEfRepo>().As<IOrderRepo>().InstancePerDependency();
-            builder.RegisterType<WarehouseEfRepo>().As<IWarehouseRepo>().InstancePerDependency();
-            builder.RegisterType<DrugStoreStockEfRepo>().As<IDrugStoreStockRepo>().InstancePerDependency();
-            builder.RegisterType<DoctorEfRepo>().As<IDoctorRepo>().InstancePerDependency();
+            builder
+                .RegisterGeneric(typeof(MongoDbLogger<>))
+                .As(typeof(ILogger<>))
+                .InstancePerDependency();
+            builder
+                .RegisterType<iDrugsEntities>()
+                .AsSelf()
+                .InstancePerDependency();
+            builder
+                .RegisterType<ApothecaryEfRepo>()
+                .As<IApothecaryRepo>()
+                .InstancePerDependency();
+            builder
+                .RegisterType<MedicineEfRepo>()
+                .As<IMedicineRepo>()
+                .InstancePerDependency();
+            builder
+                .RegisterType<OrderEfRepo>()
+                .As<IOrderRepo>()
+                .InstancePerDependency();
+            builder
+                .RegisterType<WarehouseEfRepo>()
+                .As<IWarehouseRepo>()
+                .InstancePerDependency();
+            builder
+                .RegisterType<DrugStoreStockEfRepo>()
+                .As<IDrugStoreStockRepo>()
+                .InstancePerDependency();
+            builder.RegisterType<DoctorEfRepo>()
+                .As<IDoctorRepo>()
+                .InstancePerDependency();
+
             builder.Populate(services);
             ApplicationContainer = builder.Build();
 

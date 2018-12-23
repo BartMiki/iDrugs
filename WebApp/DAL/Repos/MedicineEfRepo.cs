@@ -4,7 +4,7 @@ using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Common.Utils.DatabaseExceptionHandler;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 
 namespace DAL.Repos
 {
@@ -23,7 +23,7 @@ namespace DAL.Repos
             {
                 _context.Medicines.Add(medicine);
                 _context.SaveChanges();
-            });
+            }, typeof(MedicineEfRepo));
 
             return result;
         }
@@ -38,7 +38,7 @@ namespace DAL.Repos
 
                 _context.Medicines.Remove(entity);
                 _context.SaveChanges();
-            });
+            }, typeof(MedicineEfRepo));
 
             return result;
         }
@@ -55,7 +55,7 @@ namespace DAL.Repos
                     .CurrentValues.SetValues(medicine);
 
                 _context.SaveChanges();
-            });
+            }, typeof(MedicineEfRepo));
 
             return result;
         }
@@ -65,7 +65,7 @@ namespace DAL.Repos
             var result = Try(() =>
             {
                 return _context.Medicines.AsEnumerable();
-            });
+            }, typeof(MedicineEfRepo));
 
             return result;
         }
@@ -77,7 +77,7 @@ namespace DAL.Repos
                 var entity = _context.Medicines.Find(id);
 
                 return entity ?? throw new MedicineNotFoundException(id);
-            });
+            }, typeof(MedicineEfRepo));
 
             return result;
         }
@@ -95,7 +95,7 @@ namespace DAL.Repos
                 entity.Expired = true;
                 _context.SaveChanges();
 
-            });
+            }, typeof(MedicineEfRepo));
 
             return result;
         }
