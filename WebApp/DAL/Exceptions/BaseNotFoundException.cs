@@ -9,6 +9,6 @@ namespace DAL.Exceptions
     public class BaseNotFoundException : Exception
     {
         public BaseNotFoundException(string entityName, int id)
-            : base($"Nie znaleziono {entityName} o id {id}"){}
+            : base($"Nie znaleziono {entityName} o ID {id}"){}
     }
 }

@@ -26,11 +26,11 @@ namespace WebApp.Models.ApothecaryModels
         public bool IsEmployed { get; set; }
 
         [Display(Name = "Data zatrudnienia")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
         public DateTime HireDate { get; set; }
 
         [Display(Name = "Data zwolnienia")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
         public DateTime? FireDate { get; set; }
 
         [Display(Name = "Liczba edycji")]

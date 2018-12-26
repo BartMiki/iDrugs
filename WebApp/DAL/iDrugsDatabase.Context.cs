@@ -29,13 +29,13 @@ namespace DAL
     
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DrugStoreAvailableMedicine> DrugStoreAvailableMedicines { get; set; }
-        public virtual DbSet<Medicine> Medicines { get; set; }
         public virtual DbSet<MedicineWarehouse> MedicineWarehouses { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
+        public virtual DbSet<Apothecary> Apothecaries { get; set; }
+        public virtual DbSet<Medicine> Medicines { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
-        public virtual DbSet<Apothecary> Apothecaries { get; set; }
     
         public virtual int InsertApothecary(string firstName, string lastName, Nullable<decimal> monthlySalary)
         {
@@ -88,6 +88,24 @@ namespace DAL
                 new ObjectParameter("orderId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteOrder", orderIdParameter);
+        }
+    
+        public virtual int RemoveDoctorLicense(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("RemoveDoctorLicense", idParameter);
+        }
+    
+        public virtual int AcceptCreatedPrescription(Nullable<int> id)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AcceptCreatedPrescription", idParameter);
         }
     }
 }

@@ -1,13 +1,9 @@
 ﻿using Common.Utils;
 using DAL.Exceptions;
 using DAL.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Common.Utils.DatabaseExceptionHandler;
-using static DAL.Utils.TransactionExtension;
+using static Common.Handlers.StaticDatabaseExceptionHandler;
 
 namespace DAL.Repos
 {
@@ -20,6 +16,18 @@ namespace DAL.Repos
             _context = context;
         }
 
+        public Result Add(Doctor doctor)
+        {
+            var result = Try(() => 
+            {
+                _context.Doctors.Add(doctor);
+                _context.SaveChanges();
+
+            }, typeof(DoctorEfRepo));
+
+            return result;
+        }
+
         public Result Edit(Doctor doctor)
         {
             var result = Try(() =>
@@ -28,11 +36,11 @@ namespace DAL.Repos
 
                 if (entity == null) throw new DoctorNotFoundException(doctor.Id);
 
-                _context.Entry(doctor)
+                _context.Entry(entity)
                     .CurrentValues.SetValues(doctor);
 
                 _context.SaveChanges();
-            });
+            }, typeof(DoctorEfRepo));
 
             return result;
         }
@@ -44,7 +52,7 @@ namespace DAL.Repos
                 var entity = _context.Doctors.ToList().AsEnumerable();
 
                 return entity;
-            });
+            }, typeof(DoctorEfRepo));
 
             return result;
         }
@@ -58,28 +66,30 @@ namespace DAL.Repos
                 if (entity == null) throw new DoctorNotFoundException(id);
 
                 return entity;
-            });
+            }, typeof(DoctorEfRepo));
             return result;
         }
 
-        public Result Remove(Doctor doctor)
+        public Result Remove(int id)
         {
             var result = Try(() =>
             {
+                var doctor = new Doctor { Id = id };
+                _context.Doctors.Attach(doctor);
                 _context.Doctors.Remove(doctor);
                 _context.SaveChanges();
-            });
+            }, typeof(DoctorEfRepo));
 
             return result;
         }
 
-        public Result RemoveLicence(Doctor doctor)
+        public Result RemoveLicence(int id)
         {
             var result = Try(() =>
             {
-                _context.Entry(doctor).CurrentValues.SetValues(doctor);
+                _context.RemoveDoctorLicense(id);
                 _context.SaveChanges();
-            });
+            }, typeof(DoctorEfRepo));
 
             return result;
         }

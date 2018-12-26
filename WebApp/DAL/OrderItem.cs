@@ -20,7 +20,7 @@ namespace DAL
         public int Quantity { get; set; }
         public byte[] RowVersion { get; set; }
     
-        public virtual Medicine Medicine { get; set; }
         public virtual Order Order { get; set; }
+        public virtual Medicine Medicine { get; set; }
     }
 }

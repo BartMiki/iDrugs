@@ -11,8 +11,9 @@ namespace DAL.Interfaces
     {
         Result<IEnumerable<Doctor>> Get();
         Result<Doctor> Get(int id);
-        Result RemoveLicence(Doctor doctor);
-        Result Remove(Doctor doctor);
+        Result RemoveLicence(int id);
+        Result Remove(int id);
         Result Edit(Doctor doctor);
+        Result Add(Doctor doctor);
     }
 }

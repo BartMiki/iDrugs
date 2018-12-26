@@ -15,6 +15,8 @@ using static WebApp.AutoMapperProfiels;
 using DAL;
 using Common.Utils;
 using Common.Interfaces;
+using WebApp.Service;
+using WebApp.Interfaces;
 
 namespace WebApp
 {
@@ -77,6 +79,12 @@ namespace WebApp
                 .InstancePerDependency();
             builder.RegisterType<DoctorEfRepo>()
                 .As<IDoctorRepo>()
+                .InstancePerDependency();
+            builder.RegisterType<PrescriptionEfRepo>()
+                .As<IPrescriptionRepo>()
+                .InstancePerDependency();
+            builder.RegisterType<SelectService>()
+                .As<ISelectService>()
                 .InstancePerDependency();
 
             builder.Populate(services);

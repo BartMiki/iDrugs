@@ -1,16 +1,11 @@
 ﻿using Common.Interfaces;
-using Common.Utils;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApp.Models.MedicineModels;
+using WebApp.Interfaces;
 using WebApp.Models.OrderModels;
 using static AutoMapper.Mapper;
-using static Common.Handlers.StaticDatabaseExceptionHandler;
-using static WebApp.Models.ApothecaryModels.ApothecarySelectViewModel;
-using static WebApp.Models.ApothecaryModels.ApothecaryViewModel;
 
 namespace WebApp.Controllers
 {
@@ -20,13 +15,19 @@ namespace WebApp.Controllers
         private readonly IOrderRepo _orderRepo;
         private readonly IMedicineRepo _medicineRepo;
         private readonly ILogger<OrderController> _logger;
+        private readonly ISelectService _selectService;
 
-        public OrderController(IApothecaryRepo apothecaryRepo, IOrderRepo orderRepo, IMedicineRepo medicineRepo, ILogger<OrderController> logger)
+        public OrderController(IApothecaryRepo apothecaryRepo,
+            IOrderRepo orderRepo,
+            IMedicineRepo medicineRepo,
+            ILogger<OrderController> logger,
+            ISelectService selectService)
         {
             _apothecaryRepo = apothecaryRepo;
             _orderRepo = orderRepo;
             _medicineRepo = medicineRepo;
             _logger = logger;
+            _selectService = selectService;
         }
 
         public IActionResult Index()
@@ -68,13 +69,14 @@ namespace WebApp.Controllers
         {
             _logger.LogInfo($"Zapytanie do metody Create()");
 
-            var list = ToApothecaryViewModels(_apothecaryRepo.Get().Value);
+            var result = _selectService.GetApothecarySelectList();
+
+            if (!result.IsSuccess) return RedirectToIndex(result.FailureMessage); 
 
             var model = new CreateOrderViewModel
             {
-                ApothecaryList = ToApothecarySelectViewModels(list)
+                ApothecaryList = result.Value
             };
-
             return View(model);
         }
 
@@ -107,7 +109,7 @@ namespace WebApp.Controllers
         {
             _logger.LogInfo($"Zapytanie do metody AddOrderItem(orderId)", new { orderId });
 
-            var result = GetMedicineSelectList();
+            var result = _selectService.GetMedicineSelectList();
 
             if (!result.IsSuccess) return RedirectToDetails(orderId, result.FailureMessage);
 
@@ -125,7 +127,7 @@ namespace WebApp.Controllers
         {
             _logger.LogInfo($"Zapytanie do metody AddOrderItem(model)", new { model });
 
-            var medicineListResult = GetMedicineSelectList();
+            var medicineListResult = _selectService.GetMedicineSelectList();
 
             if (!medicineListResult.IsSuccess)
                 return RedirectToDetails(model.OrderId, medicineListResult.FailureMessage);
@@ -201,19 +203,6 @@ namespace WebApp.Controllers
         {
             if (!string.IsNullOrEmpty(errorMsg)) AddErrorForRedirect(errorMsg);
             return RedirectToAction(nameof(Details), new { id = orderId });
-        }
-
-        private Result<IEnumerable<MedicineSelectModel>> GetMedicineSelectList()
-        {
-            return Try(() =>
-            {
-                var result = _medicineRepo.Get();
-
-                if (!result.IsSuccess) throw new Exception(result.FailureMessage);
-
-                var temp = Map<IEnumerable<MedicineViewModel>>(result.Value);
-                return Map<IEnumerable<MedicineSelectModel>>(temp);
-            }, typeof(OrderController));
         }
     }
 }
