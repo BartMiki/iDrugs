@@ -63,6 +63,8 @@
     </Compile>
     <Compile Include="Enums\DALEnumExtensions.cs" />
     <Compile Include="Enums\MedType.cs" />
+    <Compile Include="Enums\PrescriptionItemStatusEnum.cs" />
+    <Compile Include="Enums\PrescriptionStatusEnum.cs" />
     <Compile Include="Enums\Unit.cs" />
     <Compile Include="Exceptions\BaseNotFoundException.cs" />
     <Compile Include="Exceptions\DoctorNotFoundException.cs" />

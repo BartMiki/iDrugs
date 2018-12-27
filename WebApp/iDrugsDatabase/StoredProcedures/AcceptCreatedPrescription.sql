@@ -6,6 +6,11 @@ AS
 		RAISERROR('Nie można zaakcpetować tworzonej recepty, ponieważ jest już stworzona lub zakończona', 16, 1)
 		RETURN 1
 	END
+	ELSE IF NOT EXISTS (SELECT * FROM PrescriptionItem WHERE PrescriptionId = @id)
+	BEGIN
+		RAISERROR('Nie można zaakcpetować recepty bez leków', 16, 1)
+		RETURN 1
+	END
 	ELSE
 	BEGIN
 		UPDATE Prescription

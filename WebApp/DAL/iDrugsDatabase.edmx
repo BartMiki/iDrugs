@@ -216,6 +216,22 @@
         <Function Name="AcceptCreatedPrescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="id" Type="int" Mode="In" />
         </Function>
+        <Function Name="AddPrescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="doctorId" Type="int" Mode="In" />
+          <Parameter Name="apothecaryId" Type="int" Mode="In" />
+          <Parameter Name="prescriptionDate" Type="date" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="AddPrescriptionItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="medicineId" Type="int" Mode="In" />
+          <Parameter Name="prescriptionId" Type="int" Mode="In" />
+          <Parameter Name="quantityToBuy" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ChangePrescriptedAmount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="newAmount" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+        </Function>
         <Function Name="CreateOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ApothecaryId" Type="int" Mode="In" />
         </Function>
@@ -354,7 +370,23 @@
             <End Role="PrescriptionItem" EntitySet="PrescriptionItems" />
           </AssociationSet>
           <FunctionImport Name="AcceptCreatedPrescription">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddPrescription" ReturnType="Collection(Int32)">
+            <Parameter Name="doctorId" Mode="In" Type="Int32" />
+            <Parameter Name="apothecaryId" Mode="In" Type="Int32" />
+            <Parameter Name="prescriptionDate" Mode="In" Type="DateTime" />
+            <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddPrescriptionItem">
+            <Parameter Name="medicineId" Mode="In" Type="Int32" />
+            <Parameter Name="prescriptionId" Mode="In" Type="Int32" />
+            <Parameter Name="quantityToBuy" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ChangePrescriptedAmount">
             <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="newAmount" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Doctor">
@@ -705,6 +737,9 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="AcceptCreatedPrescription" FunctionName="iDrugsModel.Store.AcceptCreatedPrescription" />
+          <FunctionImportMapping FunctionImportName="AddPrescription" FunctionName="iDrugsModel.Store.AddPrescription" />
+          <FunctionImportMapping FunctionImportName="AddPrescriptionItem" FunctionName="iDrugsModel.Store.AddPrescriptionItem" />
+          <FunctionImportMapping FunctionImportName="ChangePrescriptedAmount" FunctionName="iDrugsModel.Store.ChangePrescriptedAmount" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

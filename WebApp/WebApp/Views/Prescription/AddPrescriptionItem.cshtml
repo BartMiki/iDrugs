@@ -1,0 +1,41 @@
+﻿@model WebApp.Models.PrescriptionModels.AddPrescriptionItemViewModel
+
+@{
+    ViewData["Title"] = "Dodaj lek do recepty";
+}
+
+<h2>Dodawanie leku do recepty</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddPrescriptionItem">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => m.PrescriptionId)
+            <div class="form-group">
+                <label asp-for="MedicineList" class="control-label"></label>
+                <select asp-for="MedicineId" class="form-control selectpicker" data-live-search="true"
+                        asp-items="@{new SelectList(Model.MedicineList,"Id","FullName")}"></select>
+                <span asp-validation-for="MedicineId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuantityToBuy" class="control-label"></label>
+                <input asp-for="QuantityToBuy" class="form-control" />
+                <span asp-validation-for="QuantityToBuy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span>Dodaj</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<button onclick="location.href='@Url.Action("PrescriptionDetails","Prescription", new { id = Model.PrescriptionId })'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+    <span>Powrót do recepty</span>
+</button>
+

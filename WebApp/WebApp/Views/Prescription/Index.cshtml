@@ -7,9 +7,15 @@
 
 <h2>Recepty</h2>
 
-<p>
-    <a asp-action="Create">Dodaj nową receptę</a>
-</p>
+<div class="btn-group">
+    <button onclick="location.href='@Url.Action("CreatePrescription","Prescription")'" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        <span>Dodaj nową receptę</span>
+    </button>
+</div>
+
+<br />
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -51,15 +57,24 @@
                     @Html.DisplayFor(modelItem => item.CompletionDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Status)
+                    @Html.DisplayFor(modelItem => item.StatusString)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TotalCost)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <div class="btn-group">
+                        <button onclick="location.href='@Url.Action("PrescriptionDetails","Prescription", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span>Detale</span>
+                        </button>
+                        <button onclick="location.href='@Url.Action("DeletePrescription","Prescription", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span>Usuń</span>
+                        </button>
+                    </div>
                 </td>
             </tr>
         }

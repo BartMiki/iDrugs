@@ -1,0 +1,225 @@
+﻿@using DAL.Enums;
+@using WebApp.Models.PrescriptionModels;
+@model PrescriptionViewModel
+@{
+    ViewData["Title"] = $"Recepta numer {Model.Id}";
+}
+
+<h2>Szczegóły recepty</h2>
+
+<div>
+    <h4>Recepta numer @Model.Id</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Id)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Id)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DoctorFullName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DoctorFullName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ApothecaryFullName)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ApothecaryFullName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.PrescriptionDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PrescriptionDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CompletionDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CompletionDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Status)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.TotalCost)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TotalCost)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RowVersion)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RowVersion)
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button onclick="location.href='@Url.Action("Index","Prescription")'"
+                class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+            <span>Powrót do listy</span>
+        </button>
+        @if (Model.Status == PrescriptionStatusEnum.Created)
+        {
+            <button onclick="location.href='@Url.Action("AddPrescriptionItem","Prescription", new { id = Model.Id })'"
+                    class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span>Dodaj lek</span>
+            </button>
+            <button onclick="location.href='@Url.Action("EditPrescription","Prescription", new { id = Model.Id })'"
+                    class="btn btn-default">
+                <span class="glyphicon glyphicon-edit"></span>
+                <span>Edytuj</span>
+            </button>
+            <button onclick="location.href='@Url.Action("AcceptPrescription","Prescription", new { id = Model.Id })'"
+                    class="btn btn-default">
+                <span class="glyphicon glyphicon-floppy-save"></span>
+                <span>Przejdź do realizacji</span>
+            </button>
+        }
+
+        @if (Model.Status == PrescriptionStatusEnum.In_Progress)
+        {
+            <button onclick="location.href='@Url.Action("BuyAll","Prescription", new { id = Model.Id })'"
+                    class="btn btn-default">
+                <span class="glyphicon glyphicon-piggy-bank"></span>
+                <span>Kup całość</span>
+            </button>
+        }
+
+    </div>
+
+    <h4>Leki na recepcie</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrescriptionItems.First().Medicine.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrescriptionItems.First().Medicine.MedType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrescriptionItems.First().Medicine.MedicineContent)
+                </th>
+                @if (Model.Status == PrescriptionStatusEnum.In_Progress)
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.PrescriptionItems.First().QuantityRatio)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PrescriptionItems.First().RemainingCost)
+                    </th>
+                }
+                else
+                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.PrescriptionItems.First().QuantityToBuy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PrescriptionItems.First().TotalCost)
+                    </th>
+                }
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PrescriptionItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Medicine.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Medicine.MedType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Medicine.MedicineContent)
+                    </td>
+                    @if (Model.Status == PrescriptionStatusEnum.In_Progress)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityRatio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RemainingCost)
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityToBuy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalCost)
+                        </td>
+                    }
+                    <td>
+                        <div class="btn-group">
+                            @if (Model.Status == PrescriptionStatusEnum.Created)
+                            {
+                                <button onclick="location.href='@Url.Action("EditPrescriptonItem","Prescription", new { prescriptionId = Model.Id, itemId = item.Id })'"
+                                        class="btn btn-default">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                    <span>Detale</span>
+                                </button>
+                                <button onclick="location.href='@Url.Action("RemovePrescriptionItem","Prescription", new { prescriptionId = Model.Id, itemId = item.Id })'"
+                                        class="btn btn-default">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span>Usuń</span>
+                                </button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                @if (Model.Status == PrescriptionStatusEnum.In_Progress)
+                {
+                    <td>
+                        @Html.DisplayNameFor(model => model.RemainingCost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.RemainingCost)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayNameFor(model => model.TotalCost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.TotalCost)
+                    </td>
+                }
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -107,5 +107,60 @@ namespace DAL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AcceptCreatedPrescription", idParameter);
         }
+    
+        public virtual ObjectResult<Nullable<int>> AddPrescription(Nullable<int> doctorId, Nullable<int> apothecaryId, Nullable<System.DateTime> prescriptionDate, string email)
+        {
+            var doctorIdParameter = doctorId.HasValue ?
+                new ObjectParameter("doctorId", doctorId) :
+                new ObjectParameter("doctorId", typeof(int));
+    
+            var apothecaryIdParameter = apothecaryId.HasValue ?
+                new ObjectParameter("apothecaryId", apothecaryId) :
+                new ObjectParameter("apothecaryId", typeof(int));
+    
+            var prescriptionDateParameter = prescriptionDate.HasValue ?
+                new ObjectParameter("prescriptionDate", prescriptionDate) :
+                new ObjectParameter("prescriptionDate", typeof(System.DateTime));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("AddPrescription", doctorIdParameter, apothecaryIdParameter, prescriptionDateParameter, emailParameter);
+        }
+    
+        public virtual int AddPrescriptionItem(Nullable<int> medicineId, Nullable<int> prescriptionId, Nullable<int> quantityToBuy)
+        {
+            var medicineIdParameter = medicineId.HasValue ?
+                new ObjectParameter("medicineId", medicineId) :
+                new ObjectParameter("medicineId", typeof(int));
+    
+            var prescriptionIdParameter = prescriptionId.HasValue ?
+                new ObjectParameter("prescriptionId", prescriptionId) :
+                new ObjectParameter("prescriptionId", typeof(int));
+    
+            var quantityToBuyParameter = quantityToBuy.HasValue ?
+                new ObjectParameter("quantityToBuy", quantityToBuy) :
+                new ObjectParameter("quantityToBuy", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddPrescriptionItem", medicineIdParameter, prescriptionIdParameter, quantityToBuyParameter);
+        }
+    
+        public virtual int ChangePrescriptedAmount(Nullable<int> id, Nullable<int> newAmount, Nullable<int> version)
+        {
+            var idParameter = id.HasValue ?
+                new ObjectParameter("id", id) :
+                new ObjectParameter("id", typeof(int));
+    
+            var newAmountParameter = newAmount.HasValue ?
+                new ObjectParameter("newAmount", newAmount) :
+                new ObjectParameter("newAmount", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ChangePrescriptedAmount", idParameter, newAmountParameter, versionParameter);
+        }
     }
 }

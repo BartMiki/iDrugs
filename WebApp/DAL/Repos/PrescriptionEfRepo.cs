@@ -2,8 +2,10 @@
 using DAL.Exceptions;
 using DAL.Interfaces;
 using DAL.Utils;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using static Common.Handlers.StaticDatabaseExceptionHandler;
 
@@ -26,12 +28,13 @@ namespace DAL.Repos
             }, typeof(PrescriptionEfRepo));
         }
 
-        public Result AddPrescription(Prescription entity)
+        public Result<int> AddPrescription(Prescription entity)
         {
             return Try(() =>
             {
-                _context.Prescriptions.Add(entity);
+                var result = _context.AddPrescription(entity.DoctorId, entity.ApothecaryId, entity.PrescriptionDate, entity.Email);
                 _context.SaveChanges();
+                return result.FirstOrDefault().Value;
             }, typeof(PrescriptionEfRepo));
         }
 
@@ -43,35 +46,76 @@ namespace DAL.Repos
 
                 if (entity == null) throw new PrescriptionNotFoundException(prescriptionId);
 
-                entity.PrescriptionItems.Add(item);
+                _context.AddPrescriptionItem(item.MedicineId, item.PrescriptionId, item.QuantityToBuy);
                 _context.SaveChanges();
 
             }, typeof(PrescriptionEfRepo));
         }
 
+        public Result Buy(Prescription prescription)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Result BuyAll(int id)
+        {
+            var result = _context.BeginTransaction(() => 
+            {
+                var prescription = _context.Prescriptions
+                    .Include(x => x.PrescriptionItems)
+                    .FirstOrDefault(x => x.Id == id);
+
+                if (prescription == null) throw new PrescriptionNotFoundException(id);
+
+                foreach(var item in prescription.PrescriptionItems)
+                {
+                    var toBuy = item.QuantityToBuy - item.QuantityAlreadyBought;
+
+                    var stock = _context.DrugStoreAvailableMedicines.FirstOrDefault(x => x.MedicineId == item.MedicineId);
+                    if (stock == null) throw new Exception($"Brakuje {toBuy} sztuk leku {item.Medicine.Name} o ID {item.MedicineId} na stanie apteki");
+
+                    if(stock.Quantity < toBuy) throw new Exception($"Brakuje {toBuy - stock.Quantity} sztuk leku {item.Medicine.Name} o ID {item.MedicineId} na stanie apteki");
+
+                    _context.Database.ExecuteSqlCommand("UPDATE PrescriptionItem SET QuantityAlreadyBought = QuantityToBuy WHERE Id = @id",
+                        new SqlParameter("id",item.Id));
+
+                    _context.Database.ExecuteSqlCommand("UPDATE DrugStoreAvailableMedicine SET Quantity = (Quantity - @toBuy) WHERE MedicineId = @medId",
+                        new SqlParameter("toBuy", toBuy),
+                        new SqlParameter("medId", item.MedicineId));
+                }
+
+            }, GetType());
+
+            return result;
+        }
+
         public Result DeletePrescription(int id)
         {
-            return _context.BeginTransaction(() => 
+            return _context.BeginTransaction(() =>
             {
-                _context.Database.ExecuteSqlCommand("DELETE FROM PrescriptionItem WHERE PrescriptionId = @id", new { id });
-                _context.Database.ExecuteSqlCommand("DELETE FROM Prescription WHERE Id = @id", new { id });
+                var parameter = new SqlParameter("id", id);
+
+                _context.Database.ExecuteSqlCommand("DELETE FROM PrescriptionItem WHERE PrescriptionId = @id", parameter);
+                _context.Database.ExecuteSqlCommand("DELETE FROM Prescription WHERE Id = @id", parameter);
 
             }, typeof(PrescriptionEfRepo));
         }
 
         public Result DeletePrescriptionItem(int prescriptionId, int itemId)
         {
-            return Try(() => 
+            return Try(() =>
             {
-                _context.Database.ExecuteSqlCommand("DELETE FROM PrescriptionItem WHERE PrescriptionId = @pId AND Id = @id", 
-                    new { id = itemId, pId = prescriptionId});
+                var id = new SqlParameter("id", itemId);
+                var pId = new SqlParameter("pId", prescriptionId);
+
+                _context.Database.ExecuteSqlCommand("DELETE FROM PrescriptionItem WHERE PrescriptionId = @pId AND Id = @id", pId, id);
 
             }, typeof(PrescriptionEfRepo));
         }
 
         public Result EditPrescription(Prescription prescription)
         {
-            return Try(() => 
+            return Try(() =>
             {
                 var entity = _context.Prescriptions.Find(prescription.Id);
 
@@ -80,26 +124,27 @@ namespace DAL.Repos
                 _context.Entry(entity)
                     .CurrentValues.SetValues(prescription);
 
+                _context.SaveChanges();
             }, typeof(PrescriptionEfRepo));
         }
 
         public Result EditPrescriptionItem(PrescriptionItem item)
         {
-            return Try(() => 
+            return Try(() =>
             {
                 var entity = _context.PrescriptionItems.Find(item.Id);
 
                 if (entity == null) throw new PrescriptionItemNotFoundException(item.PrescriptionId, item.Id);
 
-                _context.Entry(entity)
-                    .CurrentValues.SetValues(item);
+                _context.ChangePrescriptedAmount(item.Id, item.QuantityToBuy, item.RowVersion);
 
+                _context.SaveChanges();
             }, typeof(PrescriptionEfRepo));
         }
 
         public Result<IEnumerable<Prescription>> Get()
         {
-            return Try(() => 
+            return Try(() =>
             {
                 return _context.Prescriptions.AsEnumerable();
             }, typeof(PrescriptionEfRepo));
@@ -107,7 +152,7 @@ namespace DAL.Repos
 
         public Result<Prescription> Get(int id)
         {
-            return Try(() => 
+            return Try(() =>
             {
                 var entity = _context.Prescriptions
                     .Include(x => x.Apothecary)
@@ -123,7 +168,7 @@ namespace DAL.Repos
 
         public Result<PrescriptionItem> GetItem(int id)
         {
-            return Try(() => 
+            return Try(() =>
             {
                 var entity = _context.PrescriptionItems.Find(id);
 

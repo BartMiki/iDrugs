@@ -18,7 +18,7 @@ namespace DAL.Interfaces
         Result AcceptCreated(int id);
         #endregion
         #region Add Methods
-        Result AddPrescription(Prescription entity);
+        Result<int> AddPrescription(Prescription entity);
         Result AddPrescriptionItem(int prescriptionId, PrescriptionItem item);
         #endregion
         #region Edit Methods
@@ -28,6 +28,10 @@ namespace DAL.Interfaces
         #region Delete Methods
         Result DeletePrescription(int id);
         Result DeletePrescriptionItem(int prescriptionId, int itemId);
+        #endregion
+        #region Buy
+        Result BuyAll(int id);
+        Result Buy(Prescription prescription);
         #endregion
     }
 }

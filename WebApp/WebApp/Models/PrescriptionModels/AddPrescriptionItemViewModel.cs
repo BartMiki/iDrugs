@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Models.DoctorModels;
@@ -9,6 +10,7 @@ namespace WebApp.Models.PrescriptionModels
 {
     public class AddPrescriptionItemViewModel : PrescriptionItemViewModel
     {
-        public IEnumerable<MedicineSelectModel> DoctorSelect { get; set; }
+        [Display(Name = "Lek")]
+        public IEnumerable<MedicineSelectModel> MedicineList { get; set; }
     }
 }

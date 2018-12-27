@@ -44,6 +44,11 @@
 			FROM inserted
 			WHERE PrescriptionItem.Id = inserted.Id AND inserted.QuantityAlreadyBought != inserted.QuantityToBuy
 
+			UPDATE Prescription
+			SET TotalCost = TotalCost
+			FROM inserted I
+			WHERE Prescription.Id = I.PrescriptionId
+
 			IF NOT EXISTS (SELECT * FROM PrescriptionItem PIt
 				JOIN inserted I ON I.Id = PIt.Id
 				WHERE PIt.Status != 'BOUGHT' AND PIt.PrescriptionId = I.PrescriptionId)

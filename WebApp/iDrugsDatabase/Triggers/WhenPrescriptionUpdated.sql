@@ -32,7 +32,8 @@
 				PrescriptionDate = I.PrescriptionDate,
 				RowVersion = I.RowVersion + 1,
 				Status = I.Status,
-				TotalCost = (SELECT SUM(M.UnitPrice * PIt.QuantityToBuy) FROM PrescriptionItem PIt
+				TotalCost = (SELECT ISNULL(SUM(M.UnitPrice * PIt.QuantityToBuy), 0) 
+					FROM PrescriptionItem PIt
 					JOIN Medicine M ON PIt.MedicineId = M.Id
 					WHERE I.Id = PIt.PrescriptionId)
 			FROM inserted I 
@@ -47,7 +48,8 @@
 				PrescriptionDate = I.PrescriptionDate,
 				RowVersion = I.RowVersion + 1,
 				Status = I.Status,
-				TotalCost = (SELECT SUM(M.UnitPrice * PIt.QuantityToBuy) FROM PrescriptionItem PIt
+				TotalCost = (SELECT ISNULL(SUM(M.UnitPrice * PIt.QuantityToBuy), 0)
+					FROM PrescriptionItem PIt
 					JOIN Medicine M ON PIt.MedicineId = M.Id
 					WHERE I.Id = PIt.PrescriptionId)
 			FROM inserted I 

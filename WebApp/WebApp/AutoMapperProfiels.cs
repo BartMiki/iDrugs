@@ -4,13 +4,13 @@ using DAL;
 using DAL.Enums;
 using System.Collections.Generic;
 using System.Linq;
-using WebApp.Models.MedicineModels;
 using WebApp.Models.ApothecaryModels;
-using WebApp.Models.OrderModels;
-using WebApp.Models.WarehouseModels;
-using WebApp.Models.DrugStoreStockModels;
 using WebApp.Models.DoctorModels;
+using WebApp.Models.DrugStoreStockModels;
+using WebApp.Models.MedicineModels;
+using WebApp.Models.OrderModels;
 using WebApp.Models.PrescriptionModels;
+using WebApp.Models.WarehouseModels;
 
 namespace WebApp
 {
@@ -55,7 +55,7 @@ namespace WebApp
                     .ForMember(d => d.MedicineName, x => x.MapFrom(s => s.Medicine.Name))
                     .ReverseMap();
 
-                
+
                 mapper.CreateMap<Order, OrderViewModel>()
                     .ForMember(dest => dest.ApothecaryFullName, x => x.MapFrom(src => src.Apothecary.FirstName + " " + src.Apothecary.LastName))
                     .ReverseMap();
@@ -88,10 +88,23 @@ namespace WebApp
                     .ForMember(dest => dest.FullName, x => x.MapFrom(src => $"{src.FirstName} {src.LastName} | ID: {src.Id}"));
                 #endregion
                 #region Prescription Conversions
-                mapper.CreateMap<PrescriptionItem, PrescriptionItemViewModel>().ReverseMap();
-                mapper.CreateMap<Prescription, PrescriptionViewModel>().ReverseMap();
+
+                mapper.CreateMap<PrescriptionItem, PrescriptionItemViewModel>()
+                    .ForMember(dest => dest.Status, x => x.MapFrom(src => src.Status.AsEnum<PrescriptionItemStatusEnum>()));
+
+                mapper.CreateMap<PrescriptionItemViewModel, PrescriptionItem>()
+                    .ForMember(dest => dest.Status, x => x.MapFrom(src => src.Status.AsDatabaseType()));
+
+                mapper.CreateMap<Prescription, PrescriptionViewModel>()
+                    .ForMember(dest => dest.ApothecaryFullName, x => x.MapFrom(src => $"{src.Apothecary.FirstName} {src.Apothecary.LastName}"))
+                    .ForMember(dest => dest.DoctorFullName, x => x.MapFrom(src => $"{src.Doctor.FirstName} {src.Doctor.LastName}"))
+                    .ForMember(dest => dest.Status, x => x.MapFrom(src => src.Status.AsEnum<PrescriptionStatusEnum>()));
+                
+                mapper.CreateMap<PrescriptionViewModel, Prescription>()
+                    .ForMember(dest => dest.Status, x => x.MapFrom(src => src.Status.AsDatabaseType()));
 
                 mapper.CreateMap<Prescription, CreatePrescriptionViewModel>()
+                    .IncludeBase<Prescription, PrescriptionViewModel>()
                     .ForMember(dest => dest.ApothecarySelect, map => map.Ignore())
                     .ForMember(dest => dest.DoctorSelect, map => map.Ignore())
                     .ReverseMap();
