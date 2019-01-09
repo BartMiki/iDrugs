@@ -39,9 +39,31 @@ namespace DAL.Utils
             return result;
         }
 
-        public static Result<T> BeginTransaction<T>(this iDrugsEntities context, Func<T> func)
+        public static Result<T> BeginTransaction<T>(this iDrugsEntities context, Func<T> func, Type loggerType,
+            IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
-            throw new NotImplementedException();
+            var result = Try(() =>
+            {
+                using (var transaction = context.Database.BeginTransaction(isolationLevel))
+                {
+                    try
+                    {
+                        if (func == null) throw new ArgumentNullException(nameof(func));
+
+                        T res = func.Invoke();
+                        transaction.Commit();
+
+                        return res;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }, loggerType);
+
+            return result;
         }
     }
 }

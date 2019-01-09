@@ -76,24 +76,24 @@
     </div>
 
     <div class="btn-group">
-        <button onclick="location.href='@Url.Action("Index","Prescription")'"
+        <button onclick="location.href='@Url.Action("Index", "Prescription")'"
                 class="btn btn-default">
             <span class="glyphicon glyphicon-arrow-left"></span>
             <span>Powrót do listy</span>
         </button>
         @if (Model.Status == PrescriptionStatusEnum.Created)
         {
-            <button onclick="location.href='@Url.Action("AddPrescriptionItem","Prescription", new { id = Model.Id })'"
+            <button onclick="location.href='@Url.Action("AddPrescriptionItem", "Prescription", new { id = Model.Id })'"
                     class="btn btn-default">
                 <span class="glyphicon glyphicon-plus"></span>
                 <span>Dodaj lek</span>
             </button>
-            <button onclick="location.href='@Url.Action("EditPrescription","Prescription", new { id = Model.Id })'"
+            <button onclick="location.href='@Url.Action("EditPrescription", "Prescription", new { id = Model.Id })'"
                     class="btn btn-default">
                 <span class="glyphicon glyphicon-edit"></span>
                 <span>Edytuj</span>
             </button>
-            <button onclick="location.href='@Url.Action("AcceptPrescription","Prescription", new { id = Model.Id })'"
+            <button onclick="location.href='@Url.Action("AcceptPrescription", "Prescription", new { id = Model.Id })'"
                     class="btn btn-default">
                 <span class="glyphicon glyphicon-floppy-save"></span>
                 <span>Przejdź do realizacji</span>
@@ -102,10 +102,26 @@
 
         @if (Model.Status == PrescriptionStatusEnum.In_Progress)
         {
-            <button onclick="location.href='@Url.Action("BuyAll","Prescription", new { id = Model.Id })'"
+            <button onclick="location.href='@Url.Action("BuyAll", "Prescription", new { id = Model.Id })'"
                     class="btn btn-default">
-                <span class="glyphicon glyphicon-piggy-bank"></span>
-                <span>Kup całość</span>
+                <span class="glyphicon glyphicon-tags"></span>
+                @if (Model.PrescriptionItems.Any(item => item.QuantityAlreadyBought != 0))
+                {
+                    <span>
+                        Kup resztę
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        Kup całość
+                    </span>
+                }
+            </button>
+            <button onclick="location.href='@Url.Action("BuySomeItems", "Prescription", new { id = Model.Id })'"
+                    class="btn btn-default">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+                <span>Kup część</span>
             </button>
         }
 
@@ -180,12 +196,12 @@
                         <div class="btn-group">
                             @if (Model.Status == PrescriptionStatusEnum.Created)
                             {
-                                <button onclick="location.href='@Url.Action("EditPrescriptonItem","Prescription", new { prescriptionId = Model.Id, itemId = item.Id })'"
+                                <button onclick="location.href='@Url.Action("EditPrescriptonItem", "Prescription", new { prescriptionId = Model.Id, itemId = item.Id })'"
                                         class="btn btn-default">
                                     <span class="glyphicon glyphicon-edit"></span>
                                     <span>Detale</span>
                                 </button>
-                                <button onclick="location.href='@Url.Action("RemovePrescriptionItem","Prescription", new { prescriptionId = Model.Id, itemId = item.Id })'"
+                                <button onclick="location.href='@Url.Action("RemovePrescriptionItem", "Prescription", new { prescriptionId = Model.Id, itemId = item.Id })'"
                                         class="btn btn-default">
                                     <span class="glyphicon glyphicon-remove"></span>
                                     <span>Usuń</span>

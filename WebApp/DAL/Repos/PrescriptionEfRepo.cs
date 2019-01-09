@@ -89,6 +89,47 @@ namespace DAL.Repos
             return result;
         }
 
+        public Result BuySome(int prescriptionId, IEnumerable<(int itemId, int amount)> itemsToBuy)
+        {
+            return _context.BeginTransaction(() => 
+            {
+                var prescription = _context.Prescriptions
+                    .Include(x => x.PrescriptionItems)
+                    .FirstOrDefault(x => x.Id == prescriptionId);
+
+                if (prescription == null) throw new PrescriptionNotFoundException(prescriptionId);
+
+                var items = from item in prescription.PrescriptionItems
+                            join itemToBuy in itemsToBuy
+                            on item.Id equals itemToBuy.itemId
+                            select (item, itemToBuy.amount);
+
+
+                foreach ((PrescriptionItem item, int amount) in items)
+                {
+                    var remainingToBuy = item.QuantityToBuy - item.QuantityAlreadyBought;
+
+                    if (amount > remainingToBuy) throw new Exception(
+                        $"Nie można kupić więcej leku {item.Medicine.Name} niż zostało do wykupienia. " +
+                        $"Chciano kupić {amount}, a zostało do kupienia {remainingToBuy}");
+
+                    var stock = _context.DrugStoreAvailableMedicines.FirstOrDefault(x => x.MedicineId == item.MedicineId);
+                    if (stock == null) throw new Exception($"Brakuje {amount} sztuk leku {item.Medicine.Name} o ID {item.MedicineId} na stanie apteki");
+
+                    if (stock.Quantity < amount) throw new Exception($"Brakuje {amount - stock.Quantity} sztuk leku {item.Medicine.Name} o ID {item.MedicineId} na stanie apteki");
+
+                    _context.Database.ExecuteSqlCommand("UPDATE PrescriptionItem SET QuantityAlreadyBought = (QuantityAlreadyBought + @amount) WHERE Id = @id",
+                        new SqlParameter("id", item.Id),
+                        new SqlParameter("amount", amount));
+
+                    _context.Database.ExecuteSqlCommand("UPDATE DrugStoreAvailableMedicine SET Quantity = (Quantity - @toBuy) WHERE MedicineId = @medId",
+                        new SqlParameter("toBuy", amount),
+                        new SqlParameter("medId", item.MedicineId));
+                }
+
+            }, GetType());
+        }
+
         public Result DeletePrescription(int id)
         {
             return _context.BeginTransaction(() =>

@@ -131,21 +131,31 @@ namespace Common.Handlers
             {
                 //var msg = sqlEx.Message;
                 var msg = sqlEx.Errors[0].Message;
+                msg = TranslateDatabaseError(msg);
                 _logger.LogError(msg, ex);
                 return Result.Failure(msg);
             }
             catch (Exception ex) when (ex.InnerException != null && ex.InnerException.InnerException is SqlException sqlEx)
             {
                 var msg = sqlEx.Errors[0].Message;
+                msg = TranslateDatabaseError(msg);
                 _logger.LogError(msg, ex);
                 return Result.Failure(msg);
             }
             catch (Exception ex)
             {
                 var msg = ex.Message;
+                msg = TranslateDatabaseError(msg);
                 _logger.LogError(msg, ex);
                 return Result.Failure(msg);
             }
+        }
+
+        private string TranslateDatabaseError(string msg)
+        {
+            if (msg.Contains("The DELETE statement conflicted with the REFERENCE constraint")) return "Nie można usunąć rekordu, bo jest on kluczem obcy w innej tabeli";
+
+            return msg;
         }
     }
 }

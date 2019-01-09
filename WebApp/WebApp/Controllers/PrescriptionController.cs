@@ -19,14 +19,17 @@ namespace WebApp.Controllers
         private readonly IPrescriptionRepo _prescriptionRepo;
         private readonly ILogger<PrescriptionController> _logger;
         private readonly ISelectService _selectService;
-        #endregion
+        private readonly IDrugStoreStockRepo _drugStoreStockRepo;
 
-        public PrescriptionController(IPrescriptionRepo prescriptionRepo, ILogger<PrescriptionController> logger, ISelectService selectService)
+        public PrescriptionController(IPrescriptionRepo prescriptionRepo, ILogger<PrescriptionController> logger, ISelectService selectService, IDrugStoreStockRepo drugStoreStockRepo)
         {
             _prescriptionRepo = prescriptionRepo;
             _logger = logger;
             _selectService = selectService;
+            _drugStoreStockRepo = drugStoreStockRepo;
         }
+        #endregion
+
 
         public IActionResult Index()
         {
@@ -286,6 +289,52 @@ namespace WebApp.Controllers
         public IActionResult BuyView(PrescriptionViewModel id)
         {
             return View();
+        }
+
+        public IActionResult BuySomeItems(int id)
+        {
+            var prescriptionResult = _prescriptionRepo.Get(id);
+            var drugsStoreResult = _drugStoreStockRepo.Get();
+
+            if (!prescriptionResult.IsSuccess) return RedirectToPrescriptionDetails(id, prescriptionResult.FailureMessage);
+            if(! drugsStoreResult.IsSuccess) return RedirectToPrescriptionDetails(id, drugsStoreResult.FailureMessage);
+
+            var prescription = Mapper.Map<PrescriptionViewModel>(prescriptionResult.Value);
+
+            var items = from pItem in prescription.PrescriptionItems
+                        where !pItem.BoughtOut
+                        join available in drugsStoreResult.Value
+                        on pItem.MedicineId equals available.MedicineId
+                        select new BuySingleItemViewModel
+                        {
+                            Available = available.Quantity,
+                            Amount = 0,
+                            ItemId = pItem.Id,
+                            MedicineName = $"{pItem.Medicine.Name} - {pItem.Medicine.MedicineContent}",
+                            RemainingAmount = pItem.RemainingToBought,
+                            UnitPrice = pItem.Medicine.UnitPrice
+                        };
+
+            var model = new BuySomeItemsViewModel
+            {
+                PrescriptionId = id,
+                Items = items.ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult BuySomeItems(BuySomeItemsViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var items = model.Items.Select(item => (item.ItemId, item.Amount));
+            var result = _prescriptionRepo.BuySome(model.PrescriptionId, items);
+
+            if(!result.IsSuccess) return RedirectToPrescriptionDetails(model.PrescriptionId, result.FailureMessage);
+
+            return RedirectToPrescriptionDetails(model.PrescriptionId);
         }
 
         private IActionResult RedirectToPrescriptionDetails(int id)

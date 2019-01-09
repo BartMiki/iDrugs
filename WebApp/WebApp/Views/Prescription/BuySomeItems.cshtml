@@ -1,0 +1,140 @@
+﻿@using WebApp.Models.PrescriptionModels;
+@model BuySomeItemsViewModel
+
+@{
+    ViewData["Title"] = "Kup część recepty";
+}
+
+<h2>Kup część recepty</h2>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="BuySomeItems">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(model => model.PrescriptionId)
+            <div class="form-group">
+                <ul class="list-group">
+                    @Html.HiddenFor(m => m.PrescriptionId)
+                    @for (int i = 0; i < Model.Items.Count; i++)
+                    {
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4 class="list-group-item-heading">
+                                        @Model.Items[i].MedicineName
+                                    </h4>
+                                    <div class="form-group">
+                                        <label asp-for="Items[i].Amount" class="control-label"></label>
+                                        <input id="input-@i" min="0" asp-for="Items[i].Amount" class="form-control" />
+                                        <span id="validation-@i" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.DisplayName("Cena sumaryczna")
+                                        <span id="cost-@i"></span>
+                                    </div>
+                                    @Html.HiddenFor(model => model.Items[i].Available)
+                                    @Html.HiddenFor(model => model.Items[i].MedicineName)
+                                    @Html.HiddenFor(model => model.Items[i].RemainingAmount)
+                                    @Html.HiddenFor(model => model.Items[i].ItemId)
+                                    @Html.HiddenFor(model => model.Items[i].UnitPrice)
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="well well-sm">
+                                        <div class="form-group">
+                                            @Html.DisplayNameFor(model => model.Items[i].RemainingAmount)
+                                            @Html.DisplayFor(model => model.Items[i].RemainingAmount)
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.DisplayNameFor(model => model.Items[i].Available)
+                                            @Html.DisplayFor(model => model.Items[i].Available)
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.DisplayName("Cena jednostkowa")
+                                            @Html.DisplayFor(model => model.Items[i].UnitPrice) zł
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="well well-sm">
+                <div class="form-group">
+                    @Html.DisplayName("Do zapłaty")
+                    <span id="cost-span"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <button id="buy_button" type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                    <span>Kup</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<button onclick="location.href='@Url.Action("PrescriptionDetails","Prescription", new { id = Model.PrescriptionId })'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+    <span>Powrót do recepty</span>
+</button>
+
+<script type="text/javascript">
+    $(document).ready(() => {
+        let model = @Html.Raw(Json.Serialize(Model));
+        let cost = 0.0;
+        $("#cost-span").text(cost.toFixed(2).replace(".", ",") +" zł");
+
+        for (let i = 0; i < model.items.length; i++) {
+            $("#cost-" + i).text(cost.toFixed(2).replace(".",",") + " zł");
+            $("#input-" + i).change(i, updatePrice);
+        }
+
+        function updatePrice(e) {
+            let id = e.data;
+            let items = model.items;
+
+            $("#validation-" + id).text(null);
+            let amount = parseInt($("#input-" + id).val());
+
+            let remainingAmount = items[id].remainingAmount;
+            if (isNaN(amount)) {
+                $("#validation-" + id).text("Wartość nie może być pusta")
+            }
+            if (amount > remainingAmount) {
+                $("#validation-" + id).text(
+                    "Nie można kupić " + amount + " sztuk leku, bo pozostało " + remainingAmount + " sztuk do kupienia");
+            }
+
+            let localCost = amount * items[id].unitPrice;
+            $("#cost-" + id).text(localCost.toFixed(2).replace(".", ",") + " zł");
+
+            updateTotalPrice();
+        }
+
+        function updateTotalPrice() {
+            let items = model.items;
+            let cost = 0.0;
+
+            $("#buy_button").removeAttr("disabled");
+            for (let i = 0; i < items.length; i++) {
+                cost += parseInt($("#cost-" + i).text());
+                if ($("#validation-" + i).text())
+                    $("#buy_button").attr("disabled", "disabled");
+            }
+
+            if (isNaN(cost)) {
+                $("#buy_button").attr("disabled", "disabled");
+                $("#cost-span").text(cost.toFixed(2).replace(".", ",") + " zł");
+            }
+            else {
+                $("#cost-span").text(cost.toFixed(2).replace(".", ",") + " zł");
+            }
+        }
+    });
+
+
+
+</script>

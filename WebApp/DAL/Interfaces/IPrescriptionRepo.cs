@@ -32,6 +32,7 @@ namespace DAL.Interfaces
         #region Buy
         Result BuyAll(int id);
         Result Buy(Prescription prescription);
+        Result BuySome(int prescriptionId, IEnumerable<(int itemId, int amount)> itemsToBuy);
         #endregion
     }
 }

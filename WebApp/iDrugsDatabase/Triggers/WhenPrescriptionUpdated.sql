@@ -8,18 +8,21 @@
 			WHERE I.RowVersion != P.RowVersion)
 		BEGIN
 			RAISERROR('Błąd współbierzności, blokowanie optymistyczne', 16, 1)
+			RETURN
 		END
 		ELSE IF EXISTS(SELECT * FROM Prescription P
 			JOIN inserted I ON I.Id = P.Id
 			WHERE P.Status = 'COMPLETED')
 		BEGIN
 			RAISERROR('Nie można zmieniać zakończonej recepty', 16, 1)
+			RETURN
 		END
 		ELSE IF EXISTS(SELECT * FROM Prescription P
 			JOIN inserted I ON I.Id = P.Id
 			WHERE P.Status = 'IN_PROGRESS' AND I.Status = 'CREATED')
 		BEGIN
 			RAISERROR('Nie można zmieniać zaakceptowanej recepty', 16, 1)
+			RETURN
 		END
 		ELSE
 		BEGIN
