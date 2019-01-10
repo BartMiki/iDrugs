@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9be9381748914897b9be0be5e7345377" Name="Diagram1" ZoomLevel="86">
-        <EntityTypeShape EntityType="iDrugsModel.Doctor" Width="1.5" PointX="10.25" PointY="1.375" />
         <EntityTypeShape EntityType="iDrugsModel.DrugStoreAvailableMedicine" Width="1.5" PointX="2.625" PointY="7.875" />
         <EntityTypeShape EntityType="iDrugsModel.MedicineWarehouse" Width="1.5" PointX="2.75" PointY="0.625" />
         <EntityTypeShape EntityType="iDrugsModel.Order" Width="1.5" PointX="7.75" PointY="5.5" />
@@ -20,9 +19,10 @@
         <EntityTypeShape EntityType="iDrugsModel.Prescription" Width="1.5" PointX="7.75" PointY="1.75" />
         <EntityTypeShape EntityType="iDrugsModel.PrescriptionItem" Width="1.5" PointX="5.625" PointY="1.75" />
         <AssociationConnector Association="iDrugsModel.FK__Prescript__Apoth__46E78A0C" />
-        <AssociationConnector Association="iDrugsModel.FK__Prescript__Docto__45F365D3" />
         <AssociationConnector Association="iDrugsModel.FK__Prescript__Medic__47DBAE45" />
         <AssociationConnector Association="iDrugsModel.FK__Prescript__Presc__48CFD27E" />
+        <EntityTypeShape EntityType="iDrugsModel.Doctor" Width="1.5" PointX="10.25" PointY="1.375" />
+        <AssociationConnector Association="iDrugsModel.FK__Prescript__Docto__45F365D3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

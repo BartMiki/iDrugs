@@ -27,7 +27,9 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index"><span class="glyphicon glyphicon-arrow-left"></span> Powrót</a>
-</div>
+<button onclick="location.href='@Url.Action("Index","Order")'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+    <span>Powrót</span>
+</button>
 

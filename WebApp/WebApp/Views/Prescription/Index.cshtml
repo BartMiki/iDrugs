@@ -1,5 +1,5 @@
 ﻿@using WebApp.Models.PrescriptionModels
-@model IEnumerable<PrescriptionViewModel>
+@model IndexViewModel
 
 @{
     ViewData["Title"] = "Recepty";
@@ -7,12 +7,27 @@
 
 <h2>Recepty</h2>
 
-<div class="btn-group">
-    <button onclick="location.href='@Url.Action("CreatePrescription","Prescription")'" class="btn btn-default">
-        <span class="glyphicon glyphicon-plus"></span>
-        <span>Dodaj nową receptę</span>
-    </button>
+<div class="row">
+    <div class="col-md-2">
+        <div class="btn-group">
+            <button onclick="location.href='@Url.Action("CreatePrescription","Prescription")'" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span>Dodaj nową receptę</span>
+            </button>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <form class="form-inline" asp-action="Search">
+            <div class="form-group">
+                <label>Wyszukaj receptę</label>
+                <input class="form-control" asp-for="SearchId" placeholder="Numer recepty"/>
+                <input type="submit" value="Szukaj" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
 </div>
+
+
 
 <br />
 
@@ -20,28 +35,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DoctorFullName)
+                @Html.DisplayNameFor(model => model.Prescriptions.First().DoctorFullName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ApothecaryFullName)
+                @Html.DisplayNameFor(model => model.Prescriptions.First().ApothecaryFullName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PrescriptionDate)
+                @Html.DisplayNameFor(model => model.Prescriptions.First().PrescriptionDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CompletionDate)
+                @Html.DisplayNameFor(model => model.Prescriptions.First().CompletionDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                @Html.DisplayNameFor(model => model.Prescriptions.First().Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalCost)
+                @Html.DisplayNameFor(model => model.Prescriptions.First().TotalCost)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Prescriptions)
         {
             <tr>
                 <td>

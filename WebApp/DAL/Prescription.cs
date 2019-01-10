@@ -31,8 +31,8 @@ namespace DAL
         public int RowVersion { get; set; }
     
         public virtual Apothecary Apothecary { get; set; }
-        public virtual Doctor Doctor { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PrescriptionItem> PrescriptionItems { get; set; }
+        public virtual Doctor Doctor { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using DAL.Exceptions;
 using DAL.Interfaces;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using static Common.Handlers.StaticDatabaseExceptionHandler;
 
@@ -35,6 +36,11 @@ namespace DAL.Repos
                 var entity = _context.Doctors.Find(doctor.Id);
 
                 if (entity == null) throw new DoctorNotFoundException(doctor.Id);
+
+                if (entity.RowVersion != doctor.RowVersion)
+                    throw new DBConcurrencyException("Informacje o aptekarzu zostały zmienione, przez innego użytkownika");
+
+                doctor.RowVersion++;
 
                 _context.Entry(entity)
                     .CurrentValues.SetValues(doctor);

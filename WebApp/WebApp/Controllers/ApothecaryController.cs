@@ -4,6 +4,7 @@ using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using WebApp.Models.ApothecaryModels;
+using WebApp.Models.PrescriptionModels;
 
 namespace WebApp
 {

@@ -27,7 +27,6 @@ namespace DAL
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DrugStoreAvailableMedicine> DrugStoreAvailableMedicines { get; set; }
         public virtual DbSet<MedicineWarehouse> MedicineWarehouses { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
@@ -36,6 +35,7 @@ namespace DAL
         public virtual DbSet<Medicine> Medicines { get; set; }
         public virtual DbSet<Prescription> Prescriptions { get; set; }
         public virtual DbSet<PrescriptionItem> PrescriptionItems { get; set; }
+        public virtual DbSet<Doctor> Doctors { get; set; }
     
         public virtual int InsertApothecary(string firstName, string lastName, Nullable<decimal> monthlySalary)
         {

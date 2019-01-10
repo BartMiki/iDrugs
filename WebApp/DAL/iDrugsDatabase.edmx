@@ -26,7 +26,7 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="HasValidMedicalLicense" Type="bit" Nullable="false" />
-          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="RowVersion" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DrugStoreAvailableMedicine">
           <Key>
@@ -315,7 +315,6 @@
           <FunctionImport Name="CreateOrder" ReturnType="Collection(Int32)">
           <Parameter Name="ApothecaryId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="Doctors" EntityType="iDrugsModel.Doctor" />
           <EntitySet Name="DrugStoreAvailableMedicines" EntityType="iDrugsModel.DrugStoreAvailableMedicine" />
           <EntitySet Name="MedicineWarehouses" EntityType="iDrugsModel.MedicineWarehouse" />
           <EntitySet Name="Orders" EntityType="iDrugsModel.Order" />
@@ -357,10 +356,6 @@
             <End Role="Apothecary" EntitySet="Apothecaries" />
             <End Role="Prescription" EntitySet="Prescriptions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Prescript__Docto__45F365D3" Association="iDrugsModel.FK__Prescript__Docto__45F365D3">
-            <End Role="Doctor" EntitySet="Doctors" />
-            <End Role="Prescription" EntitySet="Prescriptions" />
-          </AssociationSet>
           <AssociationSet Name="FK__Prescript__Medic__47DBAE45" Association="iDrugsModel.FK__Prescript__Medic__47DBAE45">
             <End Role="Medicine" EntitySet="Medicines" />
             <End Role="PrescriptionItem" EntitySet="PrescriptionItems" />
@@ -388,18 +383,12 @@
             <Parameter Name="newAmount" Mode="In" Type="Int32" />
             <Parameter Name="version" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Doctors" EntityType="iDrugsModel.Doctor" />
+          <AssociationSet Name="FK__Prescript__Docto__45F365D3" Association="iDrugsModel.FK__Prescript__Docto__45F365D3">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Prescription" EntitySet="Prescriptions" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="Doctor">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="HasValidMedicalLicense" Type="Boolean" Nullable="false" />
-          <Property Name="RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Prescriptions" Relationship="iDrugsModel.FK__Prescript__Docto__45F365D3" FromRole="Doctor" ToRole="Prescription" />
-        </EntityType>
         <EntityType Name="DrugStoreAvailableMedicine">
           <Key>
             <PropertyRef Name="Id" />
@@ -550,8 +539,8 @@
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="RowVersion" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Apothecary" Relationship="iDrugsModel.FK__Prescript__Apoth__46E78A0C" FromRole="Prescription" ToRole="Apothecary" />
-          <NavigationProperty Name="Doctor" Relationship="iDrugsModel.FK__Prescript__Docto__45F365D3" FromRole="Prescription" ToRole="Doctor" />
           <NavigationProperty Name="PrescriptionItems" Relationship="iDrugsModel.FK__Prescript__Presc__48CFD27E" FromRole="Prescription" ToRole="PrescriptionItem" />
+          <NavigationProperty Name="Doctor" Relationship="iDrugsModel.FK__Prescript__Docto__45F365D3" FromRole="Prescription" ToRole="Doctor" />
         </EntityType>
         <EntityType Name="PrescriptionItem">
           <Key>
@@ -579,18 +568,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Prescript__Docto__45F365D3">
-          <End Type="iDrugsModel.Doctor" Role="Doctor" Multiplicity="1" />
-          <End Type="iDrugsModel.Prescription" Role="Prescription" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctor">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Prescription">
-              <PropertyRef Name="DoctorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Prescript__Medic__47DBAE45">
           <End Type="iDrugsModel.Medicine" Role="Medicine" Multiplicity="1" />
           <End Type="iDrugsModel.PrescriptionItem" Role="PrescriptionItem" Multiplicity="*" />
@@ -615,6 +592,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HasValidMedicalLicense" Type="Boolean" Nullable="false" />
+          <Property Name="RowVersion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Prescriptions" Relationship="iDrugsModel.FK__Prescript__Docto__45F365D3" FromRole="Doctor" ToRole="Prescription" />
+        </EntityType>
+        <Association Name="FK__Prescript__Docto__45F365D3">
+          <End Type="iDrugsModel.Doctor" Role="Doctor" Multiplicity="1" />
+          <End Type="iDrugsModel.Prescription" Role="Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -624,17 +624,6 @@
           <FunctionImportMapping FunctionImportName="InsertApothecary" FunctionName="iDrugsModel.Store.InsertApothecary" />
           <FunctionImportMapping FunctionImportName="FireApothecary" FunctionName="iDrugsModel.Store.FireApothecary" />
           <FunctionImportMapping FunctionImportName="CreateOrder" FunctionName="iDrugsModel.Store.CreateOrder" />
-          <EntitySetMapping Name="Doctors">
-            <EntityTypeMapping TypeName="iDrugsModel.Doctor">
-              <MappingFragment StoreEntitySet="Doctor">
-                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
-                <ScalarProperty Name="HasValidMedicalLicense" ColumnName="HasValidMedicalLicense" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DrugStoreAvailableMedicines">
             <EntityTypeMapping TypeName="iDrugsModel.DrugStoreAvailableMedicine">
               <MappingFragment StoreEntitySet="DrugStoreAvailableMedicine">
@@ -740,6 +729,17 @@
           <FunctionImportMapping FunctionImportName="AddPrescription" FunctionName="iDrugsModel.Store.AddPrescription" />
           <FunctionImportMapping FunctionImportName="AddPrescriptionItem" FunctionName="iDrugsModel.Store.AddPrescriptionItem" />
           <FunctionImportMapping FunctionImportName="ChangePrescriptedAmount" FunctionName="iDrugsModel.Store.ChangePrescriptedAmount" />
+          <EntitySetMapping Name="Doctors">
+            <EntityTypeMapping TypeName="iDrugsModel.Doctor">
+              <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="HasValidMedicalLicense" ColumnName="HasValidMedicalLicense" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

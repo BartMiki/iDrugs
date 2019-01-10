@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Common.Interfaces;
 using Common.Utils;
 using DAL.Enums;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using WebApp.Interfaces;
 using WebApp.Models.PrescriptionModels;
 
@@ -39,12 +38,25 @@ namespace WebApp.Controllers
 
             if (result.IsSuccess)
             {
-                var model = Mapper.Map<IEnumerable<PrescriptionViewModel>>(result.Value);
+                var model = new IndexViewModel
+                {
+                    Prescriptions = Mapper.Map<IEnumerable<PrescriptionViewModel>>(result.Value)
+                };
                 return View(model);
             }
 
             AddLocalError(result.FailureMessage);
             return View(Enumerable.Empty<PrescriptionViewModel>());
+        }
+
+        [HttpPost]
+        public IActionResult Search(IndexViewModel model)
+        {
+            if (!ModelState.IsValid) return RedirectToIndex("Proszę podać wartość liczbową do wyszukiwania");
+
+            if (!model.SearchId.HasValue) return RedirectToIndex();
+
+            return RedirectToAction(nameof(PrescriptionDetails), new { id = model.SearchId.Value });
         }
 
         public IActionResult CreatePrescription()
@@ -199,7 +211,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult AddPrescriptionItem(AddPrescriptionItemViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 var action = AddSelectListToModelWithRedirectToDetails(model);
                 return action ?? View(model);
@@ -262,7 +274,7 @@ namespace WebApp.Controllers
 
             var result = _prescriptionRepo.EditPrescriptionItem(model);
 
-            if(!result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 AddErrorForRedirect(result.FailureMessage);
                 return RedirectToAction(nameof(EditPrescriptonItem), new { prescriptionId = model.PrescriptionId, itemId = model.Id });
@@ -297,7 +309,7 @@ namespace WebApp.Controllers
             var drugsStoreResult = _drugStoreStockRepo.Get();
 
             if (!prescriptionResult.IsSuccess) return RedirectToPrescriptionDetails(id, prescriptionResult.FailureMessage);
-            if(! drugsStoreResult.IsSuccess) return RedirectToPrescriptionDetails(id, drugsStoreResult.FailureMessage);
+            if (!drugsStoreResult.IsSuccess) return RedirectToPrescriptionDetails(id, drugsStoreResult.FailureMessage);
 
             var prescription = Mapper.Map<PrescriptionViewModel>(prescriptionResult.Value);
 
@@ -332,7 +344,7 @@ namespace WebApp.Controllers
             var items = model.Items.Select(item => (item.ItemId, item.Amount));
             var result = _prescriptionRepo.BuySome(model.PrescriptionId, items);
 
-            if(!result.IsSuccess) return RedirectToPrescriptionDetails(model.PrescriptionId, result.FailureMessage);
+            if (!result.IsSuccess) return RedirectToPrescriptionDetails(model.PrescriptionId, result.FailureMessage);
 
             return RedirectToPrescriptionDetails(model.PrescriptionId);
         }

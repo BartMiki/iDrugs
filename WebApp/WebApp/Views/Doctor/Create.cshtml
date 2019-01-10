@@ -1,12 +1,10 @@
 ﻿@model WebApp.Models.DoctorModels.DoctorViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Dodaj lekarza";
 }
 
-<h2>Create</h2>
-
-<h4>DoctorViewModel</h4>
+<h2>Dodaj lekarza</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -22,14 +20,18 @@
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
+            @Html.HiddenFor(x => x.HasValidMedicalLicense)
+            @Html.HiddenFor(x => x.RowVersion)
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Dodaj" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<button onclick="location.href='@Url.Action("Index","Doctor")'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+    <span>Powrót</span>
+</button>
 
