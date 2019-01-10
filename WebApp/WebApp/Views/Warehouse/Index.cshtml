@@ -7,9 +7,11 @@
 
 <h2>Hurtownia leków</h2>
 
-<p>
-    <a asp-action="Create">Dodaj/zmień ilość leków w hurtowni</a>
-</p>
+<button onclick="location.href='@Url.Action("Create","Warehouse")'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-plus"></span>
+    <span>Dodaj/zmień ilość leków w hurtowni</span>
+</button>
 <table class="table table-striped">
     <thead>
         <tr>

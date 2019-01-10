@@ -78,6 +78,13 @@
     <Build Include="StoredProcedures\CreateOrder.sql" />
     <Build Include="StoredProcedures\DeleteMedicine.sql" />
     <Build Include="StoredProcedures\DeleteOrder.sql" />
+    <Build Include="StoredProcedures\RemoveDoctorLicense.sql" />
+    <Build Include="StoredProcedures\AcceptCreatedPrescription.sql" />
+    <Build Include="Triggers\ChangeStatusOfPrescription.sql" />
+    <Build Include="Triggers\WhenPrescriptionUpdated.sql" />
+    <Build Include="StoredProcedures\AddPrescription.sql" />
+    <Build Include="StoredProcedures\AddPrescriptionItem.sql" />
+    <Build Include="StoredProcedures\ChangePrescriptedAmount.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Tables\iDrugsDatabase.refactorlog" />

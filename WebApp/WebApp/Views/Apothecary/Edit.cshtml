@@ -45,7 +45,8 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Powrót</a>
-</div>
-
+<button onclick="location.href='@Url.Action("Details","Apothecary", new { id = Model.Id })'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+    <span>Powrót</span>
+</button>

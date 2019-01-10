@@ -1,20 +1,21 @@
-﻿@model IEnumerable<WebApp.Models.DoctorModels.DoctorViewModel>
+﻿@using WebApp.Models.DoctorModels
+@model IEnumerable<DoctorViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Spis lekarzy";
 }
 
-<h2>Index</h2>
+<h2>Spis lekarzy</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="btn-group">
+    <button onclick="location.href='@Url.Action("Create","Doctor")'" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        <span>Dodaj lekarza</span>
+    </button>
+</div>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -28,26 +29,45 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasValidMedicalLicense)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @if(item.HasValidMedicalLicense)
+                    {
+                        <span class="text">Licencja ważna</span>
+                    }
+                    else
+                    {
+                        <span class="text text-danger">Licencja nieważna</span>
+                    }
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <button onclick="location.href='@Url.Action("Details","Doctor", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span>Detale</span>
+                        </button>
+                        <button onclick="location.href='@Url.Action("RemoveLicesnse","Doctor", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                            <span>Odbierz licencje</span>
+                        </button>
+                        <button onclick="location.href='@Url.Action("Delete","Doctor", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span>Usuń</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

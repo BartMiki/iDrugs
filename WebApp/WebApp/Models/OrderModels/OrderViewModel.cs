@@ -18,11 +18,11 @@ namespace WebApp.Models.OrderModels
         public string ApothecaryFullName { get; set; }
 
         [Display(Name = "Data utworzenia")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
         public DateTime OrderCreationDate { get; set; }
 
         [Display(Name = "Data zamówienia")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}")]
         public DateTime? SendOrderDate { get; set; }
     }
 }

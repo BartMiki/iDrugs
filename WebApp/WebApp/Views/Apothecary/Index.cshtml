@@ -43,9 +43,23 @@
                     }
                 }
                 <td>
-                    @Html.ActionLink("Zwolnij", "Fire", new { id = apothecary.Id }) |
-                    @Html.ActionLink("Detale", "Details", new { id = apothecary.Id }) |
-                    @Html.ActionLink("Usuń", "Delete", new { id = apothecary.Id })
+                    <div class="btn-group">
+                        <button onclick="location.href='@Url.Action("Details","Apothecary", new { id = apothecary.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span>Detale</span>
+                        </button>
+                        <button onclick="location.href='@Url.Action("Fire","Apothecary", new { id = apothecary.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-fire"></span>
+                            <span>Zwolnij</span>
+                        </button>
+                        <button onclick="location.href='@Url.Action("Delete","Apothecary", new { id = apothecary.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            <span>Usuń</span>
+                        </button>
+                    </div>
                 </td>
             </tr>
         }

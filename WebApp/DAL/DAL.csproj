@@ -63,12 +63,16 @@
     </Compile>
     <Compile Include="Enums\DALEnumExtensions.cs" />
     <Compile Include="Enums\MedType.cs" />
+    <Compile Include="Enums\PrescriptionItemStatusEnum.cs" />
+    <Compile Include="Enums\PrescriptionStatusEnum.cs" />
     <Compile Include="Enums\Unit.cs" />
     <Compile Include="Exceptions\BaseNotFoundException.cs" />
     <Compile Include="Exceptions\DoctorNotFoundException.cs" />
     <Compile Include="Exceptions\MedicineNotFoundException.cs" />
     <Compile Include="Exceptions\OrderItemNotFoundException.cs" />
     <Compile Include="Exceptions\OrderNotFoundException.cs" />
+    <Compile Include="Exceptions\PrescriptionItemNotFoundException.cs" />
+    <Compile Include="Exceptions\PrescriptionNotFoundException.cs" />
     <Compile Include="Exceptions\WarehouseItemNotFoundException.cs" />
     <Compile Include="iDrugsDatabase.Context.cs">
       <AutoGen>True</AutoGen>
@@ -90,6 +94,7 @@
     <Compile Include="Interfaces\IDrugStoreStockRepo.cs" />
     <Compile Include="Interfaces\IMedicineRepo.cs" />
     <Compile Include="Interfaces\IOrderRepo.cs" />
+    <Compile Include="Interfaces\IPrescriptionRepo.cs" />
     <Compile Include="Interfaces\IWarehouseRepo.cs" />
     <Compile Include="Medicine.cs">
       <DependentUpon>iDrugsDatabase.tt</DependentUpon>
@@ -115,6 +120,7 @@
     <Compile Include="Repos\DrugStoreStockEfRepo.cs" />
     <Compile Include="Repos\MedicineEfRepo.cs" />
     <Compile Include="Repos\OrderEfRepo.cs" />
+    <Compile Include="Repos\PrescriptionEfRepo.cs" />
     <Compile Include="Repos\WarehouseEfRepo.cs" />
     <Compile Include="Utils\Transaction.cs" />
   </ItemGroup>

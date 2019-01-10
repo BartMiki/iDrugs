@@ -17,9 +17,10 @@ namespace WebApp.Models.DoctorModels
         [Display(Name ="Nazwisko")]
         public string LastName { get; set; }
 
-        [Display(Name ="Licencja na wydanie leków")]
+        [Display(Name ="Licencja")]
         public bool HasValidMedicalLicense { get; set; }
 
-        public byte[] RowVersion { get; set; }
+        [Display(Name = "Liczba edycji")]
+        public int RowVersion { get; set; }
     }
 }

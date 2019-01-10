@@ -4,5 +4,5 @@
 	FirstName NVARCHAR(50) NOT NULL,
 	LastName NVARCHAR(50) NOT NULL,
 	HasValidMedicalLicense BIT NOT NULL DEFAULT 1,
-	RowVersion TIMESTAMP,
+	RowVersion INT NOT NULL DEFAULT 1
 )

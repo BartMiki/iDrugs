@@ -31,7 +31,6 @@ namespace DAL
         public string Unit { get; set; }
         public string Name { get; set; }
         public bool Expired { get; set; }
-        public int MedicineTypeId { get; set; }
         public byte[] RowVersion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
