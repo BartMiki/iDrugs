@@ -86,6 +86,9 @@ namespace WebApp
             builder.RegisterType<SelectService>()
                 .As<ISelectService>()
                 .InstancePerDependency();
+            builder.RegisterType<PrescriptionEmailSenderService>()
+                .As<IEmailSenderService>()
+                .InstancePerDependency();
 
             builder.Populate(services);
             ApplicationContainer = builder.Build();

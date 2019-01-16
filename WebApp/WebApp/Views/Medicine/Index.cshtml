@@ -26,9 +26,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.MedicineContent)
             </th>
-            <th>
+            <!--<th>
                 @Html.DisplayNameFor(model => model.Expired)
             </th>
+                -->
             <th></th>
         </tr>
     </thead>
@@ -45,16 +46,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.MedicineContent)
                 </td>
-                <td>
-                    @if (item.Expired)
-                    {
-                        <span class="glyphicon glyphicon-ok"></span>
-                    }
-                    else
-                    {
-                        <span class="glyphicon glyphicon-remove"></span>
-                    }
-                </td>
+                <!--
+                    <td>
+                        @if (item.Expired)
+                        {
+                            <span class="glyphicon glyphicon-ok"></span>
+                        }
+                        else
+                        {
+                            <span class="glyphicon glyphicon-remove"></span>
+                        }
+                    </td>
+                -->
                 <td>
                     <div class="btn-group">
                         <button onclick="location.href='@Url.Action("Details","Medicine", new { id = item.Id })'"
@@ -65,7 +68,7 @@
                         <button onclick="location.href='@Url.Action("Delete","Medicine", new { id = item.Id })'"
                                 class="btn btn-default">
                             <span class="glyphicon glyphicon-remove"></span>
-                            <span>Usuń</span>
+                            <span></span>
                         </button>
                         <!--
                         <button onclick="location.href='@Url.Action("MakeExpired","Medicine", new { id = item.Id })'"

@@ -19,14 +19,17 @@ namespace WebApp.Controllers
         private readonly ILogger<PrescriptionController> _logger;
         private readonly ISelectService _selectService;
         private readonly IDrugStoreStockRepo _drugStoreStockRepo;
+        private readonly IEmailSenderService _emailSenderService;
 
-        public PrescriptionController(IPrescriptionRepo prescriptionRepo, ILogger<PrescriptionController> logger, ISelectService selectService, IDrugStoreStockRepo drugStoreStockRepo)
+        public PrescriptionController(IPrescriptionRepo prescriptionRepo, ILogger<PrescriptionController> logger, ISelectService selectService, IDrugStoreStockRepo drugStoreStockRepo, IEmailSenderService emailSenderService)
         {
             _prescriptionRepo = prescriptionRepo;
             _logger = logger;
             _selectService = selectService;
             _drugStoreStockRepo = drugStoreStockRepo;
+            _emailSenderService = emailSenderService;
         }
+
         #endregion
 
 
@@ -151,10 +154,17 @@ namespace WebApp.Controllers
         {
 
             var result = _prescriptionRepo.AcceptCreated(id);
+            var emailResult = _prescriptionRepo.Get(id);
 
-            if (result.IsSuccess) return RedirectToPrescriptionDetails(id);
+            if (!result.IsSuccess) return RedirectToPrescriptionDetails(id, result.FailureMessage);
+            if (!emailResult.IsSuccess) return RedirectToPrescriptionDetails(id, result.FailureMessage);
 
-            return RedirectToPrescriptionDetails(id, result.FailureMessage);
+            var emailMsg = result.Value;
+            var email = emailResult.Value.Email;
+
+            _emailSenderService.SendEmail(email, "Rejestracja recepty", emailMsg);
+
+            return RedirectToPrescriptionDetails(id);
         }
 
         [HttpPost]
@@ -286,21 +296,17 @@ namespace WebApp.Controllers
         public IActionResult BuyAll(int id)
         {
             var result = _prescriptionRepo.BuyAll(id);
+            var emailResult = _prescriptionRepo.Get(id);
 
-            if (!result.IsSuccess) AddErrorForRedirect(result.FailureMessage);
+            if (!result.IsSuccess) return RedirectToPrescriptionDetails(id, result.FailureMessage);
+            if (!emailResult.IsSuccess) return RedirectToPrescriptionDetails(id, result.FailureMessage);
+
+            var emailMsg = result.Value;
+            var email = emailResult.Value.Email;
+
+            _emailSenderService.SendEmail(email, $"Recepta {id} zrealizowana", emailMsg);
 
             return RedirectToPrescriptionDetails(id);
-        }
-
-        public IActionResult BuyView(int id)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult BuyView(PrescriptionViewModel id)
-        {
-            return View();
         }
 
         public IActionResult BuySomeItems(int id)
@@ -327,6 +333,8 @@ namespace WebApp.Controllers
                             UnitPrice = pItem.Medicine.UnitPrice
                         };
 
+            if (items.Count() == 0) return RedirectToPrescriptionDetails(prescription.Id, "Apteka nie ma na stanie żadnych leków, które znajdują się na recepcie");
+
             var model = new BuySomeItemsViewModel
             {
                 PrescriptionId = id,
@@ -343,8 +351,16 @@ namespace WebApp.Controllers
 
             var items = model.Items.Select(item => (item.ItemId, item.Amount));
             var result = _prescriptionRepo.BuySome(model.PrescriptionId, items);
+            var emailResult = _prescriptionRepo.Get(model.PrescriptionId);
 
             if (!result.IsSuccess) return RedirectToPrescriptionDetails(model.PrescriptionId, result.FailureMessage);
+            if (!emailResult.IsSuccess) return RedirectToPrescriptionDetails(model.PrescriptionId, result.FailureMessage);
+
+            var emailMsg = result.Value;
+            var email = emailResult.Value.Email;
+            var subject = emailMsg.Contains("część") ? $"$Kupiono część leków z recepty {model.PrescriptionId}" : $"Recepta {model.PrescriptionId} zrealizowana";
+
+            _emailSenderService.SendEmail(email, subject, emailMsg);
 
             return RedirectToPrescriptionDetails(model.PrescriptionId);
         }

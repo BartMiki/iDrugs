@@ -8,6 +8,7 @@ using static AutoMapper.Mapper;
 using WebApp.Interfaces;
 using WebApp.Models.ApothecaryModels;
 using WebApp.Models.DoctorModels;
+using System.Linq;
 
 namespace WebApp.Service
 {
@@ -32,7 +33,7 @@ namespace WebApp.Service
 
                 if (!result.IsSuccess) throw new Exception(result.FailureMessage);
 
-                var temp = Map<IEnumerable<ApothecaryViewModel>>(result.Value);
+                var temp = Map<IEnumerable<ApothecaryViewModel>>(result.Value.Where(x => !x.FireDate.HasValue));
                 return Map<IEnumerable<ApothecarySelectViewModel>>(temp);
             }, GetType());
         }
@@ -45,7 +46,7 @@ namespace WebApp.Service
 
                 if (!result.IsSuccess) throw new Exception(result.FailureMessage);
 
-                return Map<IEnumerable<DoctorSelectViewModel>>(result.Value);
+                return Map<IEnumerable<DoctorSelectViewModel>>(result.Value.Where(x => x.HasValidMedicalLicense));
             }, GetType());
         }
 

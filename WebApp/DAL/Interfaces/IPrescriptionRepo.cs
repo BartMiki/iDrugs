@@ -15,7 +15,7 @@ namespace DAL.Interfaces
         Result<PrescriptionItem> GetItem(int id);
         #endregion
         #region Stored Procedures
-        Result AcceptCreated(int id);
+        Result<string> AcceptCreated(int id);
         #endregion
         #region Add Methods
         Result<int> AddPrescription(Prescription entity);
@@ -30,9 +30,8 @@ namespace DAL.Interfaces
         Result DeletePrescriptionItem(int prescriptionId, int itemId);
         #endregion
         #region Buy
-        Result BuyAll(int id);
-        Result Buy(Prescription prescription);
-        Result BuySome(int prescriptionId, IEnumerable<(int itemId, int amount)> itemsToBuy);
+        Result<string> BuyAll(int id);
+        Result<string> BuySome(int prescriptionId, IEnumerable<(int itemId, int amount)> itemsToBuy);
         #endregion
     }
 }
