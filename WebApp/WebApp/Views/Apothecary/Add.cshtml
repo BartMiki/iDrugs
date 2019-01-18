@@ -1,0 +1,43 @@
+﻿@using WebApp.Models.ApothecaryModels;
+@model ApothecaryViewModel
+
+@{
+    ViewData["Title"] = "Dodaj aptekarza";
+}
+
+<h2>Dodaj aptekarza</h2>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MonthlySalary" class="control-label"></label>
+                <input asp-for="MonthlySalary" class="form-control" />
+                <span asp-validation-for="MonthlySalary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<button onclick="location.href='@Url.Action("Index","Apothecary")'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+    <span>Powrót</span>
+</button>
+

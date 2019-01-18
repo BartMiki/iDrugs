@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9be9381748914897b9be0be5e7345377" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="iDrugsModel.DrugStoreAvailableMedicine" Width="1.5" PointX="2.625" PointY="7.875" />
+        <EntityTypeShape EntityType="iDrugsModel.MedicineWarehouse" Width="1.5" PointX="2.75" PointY="0.625" />
+        <EntityTypeShape EntityType="iDrugsModel.Order" Width="1.5" PointX="7.75" PointY="5.5" />
+        <EntityTypeShape EntityType="iDrugsModel.OrderItem" Width="1.5" PointX="5.625" PointY="5.5" />
+        <AssociationConnector Association="iDrugsModel.FK__OrderItem__Order__3D5E1FD2" />
+        <EntityTypeShape EntityType="iDrugsModel.Apothecary" Width="1.5" PointX="10.25" PointY="3.875" />
+        <AssociationConnector Association="iDrugsModel.FK__Order__Apothecar__3F115E1A" />
+        <EntityTypeShape EntityType="iDrugsModel.Medicine" Width="1.5" PointX="2.625" PointY="3.5" />
+        <AssociationConnector Association="iDrugsModel.FK__DrugStore__Medic__3B75D760" />
+        <AssociationConnector Association="iDrugsModel.FK__MedicineW__Medic__3C69FB99" />
+        <AssociationConnector Association="iDrugsModel.FK__OrderItem__Medic__3F466844" />
+        <EntityTypeShape EntityType="iDrugsModel.Prescription" Width="1.5" PointX="7.75" PointY="1.75" />
+        <EntityTypeShape EntityType="iDrugsModel.PrescriptionItem" Width="1.5" PointX="5.625" PointY="1.75" />
+        <AssociationConnector Association="iDrugsModel.FK__Prescript__Apoth__46E78A0C" />
+        <AssociationConnector Association="iDrugsModel.FK__Prescript__Medic__47DBAE45" />
+        <AssociationConnector Association="iDrugsModel.FK__Prescript__Presc__48CFD27E" />
+        <EntityTypeShape EntityType="iDrugsModel.Doctor" Width="1.5" PointX="10.25" PointY="1.375" />
+        <AssociationConnector Association="iDrugsModel.FK__Prescript__Docto__45F365D3" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

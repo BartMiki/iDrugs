@@ -1,0 +1,63 @@
+﻿@model WebApp.Models.DoctorModels.DoctorViewModel
+
+@{
+    ViewData["Title"] = "Szczegóły";
+}
+
+<h2>Informacje o lekarzu</h2>
+
+<div>
+    <h4>@Model.FirstName @Model.LastName</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HasValidMedicalLicense)
+        </dt>
+        <dd>
+            @if (Model.HasValidMedicalLicense)
+            {
+                <span class="text">Ważna</span>
+            }
+            else
+            {
+                <span class="text text-danger">Nieważna</span>
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RowVersion)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RowVersion)
+        </dd>
+    </dl>
+</div>
+<div class="btn-group">
+    <button onclick="location.href='@Url.Action("Index","Doctor")'"
+            class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        <span>Powrót</span>
+    </button>
+    <button onclick="location.href='@Url.Action("Edit","Doctor", new { id = Model.Id })'"
+            class="btn btn-default">
+        <span class="glyphicon glyphicon-edit"></span>
+        <span>Edytuj</span>
+    </button>
+</div>

@@ -1,0 +1,67 @@
+﻿@model WebApp.Models.MedicineModels.MedicineDetailsViewModel
+
+@{
+    ViewData["Title"] = "Detale leku";
+}
+
+<h2>Detale leku @Model.Name</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RefundString)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RefundString)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceWithRefund)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PriceWithRefund)
+        </dd>
+        <!--
+        <dt>
+            @Html.DisplayNameFor(model => model.Expired)
+        </dt>
+        <dd>
+            @if (Model.Expired)
+            {
+                <span class="glyphicon glyphicon-ok"></span>
+            }
+            else
+            {
+                <span class="glyphicon glyphicon-remove"></span>
+            }
+        </dd>
+        -->
+        <dt>
+            @Html.DisplayNameFor(model => model.MedicineContent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MedicineContent)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Powrót</a>
+</div>

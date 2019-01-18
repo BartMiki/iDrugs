@@ -1,0 +1,40 @@
+﻿@model WebApp.Models.DoctorModels.DoctorViewModel
+
+@{
+    ViewData["Title"] = "Edycja lekarza";
+}
+
+<h2>Edycja lekarza</h2>
+
+<h4>Numer lekarza: @Model.Id</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.RowVersion)
+            @Html.HiddenFor(model => model.HasValidMedicalLicense)
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<button onclick="location.href='@Url.Action("Details","Doctor", new { id = Model.Id })'"
+        class="btn btn-default">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+    <span>Powrót</span>
+</button>
+

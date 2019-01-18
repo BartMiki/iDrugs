@@ -1,0 +1,766 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="iDrugsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Apothecary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MonthlySalary" Type="money" Nullable="false" />
+          <Property Name="IsEmployed" Type="bit" Nullable="false" />
+          <Property Name="HireDate" Type="date" Nullable="false" />
+          <Property Name="FireDate" Type="date" />
+          <Property Name="RowVersion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HasValidMedicalLicense" Type="bit" Nullable="false" />
+          <Property Name="RowVersion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DrugStoreAvailableMedicine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MedicineId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Medicine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UnitPrice" Type="money" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="Refund" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="MedType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Expired" Type="bit" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MedicineWarehouse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MedicineId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApothecaryId" Type="int" Nullable="false" />
+          <Property Name="OrderCreationDate" Type="datetime" />
+          <Property Name="SendOrderDate" Type="datetime" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="MedicineId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prescription">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DoctorId" Type="int" Nullable="false" />
+          <Property Name="ApothecaryId" Type="int" Nullable="false" />
+          <Property Name="PrescriptionDate" Type="date" Nullable="false" />
+          <Property Name="CompletionDate" Type="date" />
+          <Property Name="Status" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="TotalCost" Type="money" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="RowVersion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PrescriptionItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PrescriptionId" Type="int" Nullable="false" />
+          <Property Name="QuantityToBuy" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="QuantityAlreadyBought" Type="int" Nullable="false" />
+          <Property Name="MedicineId" Type="int" Nullable="false" />
+          <Property Name="RowVersion" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__DrugStore__Medic__412EB0B6">
+          <End Role="Medicine" Type="Self.Medicine" Multiplicity="1" />
+          <End Role="DrugStoreAvailableMedicine" Type="Self.DrugStoreAvailableMedicine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DrugStoreAvailableMedicine">
+              <PropertyRef Name="MedicineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MedicineW__Medic__4222D4EF">
+          <End Role="Medicine" Type="Self.Medicine" Multiplicity="1" />
+          <End Role="MedicineWarehouse" Type="Self.MedicineWarehouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MedicineWarehouse">
+              <PropertyRef Name="MedicineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Order__Apothecar__4316F928">
+          <End Role="Apothecary" Type="Self.Apothecary" Multiplicity="1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Apothecary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ApothecaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Medic__44FF419A">
+          <End Role="Medicine" Type="Self.Medicine" Multiplicity="1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="MedicineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Order__440B1D61">
+          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+          <End Role="OrderItem" Type="Self.OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Prescript__Apoth__46E78A0C">
+          <End Role="Apothecary" Type="Self.Apothecary" Multiplicity="1" />
+          <End Role="Prescription" Type="Self.Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Apothecary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="ApothecaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Prescript__Docto__45F365D3">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Prescription" Type="Self.Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Prescript__Medic__47DBAE45">
+          <End Role="Medicine" Type="Self.Medicine" Multiplicity="1" />
+          <End Role="PrescriptionItem" Type="Self.PrescriptionItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrescriptionItem">
+              <PropertyRef Name="MedicineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Prescript__Presc__48CFD27E">
+          <End Role="Prescription" Type="Self.Prescription" Multiplicity="1" />
+          <End Role="PrescriptionItem" Type="Self.PrescriptionItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prescription">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrescriptionItem">
+              <PropertyRef Name="PrescriptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AcceptCreatedPrescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AddPrescription" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="doctorId" Type="int" Mode="In" />
+          <Parameter Name="apothecaryId" Type="int" Mode="In" />
+          <Parameter Name="prescriptionDate" Type="date" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="AddPrescriptionItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="medicineId" Type="int" Mode="In" />
+          <Parameter Name="prescriptionId" Type="int" Mode="In" />
+          <Parameter Name="quantityToBuy" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ChangePrescriptedAmount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="newAmount" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CreateOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ApothecaryId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteMedicine" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="orderId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="FireApothecary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertApothecary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirstName" Type="nvarchar" Mode="In" />
+          <Parameter Name="LastName" Type="nvarchar" Mode="In" />
+          <Parameter Name="MonthlySalary" Type="money" Mode="In" />
+        </Function>
+        <Function Name="RemoveDoctorLicense" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="iDrugsModelStoreContainer">
+          <EntitySet Name="Apothecary" EntityType="Self.Apothecary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DrugStoreAvailableMedicine" EntityType="Self.DrugStoreAvailableMedicine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Medicine" EntityType="Self.Medicine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MedicineWarehouse" EntityType="Self.MedicineWarehouse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItem" EntityType="Self.OrderItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prescription" EntityType="Self.Prescription" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PrescriptionItem" EntityType="Self.PrescriptionItem" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__DrugStore__Medic__412EB0B6" Association="Self.FK__DrugStore__Medic__412EB0B6">
+            <End Role="Medicine" EntitySet="Medicine" />
+            <End Role="DrugStoreAvailableMedicine" EntitySet="DrugStoreAvailableMedicine" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MedicineW__Medic__4222D4EF" Association="Self.FK__MedicineW__Medic__4222D4EF">
+            <End Role="Medicine" EntitySet="Medicine" />
+            <End Role="MedicineWarehouse" EntitySet="MedicineWarehouse" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Order__Apothecar__4316F928" Association="Self.FK__Order__Apothecar__4316F928">
+            <End Role="Apothecary" EntitySet="Apothecary" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Medic__44FF419A" Association="Self.FK__OrderItem__Medic__44FF419A">
+            <End Role="Medicine" EntitySet="Medicine" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Order__440B1D61" Association="Self.FK__OrderItem__Order__440B1D61">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderItem" EntitySet="OrderItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Prescript__Apoth__46E78A0C" Association="Self.FK__Prescript__Apoth__46E78A0C">
+            <End Role="Apothecary" EntitySet="Apothecary" />
+            <End Role="Prescription" EntitySet="Prescription" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Prescript__Docto__45F365D3" Association="Self.FK__Prescript__Docto__45F365D3">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Prescription" EntitySet="Prescription" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Prescript__Medic__47DBAE45" Association="Self.FK__Prescript__Medic__47DBAE45">
+            <End Role="Medicine" EntitySet="Medicine" />
+            <End Role="PrescriptionItem" EntitySet="PrescriptionItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Prescript__Presc__48CFD27E" Association="Self.FK__Prescript__Presc__48CFD27E">
+            <End Role="Prescription" EntitySet="Prescription" />
+            <End Role="PrescriptionItem" EntitySet="PrescriptionItem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="iDrugsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="iDrugsEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="InsertApothecary">
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="MonthlySalary" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="FireApothecary">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CreateOrder" ReturnType="Collection(Int32)">
+          <Parameter Name="ApothecaryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="DrugStoreAvailableMedicines" EntityType="iDrugsModel.DrugStoreAvailableMedicine" />
+          <EntitySet Name="MedicineWarehouses" EntityType="iDrugsModel.MedicineWarehouse" />
+          <EntitySet Name="Orders" EntityType="iDrugsModel.Order" />
+          <EntitySet Name="OrderItems" EntityType="iDrugsModel.OrderItem" />
+          <AssociationSet Name="FK__OrderItem__Order__3D5E1FD2" Association="iDrugsModel.FK__OrderItem__Order__3D5E1FD2">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <FunctionImport Name="DeleteMedicine">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteOrder">
+          <Parameter Name="orderId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Apothecaries" EntityType="iDrugsModel.Apothecary" />
+          <AssociationSet Name="FK__Order__Apothecar__3F115E1A" Association="iDrugsModel.FK__Order__Apothecar__3F115E1A">
+            <End Role="Apothecary" EntitySet="Apothecaries" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <FunctionImport Name="RemoveDoctorLicense">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Medicines" EntityType="iDrugsModel.Medicine" />
+          <AssociationSet Name="FK__DrugStore__Medic__3B75D760" Association="iDrugsModel.FK__DrugStore__Medic__3B75D760">
+            <End Role="Medicine" EntitySet="Medicines" />
+            <End Role="DrugStoreAvailableMedicine" EntitySet="DrugStoreAvailableMedicines" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MedicineW__Medic__3C69FB99" Association="iDrugsModel.FK__MedicineW__Medic__3C69FB99">
+            <End Role="Medicine" EntitySet="Medicines" />
+            <End Role="MedicineWarehouse" EntitySet="MedicineWarehouses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderItem__Medic__3F466844" Association="iDrugsModel.FK__OrderItem__Medic__3F466844">
+            <End Role="Medicine" EntitySet="Medicines" />
+            <End Role="OrderItem" EntitySet="OrderItems" />
+          </AssociationSet>
+          <EntitySet Name="Prescriptions" EntityType="iDrugsModel.Prescription" />
+          <EntitySet Name="PrescriptionItems" EntityType="iDrugsModel.PrescriptionItem" />
+          <AssociationSet Name="FK__Prescript__Apoth__46E78A0C" Association="iDrugsModel.FK__Prescript__Apoth__46E78A0C">
+            <End Role="Apothecary" EntitySet="Apothecaries" />
+            <End Role="Prescription" EntitySet="Prescriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Prescript__Medic__47DBAE45" Association="iDrugsModel.FK__Prescript__Medic__47DBAE45">
+            <End Role="Medicine" EntitySet="Medicines" />
+            <End Role="PrescriptionItem" EntitySet="PrescriptionItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Prescript__Presc__48CFD27E" Association="iDrugsModel.FK__Prescript__Presc__48CFD27E">
+            <End Role="Prescription" EntitySet="Prescriptions" />
+            <End Role="PrescriptionItem" EntitySet="PrescriptionItems" />
+          </AssociationSet>
+          <FunctionImport Name="AcceptCreatedPrescription">
+          <Parameter Name="id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddPrescription" ReturnType="Collection(Int32)">
+            <Parameter Name="doctorId" Mode="In" Type="Int32" />
+            <Parameter Name="apothecaryId" Mode="In" Type="Int32" />
+            <Parameter Name="prescriptionDate" Mode="In" Type="DateTime" />
+            <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddPrescriptionItem">
+            <Parameter Name="medicineId" Mode="In" Type="Int32" />
+            <Parameter Name="prescriptionId" Mode="In" Type="Int32" />
+            <Parameter Name="quantityToBuy" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ChangePrescriptedAmount">
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="newAmount" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Doctors" EntityType="iDrugsModel.Doctor" />
+          <AssociationSet Name="FK__Prescript__Docto__45F365D3" Association="iDrugsModel.FK__Prescript__Docto__45F365D3">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Prescription" EntitySet="Prescriptions" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="DrugStoreAvailableMedicine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MedicineId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Medicine" Relationship="iDrugsModel.FK__DrugStore__Medic__3B75D760" FromRole="DrugStoreAvailableMedicine" ToRole="Medicine" />
+        </EntityType>
+        <EntityType Name="MedicineWarehouse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MedicineId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Medicine" Relationship="iDrugsModel.FK__MedicineW__Medic__3C69FB99" FromRole="MedicineWarehouse" ToRole="Medicine" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApothecaryId" Type="Int32" Nullable="false" />
+          <Property Name="OrderCreationDate" Type="DateTime" Precision="3" />
+          <Property Name="SendOrderDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="OrderItems" Relationship="iDrugsModel.FK__OrderItem__Order__3D5E1FD2" FromRole="Order" ToRole="OrderItem" />
+          <Property Name="RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Apothecary" Relationship="iDrugsModel.FK__Order__Apothecar__3F115E1A" FromRole="Order" ToRole="Apothecary" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="MedicineId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="iDrugsModel.FK__OrderItem__Order__3D5E1FD2" FromRole="OrderItem" ToRole="Order" />
+          <Property Name="RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Medicine" Relationship="iDrugsModel.FK__OrderItem__Medic__3F466844" FromRole="OrderItem" ToRole="Medicine" />
+        </EntityType>
+        <Association Name="FK__OrderItem__Order__3D5E1FD2">
+          <End Type="iDrugsModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="iDrugsModel.OrderItem" Role="OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Apothecary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MonthlySalary" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="IsEmployed" Type="Boolean" Nullable="false" />
+          <Property Name="HireDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FireDate" Type="DateTime" Precision="0" />
+          <Property Name="RowVersion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="iDrugsModel.FK__Order__Apothecar__3F115E1A" FromRole="Apothecary" ToRole="Order" />
+          <NavigationProperty Name="Prescriptions" Relationship="iDrugsModel.FK__Prescript__Apoth__46E78A0C" FromRole="Apothecary" ToRole="Prescription" />
+        </EntityType>
+        <Association Name="FK__Order__Apothecar__3F115E1A">
+          <End Type="iDrugsModel.Apothecary" Role="Apothecary" Multiplicity="1" />
+          <End Type="iDrugsModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Apothecary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ApothecaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Medicine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitPrice" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="Refund" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="MedType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Unit" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Expired" Type="Boolean" Nullable="false" />
+          <Property Name="RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="DrugStoreAvailableMedicines" Relationship="iDrugsModel.FK__DrugStore__Medic__3B75D760" FromRole="Medicine" ToRole="DrugStoreAvailableMedicine" />
+          <NavigationProperty Name="MedicineWarehouses" Relationship="iDrugsModel.FK__MedicineW__Medic__3C69FB99" FromRole="Medicine" ToRole="MedicineWarehouse" />
+          <NavigationProperty Name="OrderItems" Relationship="iDrugsModel.FK__OrderItem__Medic__3F466844" FromRole="Medicine" ToRole="OrderItem" />
+          <NavigationProperty Name="PrescriptionItems" Relationship="iDrugsModel.FK__Prescript__Medic__47DBAE45" FromRole="Medicine" ToRole="PrescriptionItem" />
+        </EntityType>
+        <Association Name="FK__DrugStore__Medic__3B75D760">
+          <End Type="iDrugsModel.Medicine" Role="Medicine" Multiplicity="1" />
+          <End Type="iDrugsModel.DrugStoreAvailableMedicine" Role="DrugStoreAvailableMedicine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DrugStoreAvailableMedicine">
+              <PropertyRef Name="MedicineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MedicineW__Medic__3C69FB99">
+          <End Type="iDrugsModel.Medicine" Role="Medicine" Multiplicity="1" />
+          <End Type="iDrugsModel.MedicineWarehouse" Role="MedicineWarehouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MedicineWarehouse">
+              <PropertyRef Name="MedicineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderItem__Medic__3F466844">
+          <End Type="iDrugsModel.Medicine" Role="Medicine" Multiplicity="1" />
+          <End Type="iDrugsModel.OrderItem" Role="OrderItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderItem">
+              <PropertyRef Name="MedicineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Prescription">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DoctorId" Type="Int32" Nullable="false" />
+          <Property Name="ApothecaryId" Type="Int32" Nullable="false" />
+          <Property Name="PrescriptionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CompletionDate" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TotalCost" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RowVersion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Apothecary" Relationship="iDrugsModel.FK__Prescript__Apoth__46E78A0C" FromRole="Prescription" ToRole="Apothecary" />
+          <NavigationProperty Name="PrescriptionItems" Relationship="iDrugsModel.FK__Prescript__Presc__48CFD27E" FromRole="Prescription" ToRole="PrescriptionItem" />
+          <NavigationProperty Name="Doctor" Relationship="iDrugsModel.FK__Prescript__Docto__45F365D3" FromRole="Prescription" ToRole="Doctor" />
+        </EntityType>
+        <EntityType Name="PrescriptionItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PrescriptionId" Type="Int32" Nullable="false" />
+          <Property Name="QuantityToBuy" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="QuantityAlreadyBought" Type="Int32" Nullable="false" />
+          <Property Name="MedicineId" Type="Int32" Nullable="false" />
+          <Property Name="RowVersion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Medicine" Relationship="iDrugsModel.FK__Prescript__Medic__47DBAE45" FromRole="PrescriptionItem" ToRole="Medicine" />
+          <NavigationProperty Name="Prescription" Relationship="iDrugsModel.FK__Prescript__Presc__48CFD27E" FromRole="PrescriptionItem" ToRole="Prescription" />
+        </EntityType>
+        <Association Name="FK__Prescript__Apoth__46E78A0C">
+          <End Type="iDrugsModel.Apothecary" Role="Apothecary" Multiplicity="1" />
+          <End Type="iDrugsModel.Prescription" Role="Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Apothecary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="ApothecaryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Prescript__Medic__47DBAE45">
+          <End Type="iDrugsModel.Medicine" Role="Medicine" Multiplicity="1" />
+          <End Type="iDrugsModel.PrescriptionItem" Role="PrescriptionItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medicine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrescriptionItem">
+              <PropertyRef Name="MedicineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Prescript__Presc__48CFD27E">
+          <End Type="iDrugsModel.Prescription" Role="Prescription" Multiplicity="1" />
+          <End Type="iDrugsModel.PrescriptionItem" Role="PrescriptionItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prescription">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PrescriptionItem">
+              <PropertyRef Name="PrescriptionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HasValidMedicalLicense" Type="Boolean" Nullable="false" />
+          <Property Name="RowVersion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Prescriptions" Relationship="iDrugsModel.FK__Prescript__Docto__45F365D3" FromRole="Doctor" ToRole="Prescription" />
+        </EntityType>
+        <Association Name="FK__Prescript__Docto__45F365D3">
+          <End Type="iDrugsModel.Doctor" Role="Doctor" Multiplicity="1" />
+          <End Type="iDrugsModel.Prescription" Role="Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="DoctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="iDrugsModelStoreContainer" CdmEntityContainer="iDrugsEntities">
+          <FunctionImportMapping FunctionImportName="InsertApothecary" FunctionName="iDrugsModel.Store.InsertApothecary" />
+          <FunctionImportMapping FunctionImportName="FireApothecary" FunctionName="iDrugsModel.Store.FireApothecary" />
+          <FunctionImportMapping FunctionImportName="CreateOrder" FunctionName="iDrugsModel.Store.CreateOrder" />
+          <EntitySetMapping Name="DrugStoreAvailableMedicines">
+            <EntityTypeMapping TypeName="iDrugsModel.DrugStoreAvailableMedicine">
+              <MappingFragment StoreEntitySet="DrugStoreAvailableMedicine">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="MedicineId" ColumnName="MedicineId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MedicineWarehouses">
+            <EntityTypeMapping TypeName="iDrugsModel.MedicineWarehouse">
+              <MappingFragment StoreEntitySet="MedicineWarehouse">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="MedicineId" ColumnName="MedicineId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="iDrugsModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="SendOrderDate" ColumnName="SendOrderDate" />
+                <ScalarProperty Name="OrderCreationDate" ColumnName="OrderCreationDate" />
+                <ScalarProperty Name="ApothecaryId" ColumnName="ApothecaryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderItems">
+            <EntityTypeMapping TypeName="iDrugsModel.OrderItem">
+              <MappingFragment StoreEntitySet="OrderItem">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="MedicineId" ColumnName="MedicineId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteMedicine" FunctionName="iDrugsModel.Store.DeleteMedicine" />
+          <FunctionImportMapping FunctionImportName="DeleteOrder" FunctionName="iDrugsModel.Store.DeleteOrder" />
+          <EntitySetMapping Name="Apothecaries">
+            <EntityTypeMapping TypeName="iDrugsModel.Apothecary">
+              <MappingFragment StoreEntitySet="Apothecary">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="FireDate" ColumnName="FireDate" />
+                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <ScalarProperty Name="IsEmployed" ColumnName="IsEmployed" />
+                <ScalarProperty Name="MonthlySalary" ColumnName="MonthlySalary" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="RemoveDoctorLicense" FunctionName="iDrugsModel.Store.RemoveDoctorLicense" />
+          <EntitySetMapping Name="Medicines">
+            <EntityTypeMapping TypeName="iDrugsModel.Medicine">
+              <MappingFragment StoreEntitySet="Medicine">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="Expired" ColumnName="Expired" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="MedType" ColumnName="MedType" />
+                <ScalarProperty Name="Refund" ColumnName="Refund" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prescriptions">
+            <EntityTypeMapping TypeName="iDrugsModel.Prescription">
+              <MappingFragment StoreEntitySet="Prescription">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="PrescriptionDate" ColumnName="PrescriptionDate" />
+                <ScalarProperty Name="ApothecaryId" ColumnName="ApothecaryId" />
+                <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrescriptionItems">
+            <EntityTypeMapping TypeName="iDrugsModel.PrescriptionItem">
+              <MappingFragment StoreEntitySet="PrescriptionItem">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="MedicineId" ColumnName="MedicineId" />
+                <ScalarProperty Name="QuantityAlreadyBought" ColumnName="QuantityAlreadyBought" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="QuantityToBuy" ColumnName="QuantityToBuy" />
+                <ScalarProperty Name="PrescriptionId" ColumnName="PrescriptionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AcceptCreatedPrescription" FunctionName="iDrugsModel.Store.AcceptCreatedPrescription" />
+          <FunctionImportMapping FunctionImportName="AddPrescription" FunctionName="iDrugsModel.Store.AddPrescription" />
+          <FunctionImportMapping FunctionImportName="AddPrescriptionItem" FunctionName="iDrugsModel.Store.AddPrescriptionItem" />
+          <FunctionImportMapping FunctionImportName="ChangePrescriptedAmount" FunctionName="iDrugsModel.Store.ChangePrescriptedAmount" />
+          <EntitySetMapping Name="Doctors">
+            <EntityTypeMapping TypeName="iDrugsModel.Doctor">
+              <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="HasValidMedicalLicense" ColumnName="HasValidMedicalLicense" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,64 @@
+﻿@using WebApp.Models.OrderModels;
+@model IEnumerable<OrderViewModel>
+
+@{
+    ViewData["Title"] = "Zamówienia";
+}
+
+<h2>Zamówienia</h2>
+
+<div class="btn-group">
+    <button onclick="location.href='@Url.Action("Create","Order")'" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        <span>Utwórz nowe zamówienie</span>
+    </button>
+</div>
+
+<br />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ApothecaryFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderCreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SendOrderDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApothecaryFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderCreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SendOrderDate)
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <button onclick="location.href='@Url.Action("Details","Order", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span>Detale</span>
+                        </button>
+                        <button onclick="location.href='@Url.Action("Delete","Order", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span>Usuń</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

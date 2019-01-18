@@ -1,0 +1,97 @@
+﻿@using WebApp.Models.PrescriptionModels
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Recepty";
+}
+
+<h2>Recepty</h2>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="btn-group">
+            <button onclick="location.href='@Url.Action("CreatePrescription","Prescription")'" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span>Dodaj nową receptę</span>
+            </button>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <form class="form-inline" asp-action="Search">
+            <div class="form-group">
+                <label>Wyszukaj receptę</label>
+                <input class="form-control" asp-for="SearchId" placeholder="Numer recepty"/>
+                <input type="submit" value="Szukaj" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<br />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Prescriptions.First().DoctorFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prescriptions.First().ApothecaryFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prescriptions.First().PrescriptionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prescriptions.First().CompletionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prescriptions.First().Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prescriptions.First().TotalCost)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Prescriptions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DoctorFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApothecaryFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrescriptionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompletionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusString)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalCost)
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <button onclick="location.href='@Url.Action("PrescriptionDetails","Prescription", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span>Detale</span>
+                        </button>
+                        <button onclick="location.href='@Url.Action("DeletePrescription","Prescription", new { id = item.Id })'"
+                                class="btn btn-default">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span>Usuń</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
